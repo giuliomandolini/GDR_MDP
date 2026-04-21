@@ -4,15 +4,19 @@ public class Weapon {
 
     private String name;
     private float damage;
-    private long cooldown;
+    private float cooldown;
     private long lastAttack;
     private float range;
     private float area;
     private Characteristics.CharacteristicType weaponType;
     private GameController gameController;
 
-    public Weapon(Characteristics.CharacteristicType weaponType, float area, float range,
-                  long lastAttack, long cooldown, float damage, String name, GameController gameController) {
+    public String getName() {
+        return name;
+    }
+
+    public Weapon(String name, float range, float cooldown, float damage, float area,
+                  Characteristics.CharacteristicType weaponType, GameController gameController) {
         this.weaponType = weaponType;
         this.area = area;
         this.range = range;
