@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class App {
     static void main() throws IOException {
-        Map<String, Weapon> weapons = new HashMap<>();
 
         Weapon w = new Weapon("Dagger", 10f, 2f, 10, 0, Characteristics.CharacteristicType.INTELLIGENCE, null);
         Weapon w1 = new Weapon("Dagger 1", 10f, 2f, 10, 0, Characteristics.CharacteristicType.INTELLIGENCE, null);
@@ -30,6 +29,5 @@ public class App {
         Type weaponMapType = new TypeToken<Map<String, Weapon>>() {}.getType();
         weapons = j.fromJson(r, weaponMapType);
 
-        System.out.println(weapons/*.get("Dagger").getName()*/);
     }
 }
