@@ -14,7 +14,7 @@ public class Enemy extends Entity{
 
     private long lastAttack;
 
-    public Enemy(float health, float speed, float damage, float range,float cooldown, Player player) {
+    public Enemy(float health, float speed, float damage, float range, float cooldown, Player player) {
         super(health, speed);
         this.damage = damage;
         this.cooldown = cooldown;
