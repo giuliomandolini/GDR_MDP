@@ -13,10 +13,13 @@ public class Player extends Entity{
         characteristics = new Characteristics(10, 10, 10);
     }
 
-    public void Update()
+    public void update()
     {
         for(Weapon w : weapons.values()) w.attack();
     }
 
+    public void changeHealth(float amount){
+        stats.set(Stats.StatType.CURRENT_HEALTH, amount);
+    }
 
 }

@@ -11,4 +11,3 @@ public abstract class Entity {
         stats = new Stats(health, speed);
     }
 }
-Spostare l'ultimo commit dal branch json implementation al branch master

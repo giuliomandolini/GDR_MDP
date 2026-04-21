@@ -5,34 +5,58 @@ package it.unicam.cs.mpgc.rpg130397;
  * All enemies move towards the player until they are at range, then they attack.
  * If the player leaves their maximum range, the enemy goes back to moving towards the player.
  */
-public abstract class Enemy extends Entity{
+public class Enemy extends Entity{
 
     private float damage;
-    private float range;
-    private boolean ranged;
     private float cooldown;
+    private Player player;
+    private float range;
 
     private long lastAttack;
 
-    public Enemy(float health, float speed, float damage, float range, boolean ranged, float cooldown) {
+    public Enemy(float health, float speed, float damage, float range,float cooldown, Player player) {
         super(health, speed);
         this.damage = damage;
-        this.range = range;
-        this.ranged = ranged;
         this.cooldown = cooldown;
+        this.player = player;
+        this.range = range;
     }
 
-    public void Act()
+    ///Has to be called at every tick. Makes the enemy decide wether to move, to attack, or both.
+    public void chooseMoveOrAttack()
     {
-        if(/*posizione del giocatore è in range*/ true)
-            Attack();
+        //if the enemy is ranged, it attacks if the player is in range. Else, it moves.
+        if(range > 0)
+        {
+            //TODO
+            if(/*distanza tra il giocatore e il nemico < range*/true)
+                if(canAttack()) attack();
+            else move();
+        }
+        //if the enemy is melee, it moves, then if the player is near enough, it attacks.
         else
-            Move();
+        {
+            move();
+            //TODO
+            if(canAttack() && true/*è in collisione con il giocatore*/) attack();
+        }
     }
 
-    private void Attack() {
+    private void attack(){
+        if(range == 0) player.changeHealth(-damage);
+        //TODO
+        else return; //altrimenti instanzia il proiettile
     }
 
-    private void Move()
+    //checks if the cooldown permits the attack
+    private boolean canAttack()
+    {
+        return lastAttack + cooldown < System.currentTimeMillis();
+    }
+
+    //makes the entity move towards the player
+    private void move() {
+        //TODO dipende da javafx
+    }
 
 }
