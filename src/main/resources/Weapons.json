@@ -1,0 +1,20 @@
+{
+  "Dagger 1": {
+    "name": "Dagger 1",
+    "damage": 10.0,
+    "cooldown": 2.0,
+    "lastAttack": 0,
+    "range": 10.0,
+    "area": 0.0,
+    "weaponType": "INTELLIGENCE"
+  },
+  "Dagger": {
+    "name": "Dagger",
+    "damage": 10.0,
+    "cooldown": 2.0,
+    "lastAttack": 0,
+    "range": 10.0,
+    "area": 0.0,
+    "weaponType": "INTELLIGENCE"
+  }
+}
