@@ -1,33 +1,22 @@
 package it.unicam.cs.mpgc.rpg130397;
 
-import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+/// Class that contains the instructions for general game functioning and utility methods
 public class GameController {
-    private Map<String, Weapon> weaponsMap = new HashMap<>();
-    private Map<String, Enemy> enemiesMap = new HashMap<>();
+    private GameData data;
 
-    private List<Enemy> enemies;
     private Enemy closestEnemy;
     private long lastUpdate;
     private final float UPDATE_COOLDOWN = 0.05f;
 
-    public GameController() throws FileNotFoundException {
-        enemies = new LinkedList<>();
-        weaponsMap = JDeserializer.getWeapons();
-        enemiesMap = JDeserializer.getEnemies();
+    public GameController(GameData data) {
+        this.data = data;
     }
-
-
 
     public void updateClosestEnemy()
     {
         if(lastUpdate + UPDATE_COOLDOWN > System.currentTimeMillis()) return;
-        closestEnemy = enemies.getFirst();
-        for(Enemy e : enemies)
+        closestEnemy = data.getEnemies().getFirst();
+        for(Enemy e : data.getEnemies())
         {
             //TODO distanza tra nemici e giocatore
             if(/*distanza*/ true)
@@ -37,8 +26,14 @@ public class GameController {
         }
     }
 
-
-
+    public void destroyEnemy(Enemy e)
+    {
+        data.getEnemies().remove(e);
+    }
+    public void spawnEnemy(Enemy e)
+    {
+        data.getEnemies().add(e);
+    }
     public Enemy getClosestEnemy() {
         return closestEnemy;
     }

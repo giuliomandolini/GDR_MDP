@@ -14,8 +14,8 @@ public class Enemy extends Entity{
 
     private long lastAttack;
 
-    public Enemy(float health, float speed, float damage, float range, float cooldown, Player player) {
-        super(health, speed);
+    public Enemy(String name, float health, float speed, float damage, float range, float cooldown, Player player) {
+        super(name, health, speed);
         this.damage = damage;
         this.cooldown = cooldown;
         this.player = player;

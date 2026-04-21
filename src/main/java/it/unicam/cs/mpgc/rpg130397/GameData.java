@@ -1,0 +1,28 @@
+package it.unicam.cs.mpgc.rpg130397;
+
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+/** Class that contains the game data, such as the hash tables of the weapons and the enemies currently
+ * in the game
+ */
+public class GameData {
+    private Map<String, Weapon> weaponsMap = new HashMap<>();
+    private Map<String, Enemy> enemiesMap = new HashMap<>();
+
+    private List<Enemy> enemies;
+
+    public GameData() throws FileNotFoundException {
+        enemies = new LinkedList<>();
+        weaponsMap = JDeserializer.getWeapons();
+        enemiesMap = JDeserializer.getEnemies();
+    }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
+
+}

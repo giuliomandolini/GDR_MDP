@@ -43,7 +43,7 @@ public class Weapon {
         }
     }
 
-    //Intelligence weapons attack automatically and target the closest enemy#ù
+    //Intelligence weapons attack automatically and target the closest enemy
     private void magicAttack() {
         gameController.updateClosestEnemy();
         //se la distanza è troppo grande non attacca

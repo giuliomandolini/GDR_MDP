@@ -15,10 +15,16 @@ public class Bullet {
         spawnTime = System.currentTimeMillis();
     }
 
+    /// va chiamato ad ogni update
     public void update()
     {
         move();
+        checkForCollision();
         checkForLifespan();
+    }
+
+    private void checkForCollision() {
+        //TODO controlla le collisioni con il giocatore
     }
 
     private void checkForLifespan() {

@@ -1,0 +1,30 @@
+{
+  "Archer": {
+    "damage": 10.0,
+    "cooldown": 10.0,
+    "range": 10.0,
+    "lastAttack": 0,
+    "stats": {
+      "stats": {
+        "SPEED": 2.0,
+        "CURRENT_HEALTH": 10.0,
+        "MAX_HEALTH": 10.0
+      }
+    },
+    "name": "Archer"
+  },
+  "Swordsman": {
+    "damage": 10.0,
+    "cooldown": 10.0,
+    "range": 0.0,
+    "lastAttack": 0,
+    "stats": {
+      "stats": {
+        "SPEED": 2.0,
+        "CURRENT_HEALTH": 10.0,
+        "MAX_HEALTH": 10.0
+      }
+    },
+    "name": "Swordsman"
+  }
+}

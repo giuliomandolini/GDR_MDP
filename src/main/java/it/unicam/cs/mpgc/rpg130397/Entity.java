@@ -5,9 +5,17 @@ package it.unicam.cs.mpgc.rpg130397;
  * It contains the standard {@link Stats}
  */
 public abstract class Entity {
-    Stats stats;
+    private Stats stats;
+    private final String name;
 
-    public Entity(float health, float speed) {
+    public Entity(String name, float health, float speed) {
         stats = new Stats(health, speed);
+        this.name = name;
+    }
+    public Stats getStats() {
+        return stats;
+    }
+    public String getName() {
+        return name;
     }
 }

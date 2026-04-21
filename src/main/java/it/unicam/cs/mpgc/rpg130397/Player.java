@@ -8,8 +8,8 @@ public class Player extends Entity{
     Characteristics characteristics;
     Map<Characteristics.CharacteristicType, Weapon> weapons = new HashMap<>();
 
-    public Player(float health, float speed) {
-        super(health, speed);
+    public Player(String name, float health, float speed) {
+        super(name, health, speed);
         characteristics = new Characteristics(10, 10, 10);
     }
 
@@ -19,7 +19,7 @@ public class Player extends Entity{
     }
 
     public void changeHealth(float amount){
-        stats.set(Stats.StatType.CURRENT_HEALTH, amount);
+        getStats().set(Stats.StatType.CURRENT_HEALTH, amount);
     }
 
 }
