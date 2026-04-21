@@ -8,8 +8,8 @@ public class Player extends Entity{
     Characteristics characteristics;
     Map<Characteristics.CharacteristicType, Weapon> weapons = new HashMap<>();
 
-    public Player(float health, float speed, float basicDamage) {
-        super(health, speed, basicDamage);
+    public Player(float health, float speed) {
+        super(health, speed);
         characteristics = new Characteristics(10, 10, 10);
     }
 

@@ -7,7 +7,8 @@ package it.unicam.cs.mpgc.rpg130397;
 public abstract class Entity {
     Stats stats;
 
-    public Entity(float health, float speed, float basicDamage) {
-        stats = new Stats(health, speed, basicDamage);
+    public Entity(float health, float speed) {
+        stats = new Stats(health, speed);
     }
 }
+Spostare l'ultimo commit dal branch json implementation al branch master

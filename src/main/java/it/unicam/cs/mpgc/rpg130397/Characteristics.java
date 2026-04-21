@@ -5,7 +5,7 @@ import java.util.Map;
 
 /** Class that contains the
  * fundamental characteristics used only by the Player: <br>
- *  -Strenght<br>
+ *  -Strength <br>
  *  -Dexterity<br>
  *  -Intelligence
  */
@@ -13,7 +13,7 @@ public class Characteristics {
 
     public Characteristics(int strength, int dexterity, int intelligence)
     {
-        characteristics.put(CharacteristicType.STRENGHT, strength);
+        characteristics.put(CharacteristicType.STRENGTH, strength);
         characteristics.put(CharacteristicType.DEXTERITY, dexterity);
         characteristics.put(CharacteristicType.INTELLIGENCE, intelligence);
     }
@@ -22,7 +22,7 @@ public class Characteristics {
     private final Map<CharacteristicType, Integer> characteristics = new HashMap<>();
 
     public enum CharacteristicType{
-        STRENGHT, 
+        STRENGTH,
         DEXTERITY,
         INTELLIGENCE
     }
