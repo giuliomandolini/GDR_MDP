@@ -1,7 +1,9 @@
-package it.unicam.cs.mpgc.rpg130397;
+package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,8 @@
-package it.unicam.cs.mpgc.rpg130397;
+package it.unicam.cs.mpgc.rpg130397.elements.entities;
+
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Stats;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.util.HashMap;
 import java.util.Map;

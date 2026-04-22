@@ -1,4 +1,7 @@
-package it.unicam.cs.mpgc.rpg130397;
+package it.unicam.cs.mpgc.rpg130397.gamelogic;
+
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;

@@ -1,4 +1,7 @@
-package it.unicam.cs.mpgc.rpg130397;
+package it.unicam.cs.mpgc.rpg130397.elements.objects;
+
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.GameController;
 
 public class Weapon {
 
@@ -64,4 +67,5 @@ public class Weapon {
         lastAttack = System.currentTimeMillis();
     }
 
+    //TODO aumentare il danno dell'arma in base alla caratteristica del giocatore
 }

@@ -1,4 +1,6 @@
-package it.unicam.cs.mpgc.rpg130397;
+package it.unicam.cs.mpgc.rpg130397.gamelogic;
+
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 
 /// Class that contains the instructions for general game functioning and utility methods
 public class GameController {

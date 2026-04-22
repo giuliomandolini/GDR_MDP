@@ -1,4 +1,6 @@
-package it.unicam.cs.mpgc.rpg130397;
+package it.unicam.cs.mpgc.rpg130397.elements.entities;
+
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Stats;
 
 /**
  * This is the base class for each entity that exists in the game.<br>

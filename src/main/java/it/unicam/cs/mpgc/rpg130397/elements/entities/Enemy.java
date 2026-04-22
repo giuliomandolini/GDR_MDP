@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130397;
+package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
 /**
  * This class is the base class of all Entities that are aggressive towards the player.

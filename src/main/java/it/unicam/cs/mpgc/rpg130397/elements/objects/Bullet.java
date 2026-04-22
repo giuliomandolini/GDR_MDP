@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130397;
+package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
 public class Bullet {
 
