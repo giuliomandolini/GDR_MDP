@@ -27,7 +27,7 @@ public class Characteristics {
         INTELLIGENCE
     }
 
-    public float getCharacteristic(CharacteristicType type) {
+    public int getCharacteristic(CharacteristicType type) {
         return characteristics.get(type);
     }
 

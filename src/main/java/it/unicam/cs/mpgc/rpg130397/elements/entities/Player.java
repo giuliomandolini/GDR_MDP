@@ -10,7 +10,7 @@ import java.util.Map;
 public class Player extends Entity{
 
     Characteristics characteristics;
-    Map<Characteristics.CharacteristicType, Weapon> weapons = new HashMap<>();
+    Map<Characteristics.CharacteristicType, Weapon> activeWeapons = new HashMap<>();
 
     public Player(String name, float health, float speed) {
         super(name, health, speed);
@@ -19,11 +19,17 @@ public class Player extends Entity{
 
     public void update()
     {
-        for(Weapon w : weapons.values()) w.attack();
+        for(Weapon w : activeWeapons.values()) w.attack();
     }
 
     public void changeHealth(float amount){
         getStats().set(Stats.StatType.CURRENT_HEALTH, amount);
+    }
+
+    public void assignWeapon(Weapon weapon)
+    {
+        weapon.updateDamage(characteristics);
+        activeWeapons.put(weapon.getWeaponType(), weapon);
     }
 
 }
