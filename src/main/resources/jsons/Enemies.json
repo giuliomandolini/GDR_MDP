@@ -1,0 +1,54 @@
+{
+  "SkeletonMage": {
+    "damage": 15.0,
+    "cooldown": 4.0,
+    "range": 15.0,
+    "stats": {
+      "stats": {
+        "SPEED": 4.0,
+        "CURRENT_HEALTH": 10.0,
+        "MAX_HEALTH": 10.0
+      }
+    },
+    "name": "SkeletonMage"
+  },
+  "Zombie": {
+    "damage": 3.0,
+    "cooldown": 1.0,
+    "range": 0.0,
+    "stats": {
+      "stats": {
+        "SPEED": 3.0,
+        "CURRENT_HEALTH": 70.0,
+        "MAX_HEALTH": 70.0
+      }
+    },
+    "name": "Zombie"
+  },
+  "SkeletonArcher": {
+    "damage": 6.0,
+    "cooldown": 2.0,
+    "range": 10.0,
+    "stats": {
+      "stats": {
+        "SPEED": 5.0,
+        "CURRENT_HEALTH": 20.0,
+        "MAX_HEALTH": 20.0
+      }
+    },
+    "name": "SkeletonArcher"
+  },
+  "SkeletonWarrior": {
+    "damage": 10.0,
+    "cooldown": 2.0,
+    "range": 0.0,
+    "stats": {
+      "stats": {
+        "SPEED": 5.0,
+        "CURRENT_HEALTH": 50.0,
+        "MAX_HEALTH": 50.0
+      }
+    },
+    "name": "SkeletonWarrior"
+  }
+}

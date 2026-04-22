@@ -17,10 +17,6 @@ public class Weapon {
     private transient GameController gameController;
     private transient float damage;
 
-    public String getName() {
-        return name;
-    }
-
     public Weapon(String name, float range, float cooldown, float baseDamage, float area,
                   Characteristics.CharacteristicType weaponType, GameController gameController) {
         this.weaponType = weaponType;
@@ -73,9 +69,10 @@ public class Weapon {
     public void updateDamage(Characteristics characteristics)
     {
         int level = characteristics.getCharacteristic(weaponType);
+
         //for each 5 points after level 10 the damage increases by 1 baseDamage
-        if(level >= 10) damage = baseDamage * (level / 5.0f - 1);
         //if the level is less than 10 the damage decreases linearly
+        if(level > 10) damage = baseDamage * (level / 5.0f - 1);
         else damage = baseDamage * (level / 10f);
     }
 
@@ -83,5 +80,7 @@ public class Weapon {
         return weaponType;
     }
 
-    //TODO aumentare il danno dell'arma in base alla caratteristica del giocatore
+    public String getName() {
+        return name;
+    }
 }

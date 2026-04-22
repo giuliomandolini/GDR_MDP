@@ -15,7 +15,7 @@ public class Bullet {
         spawnTime = System.currentTimeMillis();
     }
 
-    /// va chiamato ad ogni update
+    ///has to be called on each update
     public void update()
     {
         move();

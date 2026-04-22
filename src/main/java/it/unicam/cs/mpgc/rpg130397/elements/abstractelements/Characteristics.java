@@ -32,6 +32,7 @@ public class Characteristics {
     }
 
     public void setCharacteristic(CharacteristicType type, int value) {
+        if(value < 0) throw new IllegalArgumentException("Valore di una caratteristica minore di 0");
         characteristics.replace(type, value);
     }
 

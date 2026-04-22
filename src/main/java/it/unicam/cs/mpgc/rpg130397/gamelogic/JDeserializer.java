@@ -18,7 +18,7 @@ public class JDeserializer {
      * @return the map of all the weapons
      */
     public static Map<String, Weapon> getWeapons() throws FileNotFoundException {
-        File f = new File("src/main/resources/Weapons.json");
+        File f = new File("src/main/resources/jsons/Weapons.json");
         Gson json = new Gson();
         Reader r = new FileReader(f);
         //Data type definition for the correct deserialization of the json file
@@ -31,7 +31,7 @@ public class JDeserializer {
      * @return the map of all the enemies
      */
     public static Map<String, Enemy> getEnemies() throws FileNotFoundException {
-        File f = new File("src/main/resources/Enemies.json");
+        File f = new File("src/main/resources/jsons/Enemies.json");
         Gson json = new Gson();
         Reader r = new FileReader(f);
         //Data type definition for the correct deserialization of the json file

@@ -28,6 +28,7 @@ public class Player extends Entity{
 
     public void assignWeapon(Weapon weapon)
     {
+        if(weapon == null) throw new IllegalArgumentException("Assegnando un'arma nulla");
         weapon.updateDamage(characteristics);
         activeWeapons.put(weapon.getWeaponType(), weapon);
     }
