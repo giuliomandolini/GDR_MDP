@@ -18,7 +18,7 @@ public class Stats {
         stats.put(StatType.SPEED, speed);
     }
 
-    //Hashmap per memorizzare le statistiche di una entità nel gioco
+    //Hashmap to memorize the statistics of an entity in the game
     private final Map<StatType, Float> stats = new HashMap<>();
 
     public enum StatType{
@@ -35,7 +35,7 @@ public class Stats {
         stats.replace(type, value);
     }
 
-    public void update(StatType type, float difference)
+    public void sum(StatType type, float difference)
     {
         stats.replace(type, stats.get(type) + difference);
     }

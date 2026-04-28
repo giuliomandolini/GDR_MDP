@@ -12,7 +12,7 @@ public class Enemy extends Entity{
     private Player player;
     private float range;
 
-    //il campo non deve essere presene nel json quindi va dichiarato transient
+    //the field must not be saved in the json so it has to be declared transient
     private transient long lastAttack;
 
     public Enemy(String name, float health, float speed, float damage, float range, float cooldown, Player player) {

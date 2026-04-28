@@ -20,7 +20,7 @@ public class App {
         //TODO controlla i valori passati tra i metodi
 
         //Map<String, Enemy> enemies = new HashMap<>();
-        Map<String, Weapon> weapons = new HashMap<>();
+        /*Map<String, Weapon> weapons = new HashMap<>();
         Weapon dagger = new Weapon("Dagger", 10, 2, 10, 0, Characteristics.CharacteristicType.DEXTERITY, null);
         Weapon bow = new Weapon("Bow", 20, 3, 30, 0, Characteristics.CharacteristicType.DEXTERITY, null);
         Weapon fireball = new Weapon("Fireball", 10, 5, 20, 3, Characteristics.CharacteristicType.INTELLIGENCE, null);
@@ -45,7 +45,7 @@ public class App {
         enemies.put(m.getName(), m);
         enemies.put(z.getName(), z);
 */
-        Gson j = new GsonBuilder().setPrettyPrinting().create();
+        /*Gson j = new GsonBuilder().setPrettyPrinting().create();
         File f = new File("src/main/resources/jsons/Weapons.json");
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(f));
@@ -57,6 +57,6 @@ public class App {
         weapons = j.fromJson(r, weaponMapType);
 
         weapons = JDeserializer.getWeapons();
-        System.out.println(weapons.get("Bow").getName());
+        System.out.println(weapons.get("Bow").getName());*/
     }
 }
