@@ -29,4 +29,7 @@ public class GameData {
         return enemies;
     }
 
+    public Map<String, WeaponStats> getWeaponStatMap() {
+        return weaponStatMap;
+    }
 }

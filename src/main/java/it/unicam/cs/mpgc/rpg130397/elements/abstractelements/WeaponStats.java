@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
 
 public class WeaponStats {
-    private String name;
     private float baseDamage;
     private float cooldown;
     private float range;
@@ -12,19 +11,13 @@ public class WeaponStats {
     //The code remains readable, scalable and not duplicated.
     private Characteristics.CharacteristicType weaponType;
 
-    public WeaponStats(String name, float range, float cooldown, float baseDamage, float area,
-                       Characteristics.CharacteristicType weaponType)
-    {
+    public WeaponStats(float range, float cooldown, float baseDamage, float area,
+                       Characteristics.CharacteristicType weaponType) {
         this.weaponType = weaponType;
         this.area = area;
         this.range = range;
         this.cooldown = cooldown;
         this.baseDamage = baseDamage;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public float getBaseDamage() {

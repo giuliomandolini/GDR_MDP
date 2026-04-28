@@ -47,13 +47,25 @@ public class JDeserializer {
         j.toJson(inventory, writer);
         writer.close();
     }
-    public static Map<Characteristics.CharacteristicType, Weapon> getPreviousInventory() throws FileNotFoundException {
+    public static Map<Characteristics.CharacteristicType, Weapon> getPreviousInventory(GameData data) throws FileNotFoundException {
         File f = new File("src/main/resources/jsons/Inventory.json");
         Gson json = new Gson();
         Reader r = new FileReader(f);
         //Data type definition for the correct deserialization of the json file
         Type inventoryMapType = new TypeToken<Map<Characteristics.CharacteristicType, Weapon>>() {}.getType();
-        return json.fromJson(r, inventoryMapType);
+
+        Map<Characteristics.CharacteristicType, Weapon> inv = json.fromJson(r, inventoryMapType);
+
+        //Only the name and the level of the weapons are saved. Their stats are saved in the GameData class.
+        return addWeaponsStats(inv, data);
+    }
+    private static Map<Characteristics.CharacteristicType, Weapon> addWeaponsStats(Map<Characteristics.CharacteristicType, Weapon> inv, GameData data)
+    {
+        for(Weapon w : inv.values())
+        {
+            w.setStats(data.getWeaponStatMap().get(w.getName()));
+        }
+        return inv;
     }
 
 }

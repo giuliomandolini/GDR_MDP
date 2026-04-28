@@ -2,21 +2,36 @@ package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.GameController;
 import it.unicam.cs.mpgc.rpg130397.utils.NearestEnemyUpdater;
 
 public class Weapon {
-    WeaponStats stats;
+    private String name;
     private int level;
 
     //the fields must not be saved in the json so it has to be declared transient
+    private transient WeaponStats stats;
     private transient long lastAttack;
     private transient NearestEnemyUpdater utils;
     private transient float damage;
 
-    public Weapon(WeaponStats stats, int level, NearestEnemyUpdater utils) {
-        this.stats = stats;
+    public Weapon(String name, float range, float cooldown, float baseDamage, float area,
+                  Characteristics.CharacteristicType weaponType, int level, NearestEnemyUpdater utils) {
+        this.stats = new WeaponStats(range, cooldown, baseDamage, area, weaponType);
+        this.name = name;
         this.level = level;
+        this.utils = utils;
+    }
+    public Weapon(String name, float range, float cooldown, float baseDamage, float area,
+                  Characteristics.CharacteristicType weaponType, NearestEnemyUpdater utils) {
+        this.stats = new WeaponStats(range, cooldown, baseDamage, area, weaponType);
+        this.name = name;
+        this.level = 1;
+        this.utils = utils;
+    }
+    public Weapon(String name, WeaponStats stats, NearestEnemyUpdater utils) {
+        this.name = name;
+        this.stats = stats;
+        this.level = 1;
         this.utils = utils;
     }
 
@@ -72,5 +87,13 @@ public class Weapon {
 
     public WeaponStats getStats() {
         return stats;
+    }
+
+    public void setStats(WeaponStats stats) {
+        this.stats = stats;
+    }
+
+    public String getName() {
+        return name;
     }
 }

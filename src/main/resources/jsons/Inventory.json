@@ -1,13 +1,6 @@
 {
   "STRENGTH": {
-    "stats": {
-      "name": "Axe",
-      "baseDamage": 20.0,
-      "cooldown": 2.0,
-      "range": 0.0,
-      "area": 0.0,
-      "weaponType": "STRENGTH"
-    },
+    "name": "Axe",
     "level": 1
   }
 }

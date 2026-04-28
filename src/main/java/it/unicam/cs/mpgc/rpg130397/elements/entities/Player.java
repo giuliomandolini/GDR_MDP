@@ -12,8 +12,9 @@ public class Player extends Entity{
     Characteristics characteristics;
     Map<Characteristics.CharacteristicType, Weapon> inventory = new HashMap<>();
 
-    public Player(String name, float health, float speed) {
+    public Player(String name, float health, float speed,  Map<Characteristics.CharacteristicType, Weapon> inventory) {
         super(name, health, speed);
+        this.inventory = inventory;
         characteristics = new Characteristics(10, 10, 10);
     }
 
