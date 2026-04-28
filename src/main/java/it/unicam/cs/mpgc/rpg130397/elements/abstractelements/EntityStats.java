@@ -9,9 +9,9 @@ import java.util.Map;
  *  -MaxHealth <br>
  *  -Speed <br>
  */
-public class Stats {
+public class EntityStats {
 
-    public Stats(float health, float speed)
+    public EntityStats(float health, float speed)
     {
         stats.put(StatType.CURRENT_HEALTH, health);
         stats.put(StatType.MAX_HEALTH, health);

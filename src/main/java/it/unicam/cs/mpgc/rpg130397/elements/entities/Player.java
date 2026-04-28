@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Stats;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 public class Player extends Entity{
 
     Characteristics characteristics;
-    Map<Characteristics.CharacteristicType, Weapon> activeWeapons = new HashMap<>();
+    Map<Characteristics.CharacteristicType, Weapon> inventory = new HashMap<>();
 
     public Player(String name, float health, float speed) {
         super(name, health, speed);
@@ -19,18 +19,25 @@ public class Player extends Entity{
 
     public void update()
     {
-        for(Weapon w : activeWeapons.values()) w.attack();
+        for(Weapon w : inventory.values()) w.attack();
     }
 
     public void changeHealth(float amount){
-        getStats().set(Stats.StatType.CURRENT_HEALTH, amount);
+        getStats().set(EntityStats.StatType.CURRENT_HEALTH, amount);
     }
 
     public void assignWeapon(Weapon weapon)
     {
         if(weapon == null) throw new IllegalArgumentException("Assegnando un'arma nulla");
         weapon.updateDamage(characteristics);
-        activeWeapons.put(weapon.getWeaponType(), weapon);
+        inventory.put(weapon.getStats().getWeaponType(), weapon);
     }
 
+    public void setInventory(Map<Characteristics.CharacteristicType, Weapon> inventory) {
+        this.inventory = inventory;
+    }
+
+    public Map<Characteristics.CharacteristicType, Weapon> getInventory() {
+        return inventory;
+    }
 }

@@ -1,15 +1,16 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 public class JDeserializer {
@@ -17,12 +18,12 @@ public class JDeserializer {
      *  Static method that deserializes the data contained in the weapons.json file into the weapons map
      * @return the map of all the weapons
      */
-    public static Map<String, Weapon> getWeapons() throws FileNotFoundException {
-        File f = new File("src/main/resources/jsons/Weapons.json");
+    public static Map<String, WeaponStats> getWeaponsStat() throws FileNotFoundException {
+        File f = new File("src/main/resources/jsons/WeaponStats.json");
         Gson json = new Gson();
         Reader r = new FileReader(f);
         //Data type definition for the correct deserialization of the json file
-        Type weaponMapType = new TypeToken<Map<String, Weapon>>() {}.getType();
+        Type weaponMapType = new TypeToken<Map<String, WeaponStats>>() {}.getType();
         return json.fromJson(r, weaponMapType);
     }
 
@@ -38,4 +39,21 @@ public class JDeserializer {
         Type enemyMapType = new TypeToken<Map<String, Enemy>>() {}.getType();
         return json.fromJson(r, enemyMapType);
     }
+
+    public static void saveInventory(Map<Characteristics.CharacteristicType, Weapon> inventory) throws IOException {
+        File f = new File("src/main/resources/jsons/Inventory.json");
+        Gson j = new GsonBuilder().setPrettyPrinting().create();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(f));
+        j.toJson(inventory, writer);
+        writer.close();
+    }
+    public static Map<Characteristics.CharacteristicType, Weapon> getPreviousInventory() throws FileNotFoundException {
+        File f = new File("src/main/resources/jsons/Inventory.json");
+        Gson json = new Gson();
+        Reader r = new FileReader(f);
+        //Data type definition for the correct deserialization of the json file
+        Type inventoryMapType = new TypeToken<Map<Characteristics.CharacteristicType, Weapon>>() {}.getType();
+        return json.fromJson(r, inventoryMapType);
+    }
+
 }

@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
@@ -13,14 +14,14 @@ import java.util.Map;
  * in the game
  */
 public class GameData {
-    private Map<String, Weapon> weaponsMap = new HashMap<>();
+    private Map<String, WeaponStats> weaponStatMap = new HashMap<>();
     private Map<String, Enemy> enemiesMap = new HashMap<>();
 
     private List<Enemy> enemies;
 
     public GameData() throws FileNotFoundException {
         enemies = new LinkedList<>();
-        weaponsMap = JDeserializer.getWeapons();
+        weaponStatMap = JDeserializer.getWeaponsStat();
         enemiesMap = JDeserializer.getEnemies();
     }
 

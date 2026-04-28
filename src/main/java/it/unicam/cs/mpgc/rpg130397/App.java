@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
 
@@ -46,7 +47,7 @@ public class App {
         enemies.put(z.getName(), z);
 */
         /*Gson j = new GsonBuilder().setPrettyPrinting().create();
-        File f = new File("src/main/resources/jsons/Weapons.json");
+        File f = new File("src/main/resources/jsons/WeaponStats.json");
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(f));
         j.toJson(weapons, writer);
@@ -58,5 +59,11 @@ public class App {
 
         weapons = JDeserializer.getWeapons();
         System.out.println(weapons.get("Bow").getName());*/
+        Map<Characteristics.CharacteristicType, Weapon> inventory  = new HashMap<>();
+        inventory.put(Characteristics.CharacteristicType.STRENGTH, new Weapon(JDeserializer.getWeaponsStat().get("Axe"), 1, null));
+        JDeserializer.saveInventory(inventory);
+        Player p = new Player("io", 1, 1);
+        p.setInventory(JDeserializer.getPreviousInventory());
+        System.out.println(p.getInventory().get(Characteristics.CharacteristicType.STRENGTH).getStats().getBaseDamage());
     }
 }
