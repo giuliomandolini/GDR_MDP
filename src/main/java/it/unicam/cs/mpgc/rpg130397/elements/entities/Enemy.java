@@ -9,11 +9,12 @@ public class Enemy extends Entity{
 
     private float damage;
     private float cooldown;
-    private Player player;
     private float range;
 
     //the field must not be saved in the json so it has to be declared transient
     private transient long lastAttack;
+    private transient Player player;
+
 
     public Enemy(String name, float health, float speed, float damage, float range, float cooldown, Player player) {
         super(name, health, speed);
