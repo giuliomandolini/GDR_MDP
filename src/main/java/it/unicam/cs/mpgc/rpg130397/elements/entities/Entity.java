@@ -7,18 +7,20 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
  * It contains the standard {@link EntityStats} <br>
  * Every entity must have a speed and health, but not all entities can attack (possible friendly npc)
  */
-public abstract class Entity {
+public abstract class Entity extends GameObject{
     private EntityStats stats;
-    private final String name;
 
     public Entity(String name, float health, float speed) {
+        super(name);
         stats = new EntityStats(health, speed);
-        this.name = name;
     }
+
+    public void changeHealth(float amount){
+        stats.set(EntityStats.StatType.CURRENT_HEALTH, amount);
+    }
+    protected abstract void die();
+
     public EntityStats getStats() {
         return stats;
-    }
-    public String getName() {
-        return name;
     }
 }

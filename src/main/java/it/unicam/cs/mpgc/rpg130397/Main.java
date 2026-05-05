@@ -10,6 +10,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
+import it.unicam.cs.mpgc.rpg130397.utils.GetResourceByName;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -24,12 +25,13 @@ public class Main {
 
         //System.out.println(weapons.get("Bow").getName());
 
-        saveInventory();
+        /*saveInventory();
 
         GameData data = new GameData();
-        Player p = new Player("io", 1, 1, JDeserializer.getPreviousInventory(data));
+        Player p = new Player("io", 1, 1, JDeserializer.getPreviousInventory(data), null);
         System.out.println(p.getInventory().get(Characteristics.CharacteristicType.STRENGTH).getStats().getBaseDamage());
-
+*/
+        System.out.println(GetResourceByName.getResourcePath("SkeletonArcher"));
 
     }
 

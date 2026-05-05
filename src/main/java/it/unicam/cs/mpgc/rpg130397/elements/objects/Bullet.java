@@ -1,6 +1,8 @@
 package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
-public class Bullet {
+import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
+
+public class Bullet extends GameObject {
 
     private float speed;
     private float damage;

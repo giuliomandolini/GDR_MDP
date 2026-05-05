@@ -61,4 +61,10 @@ public class Enemy extends Entity{
         //TODO dipende da javafx
     }
 
+    protected void die()
+    {
+        if(Math.random() > 0.95f) return;
+        //TODO instanzia il baule
+    }
+
 }
