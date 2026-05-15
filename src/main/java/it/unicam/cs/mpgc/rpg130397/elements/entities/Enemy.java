@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
+
 /**
  * This class is the base class of all Entities that are aggressive towards the player.
  * All enemies move towards the player until they are at range, then they attack.
@@ -10,18 +12,22 @@ public class Enemy extends Entity{
     private float damage;
     private float cooldown;
     private float range;
+    private Bullet bullet;
 
     //the field must not be saved in the json so it has to be declared transient
     private transient long lastAttack;
     private transient Player player;
 
 
-    public Enemy(String name, float health, float speed, float damage, float range, float cooldown, Player player) {
+    public Enemy(String name, float health, float speed, float damage, float range, float cooldown, Bullet bullet, Player player) {
         super(name, health, speed);
         this.damage = damage;
         this.cooldown = cooldown;
         this.player = player;
         this.range = range;
+        this.bullet = bullet;
+        if(bullet != null)
+            bullet.setDamage(damage);
     }
 
     ///Has to be called at every tick. Makes the enemy decide wether to move, to attack, or both.

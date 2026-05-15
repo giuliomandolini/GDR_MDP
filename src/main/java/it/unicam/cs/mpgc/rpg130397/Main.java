@@ -6,33 +6,44 @@ import com.google.gson.reflect.TypeToken;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
-import it.unicam.cs.mpgc.rpg130397.utils.GetResourceByName;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Main {
+public class Main extends Application {
+
+    @Override
+    public void start(Stage stage)
+    {
+        stage.show();
+    }
+
     static void main() throws IOException {
 
-
+        launch();
         //TODO controlla i valori passati tra i metodi
 
         //System.out.println(weapons.get("Bow").getName());
-
+        //List<GameObject> l = new ArrayList<>() ;
+        //l.stream();
         /*saveInventory();
 
         GameData data = new GameData();
         Player p = new Player("io", 1, 1, JDeserializer.getPreviousInventory(data), null);
         System.out.println(p.getInventory().get(Characteristics.CharacteristicType.STRENGTH).getStats().getBaseDamage());
 */
-        System.out.println(GetResourceByName.getResourcePath("SkeletonArcher"));
-
+        //System.out.println(GetResourceByName.getResourcePath("SkeletonArcher"));
+        loadEnemies();
     }
 
     private static void saveInventory() throws IOException {
@@ -41,17 +52,17 @@ public class Main {
         JDeserializer.saveInventory(inventory);
     }
 
-    private void loadEnemies() throws IOException {
+    private static void loadEnemies() throws IOException {
         Gson j = new GsonBuilder().setPrettyPrinting().create();
         File f = new File("src/main/resources/Enemies.json");
         Type mapType = new TypeToken<Map<String, Enemy>>() {}.getType();
 
         //Map<String, Enemy> enemies = new HashMap<>();
         Map<String, Enemy> enemies = new HashMap<>();
-        Enemy s = new Enemy("SkeletonWarrior", 50f, 5f, 10, 0, 2, null);
-        Enemy a = new Enemy("SkeletonArcher", 20f, 5f, 6, 10, 2, null);
-        Enemy m = new Enemy("SkeletonMage", 10f, 4f, 15, 15, 4, null);
-        Enemy z = new Enemy("Zombie", 70f, 3f, 3, 0, 1, null);
+        Enemy s = new Enemy("Skeleton Warrior", 50f, 5f, 10, 0, 2, null, null);
+        Enemy a = new Enemy("Skeleton Archer", 20f, 5f, 6, 10, 2, new Bullet("Arrow", 10f), null);
+        Enemy m = new Enemy("Skeleton Mage", 10f, 4f, 15, 15, 4, new Bullet("Fire Bolt", 7f),null);
+        Enemy z = new Enemy("Zombie", 70f, 3f, 3, 0, 1, null, null);
 
 
         enemies.put(s.getName(), s);

@@ -6,17 +6,19 @@ public class Bullet extends GameObject {
 
     private float speed;
     private float damage;
-    static final float LIFESPAN = 5f;
-    private long spawnTime;
+
+    static transient final float LIFESPAN = 5f;
+    private transient long spawnTime;
     //TODO
     //private Transform target?
 
-    public Bullet(float speed, float damage) {
+    //Used for definition inside the JSON, the damage is set runtime on the Enemy constructor
+    public Bullet(String name, float speed)
+    {
+        super(name);
         this.speed = speed;
-        this.damage = damage;
-        spawnTime = System.currentTimeMillis();
+        //TODO on spawn         spawnTime = System.currentTimeMillis();
     }
-
     ///has to be called on each update
     public void update()
     {
@@ -37,6 +39,11 @@ public class Bullet extends GameObject {
     private void move()
     {
         //TODO
+    }
+
+    public void setDamage(float damage)
+    {
+        this.damage = damage;
     }
 
 }

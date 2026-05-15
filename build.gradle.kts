@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id("application")
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "org.example"
@@ -14,6 +16,18 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("com.google.code.gson:gson:2.13.2")
+}
+
+javafx {
+    version = "25.0.1"
+
+    modules = listOf(
+        "javafx.controls",
+        "javafx.fxml"
+    )}
+
+application {
+    mainClass.set("Main.java")
 }
 
 tasks.test {
