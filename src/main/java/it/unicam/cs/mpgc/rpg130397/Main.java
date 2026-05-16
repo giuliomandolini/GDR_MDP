@@ -6,30 +6,42 @@ import com.google.gson.reflect.TypeToken;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.SceneManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Main extends Application {
 
+    public int width = 800;
+    public int height = 800;
     @Override
-    public void start(Stage stage)
-    {
+    public void start(Stage stage) throws IOException {
+
+        stage.setWidth(width);
+        stage.setHeight(height);
+        stage.setResizable(false);
+
+        SceneManager.setStage(stage);
+        SceneManager.loadScene("menu");
+
+
+
         stage.show();
     }
 
     static void main() throws IOException {
 
+        loadEnemies();
         launch();
         //TODO controlla i valori passati tra i metodi
 
@@ -43,7 +55,7 @@ public class Main extends Application {
         System.out.println(p.getInventory().get(Characteristics.CharacteristicType.STRENGTH).getStats().getBaseDamage());
 */
         //System.out.println(GetResourceByName.getResourcePath("SkeletonArcher"));
-        loadEnemies();
+        //loadEnemies();
     }
 
     private static void saveInventory() throws IOException {

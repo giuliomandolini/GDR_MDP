@@ -3,11 +3,11 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 
 /// Class that contains the instructions for general game functioning and utility methods
-public class GameController {
+public class GameManager {
     private GameData data;
 
 
-    public GameController(GameData data) {
+    public GameManager(GameData data) {
         this.data = data;
     }
 

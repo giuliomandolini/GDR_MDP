@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" spacing="100.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg130397.controllers.MenuController">
+   <children>
+      <Label fx:id="title" text="RPG GAME">
+         <font>
+            <Font size="60.0" />
+         </font>
+      </Label>
+      <Button fx:id="playButton" mnemonicParsing="false" onAction="#playButtonPressed" scaleX="2.0" scaleY="2.0" text="Play" />
+      <Button fx:id="quitButton" layoutX="392.0" layoutY="397.0" mnemonicParsing="false" onAction="#quitButtonPressed" scaleX="2.0" scaleY="2.0" text="Quit" />
+   </children>
+   <padding>
+      <Insets bottom="100.0" />
+   </padding>
+</VBox>
