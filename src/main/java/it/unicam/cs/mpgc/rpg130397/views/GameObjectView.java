@@ -4,10 +4,10 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.utils.GetSpriteByName;
 import javafx.scene.image.ImageView;
 
-public abstract class GameObjectView extends ImageView {
-    GameObject object;
+public class GameObjectView<T extends GameObject> extends ImageView {
+    private T object;
 
-    public GameObjectView(GameObject object)
+    public GameObjectView(T object)
     {
         this.object = object;
         super(GetSpriteByName.getSprite(object.getName()));
@@ -19,4 +19,7 @@ public abstract class GameObjectView extends ImageView {
         setLayoutY(object.getPosition().getY());
     }
 
+    public T getObject() {
+        return object;
+    }
 }

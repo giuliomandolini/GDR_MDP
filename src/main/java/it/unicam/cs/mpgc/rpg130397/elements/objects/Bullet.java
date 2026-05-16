@@ -11,6 +11,7 @@ public class Bullet extends GameObject {
     //the damage is inherited from the entity that spawns it
     private transient float damage;
     private transient Position target;
+    private transient Entity spawner;
 
     static transient final float LIFESPAN = 5f;
     private transient long spawnTime;
@@ -20,6 +21,7 @@ public class Bullet extends GameObject {
     {
         super(stats.getName(), spawner.getPosition());
         this.stats = stats;
+        this.spawner = spawner;
         this.target = target;
         spawnTime = System.currentTimeMillis();
     }
@@ -50,4 +52,11 @@ public class Bullet extends GameObject {
         this.damage = damage;
     }
 
+    public Entity getSpawner() {
+        return spawner;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
 }
