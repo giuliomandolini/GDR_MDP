@@ -4,12 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.EnemyModel;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.SceneManager;
 import javafx.application.Application;
@@ -41,7 +40,7 @@ public class Main extends Application {
 
     static void main() throws IOException {
 
-        loadEnemies();
+        //loadEnemies();
         launch();
         //TODO controlla i valori passati tra i metodi
 
@@ -51,10 +50,10 @@ public class Main extends Application {
         /*saveInventory();
 
         GameData data = new GameData();
-        Player p = new Player("io", 1, 1, JDeserializer.getPreviousInventory(data), null);
+        PlayerModel p = new PlayerModel("io", 1, 1, JDeserializer.getPreviousInventory(data), null);
         System.out.println(p.getInventory().get(Characteristics.CharacteristicType.STRENGTH).getStats().getBaseDamage());
 */
-        //System.out.println(GetResourceByName.getResourcePath("SkeletonArcher"));
+        //System.out.println(GetSpriteByName.getResourcePath("SkeletonArcher"));
         //loadEnemies();
     }
 
@@ -66,32 +65,36 @@ public class Main extends Application {
 
     private static void loadEnemies() throws IOException {
         Gson j = new GsonBuilder().setPrettyPrinting().create();
-        File f = new File("src/main/resources/Enemies.json");
-        Type mapType = new TypeToken<Map<String, Enemy>>() {}.getType();
+        File f = new File("src/main/resources/json/Enemies.json");
+        Type mapType = new TypeToken<Map<String, EnemyModel>>() {}.getType();
 
-        //Map<String, Enemy> enemies = new HashMap<>();
-        Map<String, Enemy> enemies = new HashMap<>();
-        Enemy s = new Enemy("Skeleton Warrior", 50f, 5f, 10, 0, 2, null, null);
-        Enemy a = new Enemy("Skeleton Archer", 20f, 5f, 6, 10, 2, new Bullet("Arrow", 10f), null);
-        Enemy m = new Enemy("Skeleton Mage", 10f, 4f, 15, 15, 4, new Bullet("Fire Bolt", 7f),null);
-        Enemy z = new Enemy("Zombie", 70f, 3f, 3, 0, 1, null, null);
+        //Map<String, EnemyModel> enemies = new HashMap<>();
+        Map<String, EnemyModel> enemies = new HashMap<>();
+        EnemyModel s = new EnemyModel("Skeleton Warrior", 50f, 5f, 10, 0, 2, null, null, new Position());
+        EnemyModel a = new EnemyModel("Skeleton Archer", 20f, 5f, 6, 10, 2, new Bullet("Arrow", 10f, new Position()), null, new Position());
+        EnemyModel m = new EnemyModel("Skeleton Mage", 10f, 4f, 15, 15, 4, new Bullet("Fire Bolt", 7f, new Position()),null, new Position());
+        //EnemyModel z = new EnemyModel("Zombie", 70f, 3f, 3, 0, 1, null, null);
 
 
         enemies.put(s.getName(), s);
         enemies.put(a.getName(), a);
         enemies.put(m.getName(), m);
-        enemies.put(z.getName(), z);
+        //enemies.put(z.getName(), z);
+
+        System.out.println(enemies);
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(f));
         j.toJson(enemies, writer);
         writer.close();
+        System.out.println("done: " + j.toString() + ".");
+
     }
     private void loadWeapons() throws IOException {
         Gson j = new GsonBuilder().setPrettyPrinting().create();
-        File f = new File("src/main/resources/WeaponStats.json");
+        File f = new File("src/main/resources/json/WeaponStats.json");
         Type mapType = new TypeToken<Map<String, WeaponStats>>() {}.getType();
 
-        //Map<String, Enemy> enemies = new HashMap<>();
+        //Map<String, EnemyModel> enemies = new HashMap<>();
         Map<String, WeaponStats> weapons = new HashMap<>();
         WeaponStats dagger = new WeaponStats(10, 2, 10, 0, Characteristics.CharacteristicType.DEXTERITY);
         WeaponStats bow = new WeaponStats( 20, 3, 30, 0, Characteristics.CharacteristicType.DEXTERITY);

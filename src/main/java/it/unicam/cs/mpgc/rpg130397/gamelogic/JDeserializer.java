@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.EnemyModel;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.io.*;
@@ -31,13 +31,13 @@ public class JDeserializer {
      *  Static method that deserializes the data contained in the enemies.json file into the enemies map
      * @return the map of all the enemies
      */
-    public static Map<String, Enemy> getEnemies() throws FileNotFoundException {
+    public static Map<String, EnemyModel> getEnemies() throws FileNotFoundException {
         Gson json = new Gson();
         InputStream f = JDeserializer.class.getClassLoader().getResourceAsStream("json/Enemies.json");
         if(f == null) throw new IllegalStateException("Errore nelle risorse del progetto");
         InputStreamReader r = new InputStreamReader(f);
         //Data type definition for the correct deserialization of the json file
-        Type enemyMapType = new TypeToken<Map<String, Enemy>>() {}.getType();
+        Type enemyMapType = new TypeToken<Map<String, EnemyModel>>() {}.getType();
         return json.fromJson(r, enemyMapType);
     }
 

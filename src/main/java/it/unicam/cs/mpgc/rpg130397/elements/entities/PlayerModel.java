@@ -1,18 +1,19 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Player extends Entity{
+public class PlayerModel extends Entity{
 
     Characteristics characteristics;
     Map<Characteristics.CharacteristicType, Weapon> inventory = new HashMap<>();
 
-    public Player(String name, float health, float speed,  Map<Characteristics.CharacteristicType, Weapon> inventory) {
-        super(name, health, speed);
+    public PlayerModel(String name, float health, float speed, Map<Characteristics.CharacteristicType, Weapon> inventory, Position position) {
+        super(name, health, speed, position);
         this.inventory = inventory;
         characteristics = new Characteristics(10, 10, 10);
     }

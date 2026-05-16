@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.EnemyModel;
 
 /// Class that contains the instructions for general game functioning and utility methods
 public class GameManager {
@@ -12,11 +12,11 @@ public class GameManager {
     }
 
 
-    public void destroyEnemy(Enemy e)
+    public void destroyEnemy(EnemyModel e)
     {
         data.getEnemies().remove(e);
     }
-    public void spawnEnemy(Enemy e)
+    public void spawnEnemy(EnemyModel e)
     {
         data.getEnemies().add(e);
     }

@@ -1,21 +1,23 @@
 package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 
 public class Bullet extends GameObject {
 
     private float speed;
-    private float damage;
+    //the damage is inherited from the entity that spawns it
+    private transient float damage;
 
     static transient final float LIFESPAN = 5f;
     private transient long spawnTime;
     //TODO
     //private Transform target?
 
-    //Used for definition inside the JSON, the damage is set runtime on the Enemy constructor
-    public Bullet(String name, float speed)
+    //Used for definition inside the JSON, the damage is set runtime on the EnemyModel constructor
+    public Bullet(String name, float speed, Position position)
     {
-        super(name);
+        super(name, position);
         this.speed = speed;
         //TODO on spawn         spawnTime = System.currentTimeMillis();
     }

@@ -1,8 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.EnemyModel;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -14,22 +13,31 @@ import java.util.Map;
  * in the game
  */
 public class GameData {
-    private Map<String, WeaponStats> weaponStatMap = new HashMap<>();
-    private Map<String, Enemy> enemiesMap = new HashMap<>();
+    private static Map<String, WeaponStats> weaponStatMap = new HashMap<>();
+    private static Map<String, EnemyModel> enemiesMap = new HashMap<>();
 
-    private List<Enemy> enemies;
+    private List<EnemyModel> enemies;
 
     public GameData() throws FileNotFoundException {
         enemies = new LinkedList<>();
         weaponStatMap = JDeserializer.getWeaponsStat();
         enemiesMap = JDeserializer.getEnemies();
+        if(enemiesMap == null) throw new IllegalStateException();
     }
 
-    public List<Enemy> getEnemies() {
+    public static EnemyModel getEnemy(String enemy) {
+        return enemiesMap.get(enemy);
+    }
+
+    public List<EnemyModel> getEnemies() {
         return enemies;
     }
 
-    public Map<String, WeaponStats> getWeaponStatMap() {
+    public static Map<String, EnemyModel> getEnemiesMap() {
+        return enemiesMap;
+    }
+
+    public static Map<String, WeaponStats> getWeaponStatMap() {
         return weaponStatMap;
     }
 }

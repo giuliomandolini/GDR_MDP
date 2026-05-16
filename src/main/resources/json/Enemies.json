@@ -1,0 +1,51 @@
+{
+  "Skeleton Archer": {
+    "damage": 6.0,
+    "cooldown": 2.0,
+    "range": 10.0,
+    "bullet": {
+      "speed": 10.0,
+      "damage": 6.0,
+      "name": "Arrow"
+    },
+    "stats": {
+      "stats": {
+        "SPEED": 5.0,
+        "MAX_HEALTH": 20.0,
+        "CURRENT_HEALTH": 20.0
+      }
+    },
+    "name": "Skeleton Archer"
+  },
+  "Skeleton Warrior": {
+    "damage": 10.0,
+    "cooldown": 2.0,
+    "range": 0.0,
+    "stats": {
+      "stats": {
+        "SPEED": 5.0,
+        "MAX_HEALTH": 50.0,
+        "CURRENT_HEALTH": 50.0
+      }
+    },
+    "name": "Skeleton Warrior"
+  },
+  "Skeleton Mage": {
+    "damage": 15.0,
+    "cooldown": 4.0,
+    "range": 15.0,
+    "bullet": {
+      "speed": 7.0,
+      "damage": 15.0,
+      "name": "Fire Bolt"
+    },
+    "stats": {
+      "stats": {
+        "SPEED": 4.0,
+        "MAX_HEALTH": 10.0,
+        "CURRENT_HEALTH": 10.0
+      }
+    },
+    "name": "Skeleton Mage"
+  }
+}

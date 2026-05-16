@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 
 /**
  * This is the base class for each entity that exists in the game.<br>
@@ -10,8 +11,8 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 public abstract class Entity extends GameObject{
     private EntityStats stats;
 
-    public Entity(String name, float health, float speed) {
-        super(name);
+    public Entity(String name, float health, float speed, Position position) {
+        super(name, position);
         stats = new EntityStats(health, speed);
     }
 
