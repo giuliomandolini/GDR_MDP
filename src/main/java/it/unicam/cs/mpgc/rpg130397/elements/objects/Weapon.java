@@ -1,7 +1,9 @@
 package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.utils.NearestEnemyUpdater;
 
 public class Weapon {
@@ -11,28 +13,17 @@ public class Weapon {
     //the fields must not be saved in the json so it has to be declared transient
     private transient WeaponStats stats;
     private transient long lastAttack;
-    private transient NearestEnemyUpdater utils;
     private transient float damage;
 
-    public Weapon(String name, float range, float cooldown, float baseDamage, float area,
-                  Characteristics.CharacteristicType weaponType, int level, NearestEnemyUpdater utils) {
-        this.stats = new WeaponStats(range, cooldown, baseDamage, area, weaponType);
+    public Weapon(String name, int level) {
         this.name = name;
+        this.stats = GameData.getWeaponStatMap().get(name);
         this.level = level;
-        this.utils = utils;
     }
-    public Weapon(String name, float range, float cooldown, float baseDamage, float area,
-                  Characteristics.CharacteristicType weaponType, NearestEnemyUpdater utils) {
-        this.stats = new WeaponStats(range, cooldown, baseDamage, area, weaponType);
+    public Weapon(String name) {
         this.name = name;
+        this.stats = GameData.getWeaponStatMap().get(name);
         this.level = 1;
-        this.utils = utils;
-    }
-    public Weapon(String name, WeaponStats stats, NearestEnemyUpdater utils) {
-        this.name = name;
-        this.stats = stats;
-        this.level = 1;
-        this.utils = utils;
     }
 
     public boolean canAttack()
@@ -54,9 +45,12 @@ public class Weapon {
 
     //Intelligence weapons attack automatically and target the closest enemy
     private void magicAttack() {
-        utils.updateClosestEnemy();
-        //se la distanza è troppo grande non attacca
-        //istanza il colpo con obiettivo gamecontroller.getclosestenemy()
+        Position target = NearestEnemyUpdater.updateAndGetClosestEnemy().getPosition();
+        if(target == null || GameData.getPlayer().getPosition().distanceFrom(target) > stats.getRange()) return;
+
+        Bullet b = new Bullet(stats.getBulletStats(), GameData.getPlayer(), target);
+        GameData.addBullet(b);
+
         lastAttack = System.currentTimeMillis();
     }
 
@@ -68,7 +62,7 @@ public class Weapon {
 
     //Strength weapons attack when the enemy is close enough and no shot is created
     private void meleeAttack() {
-        utils.updateClosestEnemy();
+        //utils.updateClosestEnemy();
         //controlla la distanza melee con le entità a distanza minore del range di attacco dell'arma melee
         lastAttack = System.currentTimeMillis();
     }

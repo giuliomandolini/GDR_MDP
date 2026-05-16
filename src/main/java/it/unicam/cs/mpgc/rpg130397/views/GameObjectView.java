@@ -12,4 +12,11 @@ public abstract class GameObjectView extends ImageView {
         this.object = object;
         super(GetSpriteByName.getSprite(object.getName()));
     }
+
+    public void update()
+    {
+        setLayoutX(object.getPosition().getX());
+        setLayoutY(object.getPosition().getY());
+    }
+
 }

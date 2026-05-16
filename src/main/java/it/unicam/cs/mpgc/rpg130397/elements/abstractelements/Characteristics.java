@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** Class that contains the
- * fundamental characteristics used only by the PlayerModel: <br>
+ * fundamental characteristics used only by the Player: <br>
  *  -Strength <br>
  *  -Dexterity<br>
  *  -Intelligence <br>

@@ -3,10 +3,11 @@ package it.unicam.cs.mpgc.rpg130397;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.EnemyModel;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
@@ -39,9 +40,9 @@ public class Main extends Application {
     }
 
     static void main() throws IOException {
-
+        loadWeapons();
         //loadEnemies();
-        launch();
+        //launch();
         //TODO controlla i valori passati tra i metodi
 
         //System.out.println(weapons.get("Bow").getName());
@@ -50,30 +51,30 @@ public class Main extends Application {
         /*saveInventory();
 
         GameData data = new GameData();
-        PlayerModel p = new PlayerModel("io", 1, 1, JDeserializer.getPreviousInventory(data), null);
+        Player p = new Player("io", 1, 1, JDeserializer.getPreviousInventory(data), null);
         System.out.println(p.getInventory().get(Characteristics.CharacteristicType.STRENGTH).getStats().getBaseDamage());
 */
         //System.out.println(GetSpriteByName.getResourcePath("SkeletonArcher"));
         //loadEnemies();
     }
 
-    private static void saveInventory() throws IOException {
-        Map<Characteristics.CharacteristicType, Weapon> inventory  = new HashMap<>();
-        inventory.put(Characteristics.CharacteristicType.STRENGTH, new Weapon("Axe", JDeserializer.getWeaponsStat().get("Axe"), null));
-        JDeserializer.saveInventory(inventory);
-    }
+//    private static void saveInventory() throws IOException {
+//        Map<Characteristics.CharacteristicType, Weapon> inventory  = new HashMap<>();
+//        inventory.put(Characteristics.CharacteristicType.STRENGTH, new Weapon("Axe", JDeserializer.getWeaponsStat().get("Axe")));
+//        JDeserializer.saveInventory(inventory);
+//    }
 
     private static void loadEnemies() throws IOException {
         Gson j = new GsonBuilder().setPrettyPrinting().create();
         File f = new File("src/main/resources/json/Enemies.json");
-        Type mapType = new TypeToken<Map<String, EnemyModel>>() {}.getType();
+        Type mapType = new TypeToken<Map<String, Enemy>>() {}.getType();
 
-        //Map<String, EnemyModel> enemies = new HashMap<>();
-        Map<String, EnemyModel> enemies = new HashMap<>();
-        EnemyModel s = new EnemyModel("Skeleton Warrior", 50f, 5f, 10, 0, 2, null, null, new Position());
-        EnemyModel a = new EnemyModel("Skeleton Archer", 20f, 5f, 6, 10, 2, new Bullet("Arrow", 10f, new Position()), null, new Position());
-        EnemyModel m = new EnemyModel("Skeleton Mage", 10f, 4f, 15, 15, 4, new Bullet("Fire Bolt", 7f, new Position()),null, new Position());
-        //EnemyModel z = new EnemyModel("Zombie", 70f, 3f, 3, 0, 1, null, null);
+        //Map<String, Enemy> enemies = new HashMap<>();
+        Map<String, Enemy> enemies = new HashMap<>();
+        Enemy s = new Enemy("Skeleton Warrior", 50f, 5f, 10, 0, 2, null, null, new Position());
+        Enemy a = new Enemy("Skeleton Archer", 20f, 5f, 6, 10, 2, new BulletStats("Arrow", 10f), null, new Position());
+        Enemy m = new Enemy("Skeleton Mage", 10f, 4f, 15, 15, 4, new BulletStats("Fire Bolt", 7f),null, new Position());
+        //Enemy z = new Enemy("Zombie", 70f, 3f, 3, 0, 1, null, null);
 
 
         enemies.put(s.getName(), s);
@@ -89,24 +90,24 @@ public class Main extends Application {
         System.out.println("done: " + j.toString() + ".");
 
     }
-    private void loadWeapons() throws IOException {
+    private static void loadWeapons() throws IOException {
         Gson j = new GsonBuilder().setPrettyPrinting().create();
         File f = new File("src/main/resources/json/WeaponStats.json");
         Type mapType = new TypeToken<Map<String, WeaponStats>>() {}.getType();
 
-        //Map<String, EnemyModel> enemies = new HashMap<>();
+        //Map<String, Enemy> enemies = new HashMap<>();
         Map<String, WeaponStats> weapons = new HashMap<>();
-        WeaponStats dagger = new WeaponStats(10, 2, 10, 0, Characteristics.CharacteristicType.DEXTERITY);
-        WeaponStats bow = new WeaponStats( 20, 3, 30, 0, Characteristics.CharacteristicType.DEXTERITY);
-        WeaponStats fireball = new WeaponStats( 10, 5, 20, 3, Characteristics.CharacteristicType.INTELLIGENCE);
-        WeaponStats bolt = new WeaponStats(8, 0.5f, 5, 0, Characteristics.CharacteristicType.INTELLIGENCE);
-        WeaponStats club = new WeaponStats( 0, 2, 20, 0, Characteristics.CharacteristicType.STRENGTH);
-        WeaponStats sword = new WeaponStats( 0, 1, 15, 0, Characteristics.CharacteristicType.STRENGTH);
+        WeaponStats dagger = new WeaponStats(10, 2, 10, 0, new BulletStats("Dagger", 10), Characteristics.CharacteristicType.DEXTERITY);
+        WeaponStats bow = new WeaponStats( 20, 3, 30, 0, new BulletStats("Arrow", 20), Characteristics.CharacteristicType.DEXTERITY);
+        WeaponStats fireball = new WeaponStats( 10, 5, 20, 3, new BulletStats("Fireball", 8), Characteristics.CharacteristicType.INTELLIGENCE);
+        WeaponStats bolt = new WeaponStats(8, 0.5f, 5, 0, new BulletStats("Fire Bolt", 15), Characteristics.CharacteristicType.INTELLIGENCE);
+        WeaponStats club = new WeaponStats( 0, 2, 20, 0, null, Characteristics.CharacteristicType.STRENGTH);
+        WeaponStats sword = new WeaponStats( 0, 1, 15, 0, null, Characteristics.CharacteristicType.STRENGTH);
 
         weapons.put("Dagger", dagger);
         weapons.put("Bow", bow);
         weapons.put("Fireball", fireball);
-        weapons.put("Bolt", bolt);
+        weapons.put("Fire Bolt", bolt);
         weapons.put("Axe", club);
         weapons.put("Sword", sword);
 

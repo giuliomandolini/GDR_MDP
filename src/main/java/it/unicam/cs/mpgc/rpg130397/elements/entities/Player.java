@@ -3,19 +3,22 @@ package it.unicam.cs.mpgc.rpg130397.elements.entities;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerModel extends Entity{
+public class Player extends Entity{
 
     Characteristics characteristics;
     Map<Characteristics.CharacteristicType, Weapon> inventory = new HashMap<>();
 
-    public PlayerModel(String name, float health, float speed, Map<Characteristics.CharacteristicType, Weapon> inventory, Position position) {
+    public Player(String name, float health, float speed, Map<Characteristics.CharacteristicType, Weapon> inventory, Position position) {
         super(name, health, speed, position);
         this.inventory = inventory;
         characteristics = new Characteristics(10, 10, 10);
+
+        GameData.setPlayer(this);
     }
 
     public void update()

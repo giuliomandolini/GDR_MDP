@@ -2,5 +2,13 @@
   "STRENGTH": {
     "name": "Axe",
     "level": 1
+  },
+  "DEXTERITY": {
+    "name": "Bow",
+    "level": 1
+  },
+  "INTELLIGENCE": {
+    "name": "Fireball",
+    "level": 1
   }
 }

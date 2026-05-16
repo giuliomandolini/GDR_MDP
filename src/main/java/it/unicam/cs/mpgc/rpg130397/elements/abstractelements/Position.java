@@ -23,10 +23,15 @@ public class Position {
         return y;
     }
 
-    public void Move(float x, float y)
+    public void move(float x, float y)
     {
         this.x += x;
         this.y += y;
+    }
+
+    public float distanceFrom(Position otherPosition)
+    {
+        return (float) Math.sqrt( Math.pow(x - otherPosition.getX(), 2) + Math.pow(y - otherPosition.getY(), 2));
     }
 
 }

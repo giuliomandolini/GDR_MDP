@@ -1,36 +1,41 @@
 package it.unicam.cs.mpgc.rpg130397.utils;
 
-import it.unicam.cs.mpgc.rpg130397.elements.entities.EnemyModel;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
+import java.util.List;
+
 public class NearestEnemyUpdater {
-    private GameData data;
+    private static Enemy closestEnemy;
+    private static Player player;
+    private static float minDistance;
+    private static long lastUpdate;
+    private static final float UPDATE_COOLDOWN = 0.05f;
 
-    private EnemyModel closestEnemyModel;
-    private long lastUpdate;
-    private final float UPDATE_COOLDOWN = 0.05f;
-
-    public NearestEnemyUpdater(GameData data)
+    public static Enemy updateAndGetClosestEnemy()
     {
-        this.data = data;
-    }
+        List<Enemy> enemies = GameData.getEnemies();
+        if(lastUpdate + UPDATE_COOLDOWN > System.currentTimeMillis() || enemies.isEmpty()) return null;
 
-    public void updateClosestEnemy()
-    {
-        if(lastUpdate + UPDATE_COOLDOWN > System.currentTimeMillis()) return;
-        closestEnemyModel = data.getEnemies().getFirst();
-        for(EnemyModel e : data.getEnemies())
+        closestEnemy = enemies.getFirst();
+        Position playerPosition = player.getPosition();
+
+        minDistance = closestEnemy.getPosition().distanceFrom(playerPosition);
+
+        for(int i = 1; i < enemies.size(); i++)
         {
             //TODO distanza tra nemici e giocatore
-            if(/*distanza*/ true)
+            float distance = enemies.get(i).getPosition().distanceFrom(playerPosition);
+            if(distance < minDistance)
             {
-                closestEnemyModel = e;
+                closestEnemy = enemies.get(i);
+                minDistance = distance;
             }
         }
         lastUpdate = System.currentTimeMillis();
+        return closestEnemy;
     }
 
-    public EnemyModel getClosestEnemy() {
-        return closestEnemyModel;
-    }
 }

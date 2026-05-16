@@ -1,7 +1,9 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.EnemyModel;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -14,30 +16,50 @@ import java.util.Map;
  */
 public class GameData {
     private static Map<String, WeaponStats> weaponStatMap = new HashMap<>();
-    private static Map<String, EnemyModel> enemiesMap = new HashMap<>();
+    private static Map<String, Enemy> enemiesMap = new HashMap<>();
+    private static Player player;
 
-    private List<EnemyModel> enemies;
+    private static List<Enemy> enemies;
+    private static List<Bullet> bullets;
 
     public GameData() throws FileNotFoundException {
+
         enemies = new LinkedList<>();
         weaponStatMap = JDeserializer.getWeaponsStat();
         enemiesMap = JDeserializer.getEnemies();
         if(enemiesMap == null) throw new IllegalStateException();
     }
 
-    public static EnemyModel getEnemy(String enemy) {
+    public static Enemy getEnemy(String enemy) {
         return enemiesMap.get(enemy);
     }
-
-    public List<EnemyModel> getEnemies() {
+    public static List<Enemy> getEnemies() {
         return enemies;
     }
-
-    public static Map<String, EnemyModel> getEnemiesMap() {
+    public static Map<String, Enemy> getEnemiesMap() {
         return enemiesMap;
+    }
+
+    public static List<Bullet> getBullets() {
+        return bullets;
+    }
+    public static void addBullet(Bullet b)
+    {
+        bullets.add(b);
+    }
+    public static void removeBullet(Bullet b)
+    {
+        bullets.remove(b);
     }
 
     public static Map<String, WeaponStats> getWeaponStatMap() {
         return weaponStatMap;
+    }
+
+    public static void setPlayer(Player player) {
+        GameData.player = player;
+    }
+    public static Player getPlayer() {
+        return player;
     }
 }

@@ -1,14 +1,15 @@
 package it.unicam.cs.mpgc.rpg130397.controllers;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.EnemyModel;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.PlayerModel;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
 import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
 import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
-import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
 
@@ -29,19 +30,25 @@ public class GameController {
     public void initialize() throws FileNotFoundException {
         data = new GameData();
         System.out.println(getEnemiesMap());
-        PlayerModel playerModel = new PlayerModel("Player", 10, 10, JDeserializer.getPreviousInventory(data), new Position());
+        Player playerModel = new Player("Player", 10, 10, JDeserializer.getPreviousInventory(data), new Position());
         PlayerView player = new PlayerView(playerModel);
+        Weapon w = new Weapon("Fireball");
 
         player.setLayoutX(10);
         player.setLayoutY(10);
 
-        EnemyModel skeletonModel = GameData.getEnemy("Skeleton Warrior");
+        Enemy skeletonModel = GameData.getEnemy("Skeleton Warrior");
         EnemyView skeleton = new EnemyView(skeletonModel);
         add(skeleton);
         add(player);
     }
 
-    public void add(GameObjectView object)
+    public void checkForBullets()
+    {
+
+    }
+
+    public void add(Node object)
     {
         gamePane.getChildren().add(object);
     }
