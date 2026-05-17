@@ -7,20 +7,21 @@ import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
+import it.unicam.cs.mpgc.rpg130397.views.BulletView;
 import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
 import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
 import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.FileNotFoundException;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-
-import static it.unicam.cs.mpgc.rpg130397.gamelogic.GameData.getEnemiesMap;
-import static it.unicam.cs.mpgc.rpg130397.gamelogic.GameData.getPlayer;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GameController {
 
@@ -30,35 +31,147 @@ public class GameController {
     @FXML
     private AnchorPane gamePane;
 
-    private GameObjectView<Player> player;
-    private List<GameObjectView<Bullet>> bullets;
+    private PlayerView player;
+    private List<BulletView> bullets;
+    private List<EnemyView> enemies;
 
     @FXML
     public void initialize() throws FileNotFoundException {
-        System.out.println(getEnemiesMap());
+        GameData.start();
+        //it is better to use linked lists instead of array lists because a there are a lot of additions and remotions
+        bullets = new LinkedList<>();
+        enemies = new LinkedList<>();
+
         Player playerModel = new Player("Player", 10, 10, JDeserializer.getPreviousInventory(), new Position());
-        player = new GameObjectView<>(playerModel);
+        player = new PlayerView(playerModel);
 
         Weapon w = new Weapon("Fireball");
 
-        player.setLayoutX(10);
-        player.setLayoutY(10);
+        playerModel.getPosition().move(200, 231);
 
         Enemy skeletonModel = GameData.getEnemy("Skeleton Warrior");
-        GameObjectView<Enemy> skeleton = new GameObjectView<>(skeletonModel);
+        EnemyView skeleton = new EnemyView(skeletonModel);
         add(skeleton);
         add(player);
     }
 
-    public void checkForBullets()
+    ///Synchronizes models with views
+    public void update()
     {
-        for(GameObjectView<Bullet> b : bullets)
+        createDeleteViews();
+        updateEnemiesPosition();
+        updatePlayerPosition();
+        updateBulletsPosition();
+        checkForBulletCollisions();
+    }
+
+    private void createDeleteViews()
+    {
+        createDeleteEnemyViews();
+        createDeleteBulletViews();
+    }
+
+    private void updatePlayerPosition()
+    {
+        player.update();
+    }
+
+    private void updateEnemiesPosition()
+    {
+        for(EnemyView e : enemies)
         {
-            if(b.getObject().getSpawner() instanceof Enemy)
+            e.update();
+        }
+    }
+
+    private void updateBulletsPosition()
+    {
+        for(BulletView b : bullets)
+        {
+            b.update();
+        }
+    }
+
+    private void createDeleteBulletViews()
+    {
+        //view creation control: if a bullet is present in GameData bullets but not in GameController bullets then it has to be instantiated.
+        //collect the existing bullets in a set to use contains instead of anyMatch
+        Set<Bullet> viewBullets =
+                bullets.stream()
+                        .map(BulletView::getBullet) //gets a stream of the objects of the class
+                        .collect(Collectors.toSet());   //transforms it into a set
+        Set<Bullet> modelBullets = new HashSet<>(GameData.getBullets());
+
+        Set<Bullet> onlyModel = new HashSet<>(modelBullets);
+        onlyModel.removeAll(viewBullets);
+        Set<Bullet> onlyView = new HashSet<>(viewBullets);
+        onlyView.removeAll(modelBullets);
+
+        for(Bullet b : onlyModel)
+        {
+            BulletView newBullet = new BulletView(b);
+            bullets.add(newBullet);
+            add(newBullet);
+        }
+        for(Bullet b : onlyView)
+        {
+            //redefined equals and hashcode
+            BulletView toRemove = new BulletView(b);
+            bullets.remove(toRemove);
+            remove(toRemove);
+        }
+    }
+
+    //Same as createBullets. Avoiding duplicating code would have complicated enormously the architecture
+
+    private void createDeleteEnemyViews()
+    {
+        Set<Enemy> viewEnemies =
+                enemies.stream()
+                        .map(EnemyView::getEnemy)
+                        .collect(Collectors.toSet());
+        Set<Enemy> modelEnemies = new HashSet<>(GameData.getEnemies());
+
+        Set<Enemy> onlyModel = new HashSet<>(modelEnemies);
+        onlyModel.removeAll(viewEnemies);
+        Set<Enemy> onlyView = new HashSet<>(viewEnemies);
+        onlyView.removeAll(modelEnemies);
+
+        for(Enemy b : onlyModel)
+        {
+            EnemyView newEnemy = new EnemyView(b);
+            enemies.add(newEnemy);
+            add(newEnemy);
+        }
+        for(Enemy b : onlyView)
+        {
+            //redefined equals and hashcode
+            EnemyView toRemove = new EnemyView(b);
+            enemies.remove(toRemove);
+            remove(toRemove);
+        }
+    }
+
+    private void checkForBulletCollisions() {
+        for(BulletView b : bullets)
+        {
+            //if the bullet is instantiated by an enemy, it has to check if it collides with the player, and vice versa
+            if(b.getBullet().getSpawner() instanceof Enemy)
+            {
                 if(collision(b, player)){
                     //sberla
                 }
+            }
+            else
+            {
+                for(EnemyView e : enemies)
+                {
+                    if(collision(b, e))
+                    {
 
+                    }
+                }
+            }
 
         }
     }
@@ -67,10 +180,12 @@ public class GameController {
     {
         gamePane.getChildren().add(object);
     }
-    private boolean collision(GameObjectView<?> i1, GameObjectView<?> i2)
+    public void remove(Node object)
     {
-        //controllo se la distanza è irraggiungibile per alleggerire il carico di intersects che è molto maggiore
-        if(i1.getObject().getPosition().distanceFrom(i2.getObject().getPosition()) > 150) return false;
+        gamePane.getChildren().remove(object);
+    }
+    private boolean collision(GameObjectView i1, GameObjectView i2)
+    {
         return i1.getBoundsInParent().intersects(i2.getBoundsInParent());
     }
 }

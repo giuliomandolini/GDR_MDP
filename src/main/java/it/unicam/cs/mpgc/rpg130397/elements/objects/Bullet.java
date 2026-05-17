@@ -14,7 +14,7 @@ public class Bullet extends GameObject {
     private transient Entity spawner;
 
     static transient final float LIFESPAN = 5f;
-    private transient long spawnTime;
+    private transient int spawnTime;
 
     //Used for definition inside the JSON, the damage is set runtime on the Enemy constructor
     public Bullet(BulletStats stats, Entity spawner, Position target)
@@ -23,7 +23,10 @@ public class Bullet extends GameObject {
         this.stats = stats;
         this.spawner = spawner;
         this.target = target;
-        spawnTime = System.currentTimeMillis();
+
+        //takes in consideration only the past 6 hours (better override of hashcode)
+        //(21600000 is the number of milliseconds in 6 hours)
+        spawnTime = (int) (System.currentTimeMillis() % 21600000);
     }
     ///has to be called on each update
     public void update()
@@ -58,5 +61,22 @@ public class Bullet extends GameObject {
 
     public float getDamage() {
         return damage;
+    }
+
+    public int getSpawnTime() {
+        return spawnTime;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(!(o instanceof Bullet)) return false;
+        return ((Bullet) o).getSpawnTime() == spawnTime && ((Bullet) o).getSpawner() == spawner;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return spawnTime + spawner.hashCode();
     }
 }

@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 
@@ -22,13 +23,19 @@ public class GameData {
     private static List<Enemy> enemies;
     private static List<Bullet> bullets;
 
-    public GameData() throws FileNotFoundException {
+    public static void start() throws FileNotFoundException {
 
         enemies = new LinkedList<>();
         weaponStatMap = JDeserializer.getWeaponsStat();
         enemiesMap = JDeserializer.getEnemies();
         if(enemiesMap == null) throw new IllegalStateException();
     }
+
+    public void Damage(Entity e, float damage)
+    {
+        e.changeHealth(damage);
+    }
+
 
     public static Enemy getEnemy(String enemy) {
         return enemiesMap.get(enemy);
