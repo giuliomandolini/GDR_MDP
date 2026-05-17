@@ -16,9 +16,12 @@ public abstract class Entity extends GameObject{
         stats = new EntityStats(health, speed);
     }
 
-    public void changeHealth(float amount){
+    ///@return true if the health is <= 0, false otherwise
+    public boolean changeHealth(float amount){
         stats.set(EntityStats.StatType.CURRENT_HEALTH, amount);
+        return stats.get(EntityStats.StatType.CURRENT_HEALTH) <= 0;
     }
+
     protected abstract void die();
 
     public EntityStats getStats() {

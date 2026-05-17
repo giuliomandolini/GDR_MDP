@@ -71,9 +71,9 @@ public class Main extends Application {
 
         //Map<String, Enemy> enemies = new HashMap<>();
         Map<String, Enemy> enemies = new HashMap<>();
-        Enemy s = new Enemy("Skeleton Warrior", 50f, 5f, 10, 0, 2, null, null, new Position());
-        Enemy a = new Enemy("Skeleton Archer", 20f, 5f, 6, 10, 2, new BulletStats("Arrow", 10f), null, new Position());
-        Enemy m = new Enemy("Skeleton Mage", 10f, 4f, 15, 15, 4, new BulletStats("Fire Bolt", 7f),null, new Position());
+        Enemy s = new Enemy("Skeleton Warrior", 50f, 5f, 10, 0, 2, null, null, 1);
+        Enemy a = new Enemy("Skeleton Archer", 20f, 5f, 6, 10, 2, new BulletStats("Arrow", 10f), null, 2);
+        Enemy m = new Enemy("Skeleton Mage", 10f, 4f, 15, 15, 4, new BulletStats("Fire Bolt", 7f),null, 3);
         //Enemy z = new Enemy("Zombie", 70f, 3f, 3, 0, 1, null, null);
 
 

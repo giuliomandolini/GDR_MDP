@@ -28,6 +28,19 @@ public class Position {
         this.x += x;
         this.y += y;
     }
+    public void moveTowards(Position target, float speed)
+    {
+        float distanceX = target.getX() - x;
+        float distanceY = target.getY() - y;
+
+        float totalDistance = (float) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        if(totalDistance == 0)
+            return;
+
+        x += distanceX / totalDistance * speed;
+        y += distanceY / totalDistance * speed;
+    }
 
     public float distanceFrom(Position otherPosition)
     {

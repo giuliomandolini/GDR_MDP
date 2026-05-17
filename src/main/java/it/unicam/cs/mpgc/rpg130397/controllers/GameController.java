@@ -5,6 +5,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.CombatSystem;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
 import it.unicam.cs.mpgc.rpg130397.views.BulletView;
@@ -48,6 +49,7 @@ public class GameController {
         Weapon w = new Weapon("Fireball");
 
         playerModel.getPosition().move(200, 231);
+        System.out.println(playerModel);
 
         Enemy skeletonModel = GameData.getEnemy("Skeleton Warrior");
         EnemyView skeleton = new EnemyView(skeletonModel);
@@ -62,7 +64,7 @@ public class GameController {
         updateEnemiesPosition();
         updatePlayerPosition();
         updateBulletsPosition();
-        checkForBulletCollisions();
+        checkForCollisions();
     }
 
     private void createDeleteViews()
@@ -152,14 +154,23 @@ public class GameController {
         }
     }
 
-    private void checkForBulletCollisions() {
+    private void checkForCollisions() {
+        CombatSystem.resetCollisions();
+
+        //collisions between player and enemies
+        for(EnemyView e : enemies)
+        {
+            if(collision(e, player)) CombatSystem.addCollision(e.getEnemy());
+        }
+
+        //collisions between bullets and (enemies and player)
         for(BulletView b : bullets)
         {
             //if the bullet is instantiated by an enemy, it has to check if it collides with the player, and vice versa
             if(b.getBullet().getSpawner() instanceof Enemy)
             {
                 if(collision(b, player)){
-                    //sberla
+                    CombatSystem.addCollision(b.getBullet());
                 }
             }
             else
@@ -168,7 +179,7 @@ public class GameController {
                 {
                     if(collision(b, e))
                     {
-
+                        CombatSystem.addCollision(e.getEnemy(), b.getBullet());
                     }
                 }
             }

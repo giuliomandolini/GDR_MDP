@@ -31,12 +31,6 @@ public class GameData {
         if(enemiesMap == null) throw new IllegalStateException();
     }
 
-    public void Damage(Entity e, float damage)
-    {
-        e.changeHealth(damage);
-    }
-
-
     public static Enemy getEnemy(String enemy) {
         return enemiesMap.get(enemy);
     }
