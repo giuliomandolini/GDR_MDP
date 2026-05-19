@@ -2,16 +2,12 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import javafx.scene.layout.Pane;
 
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /** Class that contains the game data, such as the hash tables of the weapons and the enemies currently
  * in the game
@@ -24,15 +20,27 @@ public class GameData {
     private static List<Enemy> enemies;
     private static List<Bullet> bullets;
 
-    public static void start(Player p, Pane gamePane) throws FileNotFoundException {
+    private static List<Enemy> onlyModelEnemies;
+    private static List<Bullet> onlyModelBullets;
+
+    private static List<Enemy> onlyViewEnemies;
+    private static List<Bullet> onlyViewBullets;
+
+
+    public static void start(Pane gamePane) throws FileNotFoundException {
 
         enemies = new LinkedList<>();
         bullets = new LinkedList<>();
 
         weaponStatMap = JDeserializer.getWeaponsStat();
         enemiesMap = JDeserializer.getEnemies();
-        if(enemiesMap == null) throw new IllegalStateException();
-        player = p;
+
+        onlyModelBullets = new ArrayList<>();
+        onlyModelEnemies = new ArrayList<>();
+
+        onlyViewBullets = new ArrayList<>();
+        onlyViewEnemies = new ArrayList<>();
+
         SpawnSystem.start(gamePane);
     }
 
@@ -42,9 +50,27 @@ public class GameData {
     public static List<Enemy> getEnemies() {
         return enemies;
     }
-    public static void addEnemies(List<Enemy> e) { enemies.addAll(e); }
+    public static void addEnemies(List<Enemy> e) { onlyModelEnemies.addAll(e); }
     public static Map<String, Enemy> getEnemiesMap() {
         return enemiesMap;
+    }
+    public static void removeEnemy(Enemy e)
+    {
+        enemies.remove(e);
+        onlyViewEnemies.add(e);
+    }
+    public static List<Enemy> getEnemiesToSpawn()
+    {
+        enemies.addAll(onlyModelEnemies);
+        List<Enemy> toReturn = new ArrayList<>(onlyModelEnemies);
+        onlyModelEnemies = new ArrayList<>();
+        return toReturn;
+    }
+    public static List<Enemy> getEnemiesToDespawn()
+    {
+        List<Enemy> toReturn = new ArrayList<>(onlyViewEnemies);
+        onlyViewEnemies = new ArrayList<>();
+        return toReturn;
     }
 
     public static List<Bullet> getBullets() {
@@ -52,11 +78,25 @@ public class GameData {
     }
     public static void addBullet(Bullet b)
     {
-        bullets.add(b);
+        onlyModelBullets.add(b);
     }
     public static void removeBullet(Bullet b)
     {
         bullets.remove(b);
+        onlyViewBullets.add(b);
+    }
+    public static List<Bullet> getBulletsToSpawn()
+    {
+        bullets.addAll(onlyModelBullets);
+        List<Bullet> toReturn = new ArrayList<>(onlyModelBullets);
+        onlyModelBullets = new ArrayList<>();
+        return toReturn;
+    }
+    public static List<Bullet> getBulletsToDespawn()
+    {
+        List<Bullet> toReturn = new ArrayList<>(onlyViewBullets);
+        onlyViewBullets = new ArrayList<>();
+        return toReturn;
     }
 
     public static Map<String, WeaponStats> getWeaponStatMap() {

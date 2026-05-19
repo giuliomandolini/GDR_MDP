@@ -1,23 +1,29 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 
 /// Class that contains the instructions for general game functioning and utility methods
 public class GameManager {
-    private GameData data;
 
-
-    public GameManager(GameData data) {
-        this.data = data;
+    public static void update()
+    {
+        updateModels();
+        SpawnSystem.spawnEnemies();
     }
 
 
-    public void destroyEnemy(Enemy e)
+    public static void updateModels()
     {
-        data.getEnemies().remove(e);
-    }
-    public void spawnEnemy(Enemy e)
-    {
-        data.getEnemies().add(e);
+        for(Enemy e : GameData.getEnemies())
+        {
+            e.update();
+        }
+        System.out.println(GameData.getBullets() + ", ");
+        for(Bullet b : GameData.getBullets())
+        {
+            b.update();
+        }
+        GameData.getPlayer().update();
     }
 }

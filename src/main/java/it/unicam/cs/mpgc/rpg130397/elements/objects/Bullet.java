@@ -12,26 +12,30 @@ public class Bullet extends GameObject {
     //the damage is inherited from the entity that spawns it
     private transient float damage;
     private transient Position target;
+    private transient Position bulletPosition;
     private transient Entity spawner;
 
-    static transient final float LIFESPAN = 7f;
-    private transient int spawnTime;
+    static transient final float LIFESPAN = 7000f;
+    private transient long spawnTime;
 
     //Used for definition inside the JSON, the damage is set runtime on the Enemy constructor
     public Bullet(BulletStats stats, Entity spawner, Position target)
     {
-        super(stats.getName(), spawner.getPosition());
+        Position spawnPosition = new Position(spawner.getPosition().getX(), spawner.getPosition().getY());
+        super(stats.getName(), spawnPosition);
+
         this.stats = stats;
         this.spawner = spawner;
         this.target = target;
 
         //takes in consideration only the past 6 hours (better override of hashcode)
         //(21600000 is the number of milliseconds in 6 hours)
-        spawnTime = (int) (System.currentTimeMillis() % 21600000);
+        spawnTime = System.currentTimeMillis();
     }
     ///has to be called on each update
     public void update()
     {
+        System.out.println("bullet move");
         move();
         checkForCollision();
         checkForLifespan();
@@ -63,7 +67,7 @@ public class Bullet extends GameObject {
         return damage;
     }
 
-    public int getSpawnTime() {
+    public long getSpawnTime() {
         return spawnTime;
     }
 
@@ -77,6 +81,6 @@ public class Bullet extends GameObject {
     @Override
     public int hashCode()
     {
-        return spawnTime + spawner.hashCode();
+        return (int) spawnTime + spawner.hashCode();
     }
 }

@@ -15,7 +15,7 @@ import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 public class Enemy extends Entity{
 
     private float damage;
-    private float cooldown;
+    private long cooldown;
     private float range;
     private BulletStats bullet;
 
@@ -25,7 +25,7 @@ public class Enemy extends Entity{
     private transient int id;
     private transient Player player;
 
-    public Enemy(String name, float health, float speed, float damage, float range, float cooldown, BulletStats bullet, Position position, int id) {
+    public Enemy(String name, float health, float speed, float damage, float range, long cooldown, BulletStats bullet, Position position, int id) {
         super(name, health, speed, position);
         this.damage = damage;
         this.cooldown = cooldown;
@@ -44,7 +44,9 @@ public class Enemy extends Entity{
         if(range > 0)
         {
             if(getPosition().distanceFrom(player.getPosition()) <= range)
+            {
                 if(canAttack()) attack();
+            }
             else move();
         }
         //if the enemy is melee, it moves, then if the player is near enough, it attacks. if it is reloading its attack it remains still.
@@ -79,6 +81,7 @@ public class Enemy extends Entity{
 
     private void move()
     {
+        System.out.println("position = " + getPosition().toString() +" at time " + System.currentTimeMillis() % 200);
         getPosition().moveTowards(player.getPosition(), getStats().get(EntityStats.StatType.SPEED));
     }
 
@@ -98,7 +101,7 @@ public class Enemy extends Entity{
         return damage;
     }
 
-    public float getCooldown() {
+    public long getCooldown() {
         return cooldown;
     }
 

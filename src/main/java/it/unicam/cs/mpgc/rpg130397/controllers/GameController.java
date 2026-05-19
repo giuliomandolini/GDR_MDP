@@ -1,30 +1,22 @@
 package it.unicam.cs.mpgc.rpg130397.controllers;
 
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
 import it.unicam.cs.mpgc.rpg130397.views.BulletView;
 import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
-import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
 import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 
 import java.io.FileNotFoundException;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class GameController {
 
@@ -42,24 +34,18 @@ public class GameController {
 
     @FXML
     public void initialize() throws FileNotFoundException, InterruptedException {
-        Player playerModel = new Player("Player", 10, 10, JDeserializer.getPreviousInventory(), new Position());
-        System.out.println(playerModel.getInventory().get(Characteristics.CharacteristicType.STRENGTH).getStats());
-        System.out.println(playerModel.getInventory().get(Characteristics.CharacteristicType.DEXTERITY).getName());
-        System.out.println(playerModel.getInventory().get(Characteristics.CharacteristicType.INTELLIGENCE).getName());
-        player = new PlayerView(playerModel);
-        GameData.start(player.getPlayer(), gamePane);
+        GameData.start(gamePane); //1
+        Player playerModel = new Player("Player", 10, 10, JDeserializer.getPreviousInventory(), new Position()); //2
 
-        System.out.println(gamePane.getMinHeight() + " + " + gamePane.getMinWidth());
+        player = new PlayerView(playerModel);
+        GameData.setPlayer(playerModel);//3
+
         //it is better to use linked lists instead of array lists because a there are a lot of additions and remotions
         bullets = new LinkedList<>();
         enemies = new LinkedList<>();
 
 
-        Weapon w = new Weapon("Fireball");
-
-
-        playerModel.getPosition().move(200, 231);
-        System.out.println(playerModel);
+        playerModel.getPosition().move(400 , 400);
 
         add(player);
         AnimationTimer timer = new AnimationTimer() {
@@ -74,11 +60,12 @@ public class GameController {
     ///Synchronizes models with views and controls game
     public void update()
     {
-        createEnemyViews(SpawnSystem.spawnEnemies());
+        createDestroyEnemyViews();
+        createDestroyBulletViews();
         updatePositions();
-        CollisionSystem.checkForCollisions(bullets, enemies, player);
 
-        updateModels();
+        CollisionSystem.checkForCollisions(bullets, enemies, player);
+        GameManager.update();
     }
 
     private void updatePositions() {
@@ -87,12 +74,26 @@ public class GameController {
         updateBulletsPosition();
     }
 
-    private void createEnemyViews(List<Enemy> enemies)
+    private void createDestroyEnemyViews()
     {
-        if(enemies == null) return;
-        for(Enemy e : enemies)
+        for(Enemy e : GameData.getEnemiesToSpawn())
         {
             addEnemy(new EnemyView(e));
+        }
+        for(Enemy e : GameData.getEnemiesToDespawn())
+        {
+            remove(e);
+        }
+    }
+    private void createDestroyBulletViews()
+    {
+        for(Bullet b : GameData.getBulletsToSpawn())
+        {
+            addBullet(new BulletView(b));
+        }
+        for(Bullet b : GameData.getBulletsToDespawn())
+        {
+            remove(b);
         }
     }
 
@@ -115,19 +116,6 @@ public class GameController {
         {
             b.update();
         }
-    }
-
-    private void updateModels()
-    {
-        for(Enemy e : GameData.getEnemies())
-        {
-            e.update();
-        }
-        for(Bullet b : GameData.getBullets())
-        {
-            b.update();
-        }
-        player.getPlayer().update();
     }
 
     private void createDeleteBulletViews()

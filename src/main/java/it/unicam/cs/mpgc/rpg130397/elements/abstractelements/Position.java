@@ -25,6 +25,7 @@ public class Position {
 
     public void move(float x, float y)
     {
+        System.out.println("move");
         this.x += x;
         this.y += y;
     }
@@ -47,4 +48,14 @@ public class Position {
         return (float) Math.sqrt( Math.pow(x - otherPosition.getX(), 2) + Math.pow(y - otherPosition.getY(), 2));
     }
 
+    public void setPosition(float x, float y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        return x + ", " + y;
+    }
 }

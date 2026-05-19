@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg130397.elements.objects;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.utils.NearestEnemyUpdater;
 
@@ -15,13 +16,6 @@ public class Weapon {
     private transient long lastAttack;
     private transient float damage;
 
-    public Weapon(String name) {
-        this.name = name;
-        this.stats = GameData.getWeaponStatMap().get(name);
-        if(stats == null) throw new IllegalStateException("Stats di weapon null");
-        else System.out.println("OK?");
-        this.level = 1;
-    }
 
     public boolean canAttack()
     {
@@ -42,7 +36,9 @@ public class Weapon {
 
     //Intelligence weapons attack automatically and target the closest enemy
     private void magicAttack() {
-        Position target = NearestEnemyUpdater.updateAndGetClosestEnemy().getPosition();
+        Enemy closestEnemy = NearestEnemyUpdater.updateAndGetClosestEnemy();
+        if(closestEnemy == null) return;
+        Position target = closestEnemy.getPosition();
         if(target == null || GameData.getPlayer().getPosition().distanceFrom(target) > stats.getRange()) return;
 
         Bullet b = new Bullet(stats.getBulletStats(), GameData.getPlayer(), target);

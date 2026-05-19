@@ -9,7 +9,6 @@ import java.util.List;
 
 public class NearestEnemyUpdater {
     private static Enemy closestEnemy;
-    private static Player player;
     private static float minDistance;
     private static long lastUpdate;
     private static final float UPDATE_COOLDOWN = 0.05f;
@@ -20,7 +19,7 @@ public class NearestEnemyUpdater {
         if(lastUpdate + UPDATE_COOLDOWN > System.currentTimeMillis() || enemies.isEmpty()) return null;
 
         closestEnemy = enemies.getFirst();
-        Position playerPosition = player.getPosition();
+        Position playerPosition = GameData.getPlayer().getPosition();
 
         minDistance = closestEnemy.getPosition().distanceFrom(playerPosition);
 
