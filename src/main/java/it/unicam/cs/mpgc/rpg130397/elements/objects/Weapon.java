@@ -15,14 +15,11 @@ public class Weapon {
     private transient long lastAttack;
     private transient float damage;
 
-    public Weapon(String name, int level) {
-        this.name = name;
-        this.stats = GameData.getWeaponStatMap().get(name);
-        this.level = level;
-    }
     public Weapon(String name) {
         this.name = name;
         this.stats = GameData.getWeaponStatMap().get(name);
+        if(stats == null) throw new IllegalStateException("Stats di weapon null");
+        else System.out.println("OK?");
         this.level = 1;
     }
 

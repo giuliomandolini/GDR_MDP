@@ -11,7 +11,7 @@ import java.util.Map;
 public class Player extends Entity{
 
     Characteristics characteristics;
-    Map<Characteristics.CharacteristicType, Weapon> inventory = new HashMap<>();
+    Map<Characteristics.CharacteristicType, Weapon> inventory;
 
     public Player(String name, float health, float speed, Map<Characteristics.CharacteristicType, Weapon> inventory, Position position) {
         super(name, health, speed, position);
@@ -45,5 +45,6 @@ public class Player extends Entity{
     public Map<Characteristics.CharacteristicType, Weapon> getInventory() {
         return inventory;
     }
+
 
 }

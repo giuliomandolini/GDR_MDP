@@ -5,6 +5,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
+import javafx.scene.layout.Pane;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -23,12 +24,16 @@ public class GameData {
     private static List<Enemy> enemies;
     private static List<Bullet> bullets;
 
-    public static void start() throws FileNotFoundException {
+    public static void start(Player p, Pane gamePane) throws FileNotFoundException {
 
         enemies = new LinkedList<>();
+        bullets = new LinkedList<>();
+
         weaponStatMap = JDeserializer.getWeaponsStat();
         enemiesMap = JDeserializer.getEnemies();
         if(enemiesMap == null) throw new IllegalStateException();
+        player = p;
+        SpawnSystem.start(gamePane);
     }
 
     public static Enemy getEnemy(String enemy) {
@@ -37,6 +42,7 @@ public class GameData {
     public static List<Enemy> getEnemies() {
         return enemies;
     }
+    public static void addEnemies(List<Enemy> e) { enemies.addAll(e); }
     public static Map<String, Enemy> getEnemiesMap() {
         return enemiesMap;
     }

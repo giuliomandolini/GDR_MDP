@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.CombatSystem;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.CollisionSystem;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
 /**
@@ -25,7 +25,6 @@ public class Enemy extends Entity{
     private transient int id;
     private transient Player player;
 
-
     public Enemy(String name, float health, float speed, float damage, float range, float cooldown, BulletStats bullet, Position position, int id) {
         super(name, health, speed, position);
         this.damage = damage;
@@ -33,6 +32,7 @@ public class Enemy extends Entity{
         this.range = range;
         this.bullet = bullet;
         this.id = id;
+        this.setPosition(position);
         lastAttack = System.currentTimeMillis();
         player = GameData.getPlayer();
     }
@@ -52,14 +52,14 @@ public class Enemy extends Entity{
         {
             if(canAttack())
             {
-                if(CombatSystem.getPlayerEnemyCollisions().contains(this)) attack();
+                if(CollisionSystem.getPlayerEnemyCollisions().contains(this)) attack();
                 else move();
             }
         }
     }
 
     private void attack(){
-        if(range == 0) CombatSystem.damage(GameData.getPlayer(), damage);
+        if(range == 0) return;// CombatSystem.damage(GameData.getPlayer(), damage);
         else GameData.addBullet(new Bullet(bullet, this, GameData.getPlayer().getPosition()));
 
         lastAttack = System.currentTimeMillis();
@@ -92,5 +92,33 @@ public class Enemy extends Entity{
     @Override
     public int hashCode() {
         return id;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public float getCooldown() {
+        return cooldown;
+    }
+
+    public float getRange() {
+        return range;
+    }
+
+    public BulletStats getBullet() {
+        return bullet;
+    }
+
+    public long getLastAttack() {
+        return lastAttack;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

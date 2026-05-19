@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
 public class Bullet extends GameObject {
 
@@ -13,7 +14,7 @@ public class Bullet extends GameObject {
     private transient Position target;
     private transient Entity spawner;
 
-    static transient final float LIFESPAN = 5f;
+    static transient final float LIFESPAN = 7f;
     private transient int spawnTime;
 
     //Used for definition inside the JSON, the damage is set runtime on the Enemy constructor
@@ -41,13 +42,12 @@ public class Bullet extends GameObject {
     }
 
     private void checkForLifespan() {
-        //TODO
-        if(System.currentTimeMillis() > spawnTime + LIFESPAN) return; //distruggi il proiettile
+        if(System.currentTimeMillis() > spawnTime + LIFESPAN) GameData.removeBullet(this);
     }
 
     private void move()
     {
-        //TODO
+        getPosition().moveTowards(target, stats.getSpeed());
     }
 
     public void setDamage(float damage)

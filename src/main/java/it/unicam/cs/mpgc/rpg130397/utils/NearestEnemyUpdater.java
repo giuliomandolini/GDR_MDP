@@ -26,7 +26,6 @@ public class NearestEnemyUpdater {
 
         for(int i = 1; i < enemies.size(); i++)
         {
-            //TODO distanza tra nemici e giocatore
             float distance = enemies.get(i).getPosition().distanceFrom(playerPosition);
             if(distance < minDistance)
             {

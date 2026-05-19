@@ -5,11 +5,11 @@ import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 
 public class EnemyView extends GameObjectView {
 
-    Enemy enemy;
+    private Enemy enemy;
 
     public EnemyView(Enemy e) {
-        enemy = e;
         super(e);
+        enemy = e;
     }
 
     public void update()
@@ -22,7 +22,9 @@ public class EnemyView extends GameObjectView {
     public boolean equals(Object o)
     {
         if(!(o instanceof EnemyView)) return false;
-        return ((EnemyView) o).getEnemy() == enemy;
+        System.out.println(((EnemyView) o).getEnemy().equals(enemy) + " on " + enemy.getName() + " and " + ((EnemyView) o).getEnemy().getName() + " : " +
+                ((EnemyView) o).getEnemy().hashCode() + " uguale " + enemy.hashCode());
+        return ((EnemyView) o).getEnemy().equals(enemy);
     }
 
     @Override
