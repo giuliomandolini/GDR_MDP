@@ -98,7 +98,7 @@ public class Main extends Application {
         Map<String, WeaponStats> weapons = new HashMap<>();
         WeaponStats dagger = new WeaponStats(100, 2000, 10, 0, new BulletStats("Dagger", 10), Characteristics.CharacteristicType.DEXTERITY);
         WeaponStats bow = new WeaponStats( 200, 3000, 30, 0, new BulletStats("Arrow", 20), Characteristics.CharacteristicType.DEXTERITY);
-        WeaponStats fireball = new WeaponStats( 150, 5000, 20, 3, new BulletStats("Fireball", 8), Characteristics.CharacteristicType.INTELLIGENCE);
+        WeaponStats fireball = new WeaponStats( 150, 5000, 20, 50, new BulletStats("Fireball", 8), Characteristics.CharacteristicType.INTELLIGENCE);
         WeaponStats bolt = new WeaponStats(80, 500, 5, 0, new BulletStats("Fire Bolt", 15), Characteristics.CharacteristicType.INTELLIGENCE);
         WeaponStats club = new WeaponStats( 0, 2000, 20, 0, null, Characteristics.CharacteristicType.STRENGTH);
         WeaponStats sword = new WeaponStats( 0, 1000, 15, 0, null, Characteristics.CharacteristicType.STRENGTH);

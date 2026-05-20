@@ -11,23 +11,37 @@ public class Bullet extends GameObject {
     private BulletStats stats;
     //the damage is inherited from the entity that spawns it
     private transient float damage;
-    private transient Position target;
-    private transient Position bulletPosition;
+    private transient float area;
+    private transient float range;
+    private transient float dirX;
+    private transient float dirY;
     private transient Entity spawner;
+    //needed for range to be effective
+    private transient Position spawnPosition;
 
-    static transient final float LIFESPAN = 7000f;
+    static final float LIFESPAN = 7000f;
     private transient long spawnTime;
 
     //Used for definition inside the JSON, the damage is set runtime on the Enemy constructor
-    public Bullet(BulletStats stats, float damage, Entity spawner, Position target)
+    public Bullet(BulletStats stats, float damage, Entity spawner, Position target, float range, float area)
     {
-        Position spawnPosition = new Position(spawner.getPosition().getX(), spawner.getPosition().getY());
-        super(stats.getName(), spawnPosition);
+        super(stats.getName(), new Position(spawner.getPosition().getX(), spawner.getPosition().getY()));
 
         this.stats = stats;
         this.spawner = spawner;
-        this.target = target;
         this.damage = damage;
+        this.area = area;
+        this.range = range;
+        spawnPosition = new Position(getPosition().getX(), getPosition().getY());
+
+        //needed to keep the bullet running
+        float distanceX = target.getX() - spawnPosition.getX();
+        float distanceY = target.getY() - spawnPosition.getY();
+
+        float totalDistance = (float)Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        dirX = distanceX / totalDistance;
+        dirY = distanceY / totalDistance;
 
         //takes in consideration only the past 6 hours (better override of hashcode)
         //(21600000 is the number of milliseconds in 6 hours)
@@ -37,16 +51,18 @@ public class Bullet extends GameObject {
     public void update()
     {
         move();
-        checkForLifespan();
+        checkForLifespanAndRange();
     }
 
-    private void checkForLifespan() {
-        if(System.currentTimeMillis() > spawnTime + LIFESPAN) GameData.removeBullet(this);
+    private void checkForLifespanAndRange() {
+        System.out.println(spawnPosition.distanceFrom(getPosition()) + ", " + range);
+        if(System.currentTimeMillis() > spawnTime + LIFESPAN
+        || spawnPosition.distanceFrom(getPosition()) > range) GameData.removeBullet(this);
     }
 
     private void move()
     {
-        getPosition().moveTowards(target, stats.getSpeed());
+        getPosition().move(dirX * stats.getSpeed(), dirY * stats.getSpeed());
     }
 
     public Entity getSpawner() {
@@ -55,6 +71,14 @@ public class Bullet extends GameObject {
 
     public float getDamage() {
         return damage;
+    }
+
+    public BulletStats getStats() {
+        return stats;
+    }
+
+    public float getArea() {
+        return area;
     }
 
     public long getSpawnTime() {

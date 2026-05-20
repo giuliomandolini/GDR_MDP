@@ -26,7 +26,26 @@ public class CombatSystem {
         {
             for(Bullet b : coll.get(e))
             {
-                e.changeHealth(b.getDamage());
+                System.out.println(b.getName() + ", " + b.getArea() + ", " + b.getDamage());
+                System.out.println(b.getStats().getName());
+                if(b.getArea() > 0)
+                {
+                    System.out.println("AREA + " + b.getArea());
+                    List<Enemy> toDamage = new LinkedList<>(GameData.getEnemies());
+                    for(Enemy enemyToDamage : toDamage)
+                    {
+                        if(enemyToDamage.getPosition().distanceFrom(b.getPosition()) <= b.getArea())
+                            damage(enemyToDamage, b.getDamage());
+                    }
+                }
+                else
+                {
+                    System.out.println("NO AREA");
+                    damage(e, b.getDamage());
+                }
+
+                System.out.println("OK");
+
                 GameData.removeBullet(b);
             }
         }

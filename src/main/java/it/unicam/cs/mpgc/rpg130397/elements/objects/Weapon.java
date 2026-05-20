@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
+import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
@@ -26,10 +27,9 @@ public class Weapon {
     {
         if(!canAttack())
         {
-            System.out.println(name + " cooldown " + lastAttack % 1000000 + ", " + stats.getCooldown() + ", " + System.currentTimeMillis() % 1000000);
             return;
         }
-        System.out.println("WEAPON ATTACK " + name );
+
         switch (stats.getWeaponType())
         {
             case STRENGTH -> meleeAttack();
@@ -40,23 +40,26 @@ public class Weapon {
 
     //Intelligence weapons attack automatically and target the closest enemy
     private void magicAttack() {
-        System.out.println("Weapon " + getName() + " attacking! " + NearestEnemyUpdater.updateAndGetClosestEnemy());
 
         Enemy closestEnemy = NearestEnemyUpdater.updateAndGetClosestEnemy();
         if(closestEnemy == null) return;
-        System.out.println("target = " + closestEnemy.getName() + ", at range " + GameData.getPlayer().getPosition().distanceFrom(closestEnemy.getPosition()) + " can attack at "  + stats.getRange());
         Position target = closestEnemy.getPosition();
         if(target == null || GameData.getPlayer().getPosition().distanceFrom(target) > stats.getRange()) return;
 
-        Bullet b = new Bullet(stats.getBulletStats(), damage, GameData.getPlayer(), target);
-        GameData.addBullet(b);
+        createBullet(target);
 
         lastAttack = System.currentTimeMillis();
     }
 
     //Dexterity weapons attack towards mouse position
     private void rangedAttack() {
-        //TODO istanza il colpo con destinazione puntatore del mouse
+        Position target = GameController.getMousePosition();
+        if(target == null)
+        {
+            target = new Position(0, 0);
+            System.out.println("NESSUNA POSIZIONE");
+        }
+        createBullet(target);
         lastAttack = System.currentTimeMillis();
     }
 
@@ -65,6 +68,13 @@ public class Weapon {
         //utils.updateClosestEnemy();
         //TODO controlla la distanza melee con le entità a distanza minore del range di attacco dell'arma melee
         lastAttack = System.currentTimeMillis();
+    }
+
+    private Bullet createBullet(Position target)
+    {
+        Bullet b = new Bullet(stats.getBulletStats(), damage, GameData.getPlayer(), target, stats.getRange(), stats.getArea());
+        GameData.addBullet(b);
+        return b;
     }
 
     public void updateDamage(Characteristics characteristics)
@@ -85,6 +95,7 @@ public class Weapon {
 
     public void setStats(WeaponStats stats) {
         this.stats = stats;
+        updateDamage(GameData.getPlayer().getCharacteristics());
     }
 
     public String getName() {

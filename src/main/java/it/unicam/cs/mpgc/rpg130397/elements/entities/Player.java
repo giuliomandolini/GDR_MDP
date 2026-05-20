@@ -5,9 +5,11 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 
+import java.io.FileNotFoundException;
 import java.util.Map;
 
 public class Player extends Entity{
@@ -16,15 +18,14 @@ public class Player extends Entity{
     private Map<Characteristics.CharacteristicType, Weapon> inventory;
     private FloatProperty healthProperty;
 
-    public Player(String name, float health, float speed, Map<Characteristics.CharacteristicType, Weapon> inventory, Characteristics characteristics, Position position) {
+    public Player(String name, float health, float speed, Characteristics characteristics, Position position) throws FileNotFoundException {
         super(name, health, speed, position);
-        this.inventory = inventory;
 
         GameData.setPlayer(this);//before
         this.characteristics = characteristics;
+        this.inventory = JDeserializer.getPreviousInventory();//after
+
         healthProperty = new SimpleFloatProperty(health);
-        GameData.setPlayer(this);
-        System.out.println("player with health: " + getStats().get(EntityStats.StatType.CURRENT_HEALTH) + " out of " + getStats().get(EntityStats.StatType.MAX_HEALTH));
     }
 
     public void update()

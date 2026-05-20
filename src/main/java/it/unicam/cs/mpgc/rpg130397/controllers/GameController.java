@@ -42,26 +42,15 @@ public class GameController {
     private List<BulletView> bullets;
     private List<EnemyView> enemies;
 
-
+    private static Position mousePosition;
 
     @FXML
     public void initialize() throws FileNotFoundException, InterruptedException {
         GameData.start(gamePane); //1
-        Player playerModel = new Player("Player", 1000, 10, JDeserializer.getPreviousInventory(), new Characteristics(10, 10, 10), new Position()); //2
-
-        for(Weapon w : playerModel.getInventory().values())
-        {
-            w.setStats(GameData.getWeaponStatMap().get(w.getName()));
-            System.out.println(w.getName());
-            System.out.println(GameData.getWeaponStatMap().get(w.getName()).getBaseDamage());
-            System.out.println(GameData.getWeaponStatMap().get(w.getName()).getBulletStats());
-        }
+        Player playerModel = new Player("Player", 1000, 10, new Characteristics(10, 10, 10), new Position()); //2
 
         player = new PlayerView(playerModel);
 
-        System.out.println(playerModel.getInventory().get(Characteristics.CharacteristicType.INTELLIGENCE).getName());
-        System.out.println(playerModel.getInventory().get(Characteristics.CharacteristicType.INTELLIGENCE).getStats());
-        System.out.println(playerModel.getInventory().get(Characteristics.CharacteristicType.INTELLIGENCE).getStats().getBulletStats());
         //it is better to use linked lists instead of array lists because a there are a lot of additions and remotions
         bullets = new LinkedList<>();
         enemies = new LinkedList<>();
@@ -77,6 +66,7 @@ public class GameController {
             }
         };
         setupUi();
+        setupInput();
         timer.start();
     }
 
@@ -139,6 +129,14 @@ public class GameController {
         intelligenceLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.INTELLIGENCE).asString());
     }
 
+    private void setupInput()
+    {
+        mousePosition = new Position();
+        gamePane.setOnMouseMoved(event -> {
+            mousePosition.setPosition((float) event.getX(), (float) event.getY());
+        });
+    }
+
     private void add(Node object)
     {
         gamePane.getChildren().add(object);
@@ -179,5 +177,9 @@ public class GameController {
                 return g;
         }
         return null;
+    }
+
+    public static Position getMousePosition() {
+        return mousePosition;
     }
 }

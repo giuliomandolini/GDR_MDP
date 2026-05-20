@@ -24,7 +24,7 @@ public class EnemySpawnSystem {
     public static void start(Pane gamePane)
     {
         possibleEnemies = GameData.getEnemiesMap().values().stream().toList();
-        spawnCooldown = 50000;
+        spawnCooldown = 2000;
         enemiesToSpawn = 5;
         pane = gamePane;
         //lastSpawn = System.currentTimeMillis();
@@ -61,8 +61,26 @@ public class EnemySpawnSystem {
         float maxX = (float) pane.getMinWidth();
         float maxY = (float) pane.getMinHeight();
 
-        float x = rand > 0.5 ? 0 : (float) (Math.random() * maxX);
-        float y = rand <= 0.5 ? 0 : (float) (Math.random() * maxY);
+        float x;
+        float y;
+        if(rand < 0.25)
+        {
+            x = (float) Math.random() * maxX;
+            y = 0;
+        } else if(rand < 0.5)
+        {
+            x = maxX;
+            y = (float) Math.random() * maxY;
+        }
+        else if(rand < 0.75)
+        {
+            x = (float) Math.random() * maxX;
+            y = maxY;
+        }
+        else {
+            x = 0;
+            y = (float) Math.random() * maxY;
+        }
 
         return new Position(x, y);
     }

@@ -58,7 +58,8 @@ public class Enemy extends Entity{
     }
 
     private void spawnBullet(){
-        Bullet newBullet = new Bullet(bullet, damage, this, GameData.getPlayer().getPosition());
+        //enemy spawn bullets without area damage firing towards the player
+        Bullet newBullet = new Bullet(bullet, damage, this, GameData.getPlayer().getPosition(), range, 0);
         GameData.addBullet(newBullet);
         lastAttack = System.currentTimeMillis();
     }
@@ -74,7 +75,9 @@ public class Enemy extends Entity{
 
     protected void die()
     {
-        if(Math.random() > 0.95f) return;
+        GameData.removeEnemy(this);
+
+        //if(Math.random() > 0.95f) return;
         //TODO instanzia il baule
     }
 
@@ -109,14 +112,6 @@ public class Enemy extends Entity{
 
     public BulletStats getBullet() {
         return bullet;
-    }
-
-    public long getLastAttack() {
-        return lastAttack;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public Player getPlayer() {

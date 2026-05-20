@@ -17,5 +17,5 @@ public class BulletStats {
         return speed;
     }
 
-    //Damage is given by the spawner
+    //Damage and other data is given by the spawner
 }

@@ -6,6 +6,7 @@ import it.unicam.cs.mpgc.rpg130397.views.BulletView;
 import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
 import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /// Class that contains the instructions for general game functioning and utility methods
@@ -14,9 +15,8 @@ public class GameManager {
     public static void update(List<BulletView> bullets, List<EnemyView> enemies, PlayerView player)
     {
         EnemySpawnSystem.spawnEnemies();
-        updateModels();
-
         CollisionSystem.checkForCollisions(bullets, enemies, player);
+        updateModels();
         CombatSystem.update();
     }
 
@@ -27,7 +27,9 @@ public class GameManager {
         {
             e.update();
         }
-        for(Bullet b : GameData.getBullets())
+        //another list is necessary to avoid concurrentModificationException
+        List<Bullet> toUpdate = new LinkedList<>(GameData.getBullets());
+        for(Bullet b : toUpdate)
         {
             b.update();
         }
