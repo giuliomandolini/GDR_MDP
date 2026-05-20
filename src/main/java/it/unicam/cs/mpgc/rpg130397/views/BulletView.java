@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg130397.views;
 
-import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 
 public class BulletView extends GameObjectView {
@@ -22,7 +21,7 @@ public class BulletView extends GameObjectView {
     public boolean equals(Object o)
     {
         if(!(o instanceof BulletView)) return false;
-        return ((BulletView) o).getBullet() == bullet;
+        return ((BulletView) o).getObject() == bullet;
     }
 
     @Override
@@ -31,7 +30,12 @@ public class BulletView extends GameObjectView {
         return bullet.hashCode();
     }
 
-    public Bullet getBullet() {
+    @Override
+    public String toString() {
+        return getObject().getName();
+    }
+
+    public Bullet getObject() {
         return bullet;
     }
 }

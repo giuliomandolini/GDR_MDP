@@ -33,7 +33,7 @@ public class Enemy extends Entity{
         this.bullet = bullet;
         this.id = id;
         this.setPosition(position);
-        lastAttack = System.currentTimeMillis();
+        if(range > 0) lastAttack = System.currentTimeMillis();
         player = GameData.getPlayer();
     }
 
@@ -45,32 +45,31 @@ public class Enemy extends Entity{
         {
             if(getPosition().distanceFrom(player.getPosition()) <= range)
             {
-                if(canAttack()) attack();
+                if(canAttack()) spawnBullet();
             }
             else move();
         }
         //if the enemy is melee, it moves, then if the player is near enough, it attacks. if it is reloading its attack it remains still.
         else
         {
-            if(canAttack())
-            {
-                if(CollisionSystem.getPlayerEnemyCollisions().contains(this)) attack();
-                else move();
-            }
+            if(!CollisionSystem.getPlayerEnemyCollisions().contains(this))
+                move();
         }
     }
 
-    private void attack(){
-        if(range == 0) return;// CombatSystem.damage(GameData.getPlayer(), damage);
-        else GameData.addBullet(new Bullet(bullet, this, GameData.getPlayer().getPosition()));
-
+    private void spawnBullet(){
+        Bullet newBullet = new Bullet(bullet, damage, this, GameData.getPlayer().getPosition());
+        GameData.addBullet(newBullet);
         lastAttack = System.currentTimeMillis();
     }
 
     //checks if the cooldown permits the attack
-    private boolean canAttack()
+    public boolean canAttack()
     {
         return lastAttack + cooldown < System.currentTimeMillis();
+    }
+    public void setLastAttack() {
+        lastAttack = System.currentTimeMillis();
     }
 
     protected void die()
@@ -81,7 +80,6 @@ public class Enemy extends Entity{
 
     private void move()
     {
-        System.out.println("position = " + getPosition().toString() +" at time " + System.currentTimeMillis() % 200);
         getPosition().moveTowards(player.getPosition(), getStats().get(EntityStats.StatType.SPEED));
     }
 

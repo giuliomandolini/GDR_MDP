@@ -25,7 +25,6 @@ public class Position {
 
     public void move(float x, float y)
     {
-        System.out.println("move");
         this.x += x;
         this.y += y;
     }

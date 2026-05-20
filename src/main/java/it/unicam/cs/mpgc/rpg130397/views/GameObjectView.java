@@ -11,4 +11,7 @@ public abstract class GameObjectView extends ImageView {
         super(GetSpriteByName.getSprite(object.getName()));
     }
 
+    public abstract GameObject getObject();
+    public abstract void update();
+
 }

@@ -19,7 +19,7 @@ public class Bullet extends GameObject {
     private transient long spawnTime;
 
     //Used for definition inside the JSON, the damage is set runtime on the Enemy constructor
-    public Bullet(BulletStats stats, Entity spawner, Position target)
+    public Bullet(BulletStats stats, float damage, Entity spawner, Position target)
     {
         Position spawnPosition = new Position(spawner.getPosition().getX(), spawner.getPosition().getY());
         super(stats.getName(), spawnPosition);
@@ -27,6 +27,7 @@ public class Bullet extends GameObject {
         this.stats = stats;
         this.spawner = spawner;
         this.target = target;
+        this.damage = damage;
 
         //takes in consideration only the past 6 hours (better override of hashcode)
         //(21600000 is the number of milliseconds in 6 hours)
@@ -35,14 +36,8 @@ public class Bullet extends GameObject {
     ///has to be called on each update
     public void update()
     {
-        System.out.println("bullet move");
         move();
-        checkForCollision();
         checkForLifespan();
-    }
-
-    private void checkForCollision() {
-        //TODO controlla le collisioni con il giocatore
     }
 
     private void checkForLifespan() {
@@ -52,11 +47,6 @@ public class Bullet extends GameObject {
     private void move()
     {
         getPosition().moveTowards(target, stats.getSpeed());
-    }
-
-    public void setDamage(float damage)
-    {
-        this.damage = damage;
     }
 
     public Entity getSpawner() {
@@ -75,7 +65,7 @@ public class Bullet extends GameObject {
     public boolean equals(Object o)
     {
         if(!(o instanceof Bullet)) return false;
-        return ((Bullet) o).getSpawnTime() == spawnTime && ((Bullet) o).getSpawner() == spawner;
+        return ((Bullet) o).getSpawnTime() == spawnTime && ((Bullet) o).getSpawner().equals(spawner);
     }
 
     @Override
@@ -83,4 +73,5 @@ public class Bullet extends GameObject {
     {
         return (int) spawnTime + spawner.hashCode();
     }
+
 }

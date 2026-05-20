@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.views;
 
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 
 public class EnemyView extends GameObjectView {
 
@@ -22,9 +21,8 @@ public class EnemyView extends GameObjectView {
     public boolean equals(Object o)
     {
         if(!(o instanceof EnemyView)) return false;
-        System.out.println(((EnemyView) o).getEnemy().equals(enemy) + " on " + enemy.getName() + " and " + ((EnemyView) o).getEnemy().getName() + " : " +
-                ((EnemyView) o).getEnemy().hashCode() + " uguale " + enemy.hashCode());
-        return ((EnemyView) o).getEnemy().equals(enemy);
+
+        return ((EnemyView) o).getObject().equals(enemy);
     }
 
     @Override
@@ -33,7 +31,7 @@ public class EnemyView extends GameObjectView {
         return enemy.hashCode();
     }
 
-    public Enemy getEnemy() {
+    public Enemy getObject() {
         return enemy;
     }
 }

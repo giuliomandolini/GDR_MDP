@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg130397.views;
 
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 
 public class PlayerView extends GameObjectView {
@@ -17,7 +16,7 @@ public class PlayerView extends GameObjectView {
         setLayoutY(player.getPosition().getY());
     }
 
-    public Player getPlayer() {
+    public Player getObject() {
         return player;
     }
 }

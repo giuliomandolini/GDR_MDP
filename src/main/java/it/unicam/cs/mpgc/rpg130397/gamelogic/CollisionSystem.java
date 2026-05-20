@@ -14,7 +14,7 @@ public class CollisionSystem {
 
     private static Set<Enemy> playerEnemyCollisions;
     private static Set<Bullet> playerBulletCollisions;
-    private static Map<Enemy, Bullet> enemyBulletCollisions;
+    private static Map<Enemy, List<Bullet>> enemyBulletCollisions;
 
     //TODO sistemare collisioni e combat system
     public static void resetCollisions()
@@ -30,17 +30,17 @@ public class CollisionSystem {
         //collisions between player and enemies
         for(EnemyView e : enemies)
         {
-            if(collision(e, player)) playerEnemyCollisions.add(e.getEnemy());
+            if(collision(e, player)) playerEnemyCollisions.add(e.getObject());
         }
 
         //collisions between bullets and (enemies and player)
         for(BulletView b : bullets)
         {
             //if the bullet is instantiated by an enemy, it has to check if it collides with the player, and vice versa
-            if(b.getBullet().getSpawner() instanceof Enemy)
+            if(b.getObject().getSpawner() instanceof Enemy)
             {
                 if(collision(b, player)){
-                    playerBulletCollisions.add(b.getBullet());
+                    playerBulletCollisions.add(b.getObject());
                 }
             }
             else
@@ -49,7 +49,9 @@ public class CollisionSystem {
                 {
                     if(collision(b, e))
                     {
-                        enemyBulletCollisions.put(e.getEnemy(), b.getBullet());
+                        if(enemyBulletCollisions.get(e.getObject()) == null)
+                            enemyBulletCollisions.put(e.getObject(), new ArrayList<>());
+                        enemyBulletCollisions.get(e.getObject()).add(b.getObject());
                     }
                 }
             }
@@ -60,11 +62,6 @@ public class CollisionSystem {
     {
         return i1.getBoundsInParent().intersects(i2.getBoundsInParent());
     }
-    ///@return true if the health is <= 0, false otherwise
-    public static boolean damage(Entity e, float damage)
-    {
-        return e.changeHealth(damage);
-    }
 
     public static Set<Enemy> getPlayerEnemyCollisions() {
         return playerEnemyCollisions;
@@ -74,7 +71,7 @@ public class CollisionSystem {
         return playerBulletCollisions;
     }
 
-    public static Map<Enemy, Bullet> getEnemyBulletCollisions() {
+    public static Map<Enemy, List<Bullet>> getEnemyBulletCollisions() {
         return enemyBulletCollisions;
     }
 }

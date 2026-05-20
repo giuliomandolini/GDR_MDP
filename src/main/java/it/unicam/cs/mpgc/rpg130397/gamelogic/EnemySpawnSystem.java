@@ -3,15 +3,13 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class SpawnSystem {
+public class EnemySpawnSystem {
 
     private static long lastSpawn;
     private static long spawnCooldown;
@@ -27,7 +25,7 @@ public class SpawnSystem {
     {
         possibleEnemies = GameData.getEnemiesMap().values().stream().toList();
         spawnCooldown = 50000;
-        enemiesToSpawn = 1;
+        enemiesToSpawn = 5;
         pane = gamePane;
         //lastSpawn = System.currentTimeMillis();
         idCounter = 0;
@@ -42,7 +40,7 @@ public class SpawnSystem {
             List<Enemy> toAdd = new ArrayList<>();
             for (int i = 0; i < enemiesToSpawn; i++) {
                 Position spawnPoint = getRandomPosition();
-                Enemy base = GameData.getEnemiesMap().get("Skeleton Archer");//possibleEnemies.get(new Random().nextInt(possibleEnemies.size()));
+                Enemy base = /*GameData.getEnemiesMap().get("Skeleton Archer");*/possibleEnemies.get(new Random().nextInt(possibleEnemies.size()));
 
                 //creates a new copy of the object, because otherwise the enemy cannot be added because javafx does not permit duplicates into the scene
                 Enemy enemy = new Enemy(base.getName(), base.getStats().get(EntityStats.StatType.MAX_HEALTH), base.getStats().get(EntityStats.StatType.SPEED),
@@ -64,7 +62,7 @@ public class SpawnSystem {
         float maxY = (float) pane.getMinHeight();
 
         float x = rand > 0.5 ? 0 : (float) (Math.random() * maxX);
-        float y = rand > 0.25 && rand < 0.75 ? 0 : (float) (Math.random() * maxY);
+        float y = rand <= 0.5 ? 0 : (float) (Math.random() * maxY);
 
         return new Position(x, y);
     }

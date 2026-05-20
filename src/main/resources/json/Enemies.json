@@ -10,7 +10,7 @@
     },
     "stats": {
       "stats": {
-        "SPEED": 5.0,
+        "SPEED": 1.0,
         "MAX_HEALTH": 20.0,
         "CURRENT_HEALTH": 20.0
       }
@@ -23,7 +23,7 @@
     "range": 0.0,
     "stats": {
       "stats": {
-        "SPEED": 5.0,
+        "SPEED": 1.0,
         "MAX_HEALTH": 50.0,
         "CURRENT_HEALTH": 50.0
       }
@@ -41,7 +41,7 @@
     },
     "stats": {
       "stats": {
-        "SPEED": 4.0,
+        "SPEED": 0.7,
         "MAX_HEALTH": 10.0,
         "CURRENT_HEALTH": 10.0
       }

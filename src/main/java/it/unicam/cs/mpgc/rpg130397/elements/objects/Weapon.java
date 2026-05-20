@@ -19,13 +19,17 @@ public class Weapon {
 
     public boolean canAttack()
     {
-        //TODO implementare la distanza
         return lastAttack + stats.getCooldown() < System.currentTimeMillis();
     }
 
     public void attack()
     {
-        if(!canAttack()) return;
+        if(!canAttack())
+        {
+            System.out.println(name + " cooldown " + lastAttack % 1000000 + ", " + stats.getCooldown() + ", " + System.currentTimeMillis() % 1000000);
+            return;
+        }
+        System.out.println("WEAPON ATTACK " + name );
         switch (stats.getWeaponType())
         {
             case STRENGTH -> meleeAttack();
@@ -36,12 +40,15 @@ public class Weapon {
 
     //Intelligence weapons attack automatically and target the closest enemy
     private void magicAttack() {
+        System.out.println("Weapon " + getName() + " attacking! " + NearestEnemyUpdater.updateAndGetClosestEnemy());
+
         Enemy closestEnemy = NearestEnemyUpdater.updateAndGetClosestEnemy();
         if(closestEnemy == null) return;
+        System.out.println("target = " + closestEnemy.getName() + ", at range " + GameData.getPlayer().getPosition().distanceFrom(closestEnemy.getPosition()) + " can attack at "  + stats.getRange());
         Position target = closestEnemy.getPosition();
         if(target == null || GameData.getPlayer().getPosition().distanceFrom(target) > stats.getRange()) return;
 
-        Bullet b = new Bullet(stats.getBulletStats(), GameData.getPlayer(), target);
+        Bullet b = new Bullet(stats.getBulletStats(), damage, GameData.getPlayer(), target);
         GameData.addBullet(b);
 
         lastAttack = System.currentTimeMillis();
@@ -49,20 +56,20 @@ public class Weapon {
 
     //Dexterity weapons attack towards mouse position
     private void rangedAttack() {
-        //istanza il colpo con destinazione puntatore del mouse
+        //TODO istanza il colpo con destinazione puntatore del mouse
         lastAttack = System.currentTimeMillis();
     }
 
     //Strength weapons attack when the enemy is close enough and no shot is created
     private void meleeAttack() {
         //utils.updateClosestEnemy();
-        //controlla la distanza melee con le entità a distanza minore del range di attacco dell'arma melee
+        //TODO controlla la distanza melee con le entità a distanza minore del range di attacco dell'arma melee
         lastAttack = System.currentTimeMillis();
     }
 
     public void updateDamage(Characteristics characteristics)
     {
-        int level = characteristics.getCharacteristic(stats.getWeaponType());
+        int level = characteristics.getCharacteristicValue(stats.getWeaponType());
 
         //for each 5 points after level 10 the damage increases by 1 baseDamage
         //if the level is less than 10 the damage decreases linearly

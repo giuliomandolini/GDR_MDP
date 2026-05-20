@@ -1,24 +1,30 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends Entity{
 
-    Characteristics characteristics;
-    Map<Characteristics.CharacteristicType, Weapon> inventory;
+    private Characteristics characteristics;
+    private Map<Characteristics.CharacteristicType, Weapon> inventory;
+    private FloatProperty healthProperty;
 
-    public Player(String name, float health, float speed, Map<Characteristics.CharacteristicType, Weapon> inventory, Position position) {
+    public Player(String name, float health, float speed, Map<Characteristics.CharacteristicType, Weapon> inventory, Characteristics characteristics, Position position) {
         super(name, health, speed, position);
         this.inventory = inventory;
-        characteristics = new Characteristics(10, 10, 10);
 
+        GameData.setPlayer(this);//before
+        this.characteristics = characteristics;
+        healthProperty = new SimpleFloatProperty(health);
         GameData.setPlayer(this);
+        System.out.println("player with health: " + getStats().get(EntityStats.StatType.CURRENT_HEALTH) + " out of " + getStats().get(EntityStats.StatType.MAX_HEALTH));
     }
 
     public void update()
@@ -46,5 +52,24 @@ public class Player extends Entity{
         return inventory;
     }
 
+    public FloatProperty getHealthProperty() {
+        return healthProperty;
+    }
 
+    public Characteristics getCharacteristics() {
+        return characteristics;
+    }
+
+    public void increaseCharacteristic(Characteristics.CharacteristicType type, int amount)
+    {
+        characteristics.setCharacteristicValue(type, characteristics.getCharacteristicValue(type) + amount);
+    }
+
+    @Override
+    public void changeHealth(float amount) {
+        super.changeHealth(amount);
+        //sets newHealth positive
+        float newHealth = Math.max(getStats().get(EntityStats.StatType.CURRENT_HEALTH), 0);
+        healthProperty.set(newHealth);
+    }
 }

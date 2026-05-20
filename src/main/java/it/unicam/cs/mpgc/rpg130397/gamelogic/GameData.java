@@ -41,7 +41,7 @@ public class GameData {
         onlyViewBullets = new ArrayList<>();
         onlyViewEnemies = new ArrayList<>();
 
-        SpawnSystem.start(gamePane);
+        EnemySpawnSystem.start(gamePane);
     }
 
     public static Enemy getEnemy(String enemy) {

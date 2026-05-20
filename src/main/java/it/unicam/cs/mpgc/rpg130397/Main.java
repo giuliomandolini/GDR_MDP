@@ -26,7 +26,6 @@ public class Main extends Application {
     public int height = 800;
     @Override
     public void start(Stage stage) throws IOException {
-
         stage.setWidth(width);
         stage.setHeight(height);
         stage.setResizable(false);
@@ -40,8 +39,9 @@ public class Main extends Application {
     }
 
     static void main() throws IOException {
-        loadWeapons();
         //loadEnemies();
+        //        loadWeapons();
+
         //launch();
         //TODO controlla i valori passati tra i metodi
 
@@ -82,12 +82,11 @@ public class Main extends Application {
 //        enemies.put(m.getName(), m);
         //enemies.put(z.getName(), z);
 
-        System.out.println(enemies);
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(f));
         j.toJson(enemies, writer);
         writer.close();
-        System.out.println("done: " + j.toString() + ".");
+
 
     }
     private static void loadWeapons() throws IOException {
@@ -97,12 +96,12 @@ public class Main extends Application {
 
         //Map<String, Enemy> enemies = new HashMap<>();
         Map<String, WeaponStats> weapons = new HashMap<>();
-        WeaponStats dagger = new WeaponStats(10, 2, 10, 0, new BulletStats("Dagger", 10), Characteristics.CharacteristicType.DEXTERITY);
-        WeaponStats bow = new WeaponStats( 20, 3, 30, 0, new BulletStats("Arrow", 20), Characteristics.CharacteristicType.DEXTERITY);
-        WeaponStats fireball = new WeaponStats( 10, 5, 20, 3, new BulletStats("Fireball", 8), Characteristics.CharacteristicType.INTELLIGENCE);
-        WeaponStats bolt = new WeaponStats(8, 0.5f, 5, 0, new BulletStats("Fire Bolt", 15), Characteristics.CharacteristicType.INTELLIGENCE);
-        WeaponStats club = new WeaponStats( 0, 2, 20, 0, null, Characteristics.CharacteristicType.STRENGTH);
-        WeaponStats sword = new WeaponStats( 0, 1, 15, 0, null, Characteristics.CharacteristicType.STRENGTH);
+        WeaponStats dagger = new WeaponStats(100, 2000, 10, 0, new BulletStats("Dagger", 10), Characteristics.CharacteristicType.DEXTERITY);
+        WeaponStats bow = new WeaponStats( 200, 3000, 30, 0, new BulletStats("Arrow", 20), Characteristics.CharacteristicType.DEXTERITY);
+        WeaponStats fireball = new WeaponStats( 150, 5000, 20, 3, new BulletStats("Fireball", 8), Characteristics.CharacteristicType.INTELLIGENCE);
+        WeaponStats bolt = new WeaponStats(80, 500, 5, 0, new BulletStats("Fire Bolt", 15), Characteristics.CharacteristicType.INTELLIGENCE);
+        WeaponStats club = new WeaponStats( 0, 2000, 20, 0, null, Characteristics.CharacteristicType.STRENGTH);
+        WeaponStats sword = new WeaponStats( 0, 1000, 15, 0, null, Characteristics.CharacteristicType.STRENGTH);
 
         weapons.put("Dagger", dagger);
         weapons.put("Bow", bow);

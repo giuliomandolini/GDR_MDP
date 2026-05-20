@@ -2,10 +2,10 @@ package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
 
 public class WeaponStats {
     private float baseDamage;
-    private float cooldown;
+    private long cooldown;
     private float range;
     private float area;
-    private transient BulletStats bulletStats;
+    private BulletStats bulletStats;
 
     //weaponType defines the characteristic that uses that weapon. this is needed to avoid
     //creating new classes in the case a new characteristic is inserted. Doing so it is sufficient
@@ -13,7 +13,7 @@ public class WeaponStats {
     //The code remains readable, scalable and not duplicated.
     private Characteristics.CharacteristicType weaponType;
 
-    public WeaponStats(float range, float cooldown, float baseDamage, float area, BulletStats bulletStats,
+    public WeaponStats(float range, long cooldown, float baseDamage, float area, BulletStats bulletStats,
                        Characteristics.CharacteristicType weaponType) {
         this.weaponType = weaponType;
         this.area = area;
@@ -27,7 +27,7 @@ public class WeaponStats {
         return baseDamage;
     }
 
-    public float getCooldown() {
+    public long getCooldown() {
         return cooldown;
     }
 
