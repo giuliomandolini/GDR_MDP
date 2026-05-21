@@ -47,9 +47,12 @@ public class GameController {
     @FXML
     public void initialize() throws FileNotFoundException, InterruptedException {
         GameData.start(gamePane); //1
-        Player playerModel = new Player("Player", 1000, 10, new Characteristics(10, 10, 10), new Position()); //2
+        InputManager.start();
+        Player playerModel = new Player("Player", 1000, 4, new Characteristics(10, 10, 10), new Position()); //2
 
         player = new PlayerView(playerModel);
+        player.setScaleX(0.8);
+        player.setScaleY(0.8);
 
         //it is better to use linked lists instead of array lists because a there are a lot of additions and remotions
         bullets = new LinkedList<>();
@@ -127,12 +130,17 @@ public class GameController {
         strengthLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.STRENGTH).asString());
         dexterityLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.DEXTERITY).asString());
         intelligenceLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.INTELLIGENCE).asString());
+
+        gamePane.requestFocus();
+        gamePane.setFocusTraversable(true);
     }
 
     private void setupInput()
     {
         mousePosition = new Position();
         gamePane.setOnMouseMoved(event -> mousePosition.setPosition((float) event.getX(), (float) event.getY()));
+        gamePane.setOnKeyPressed(keyEvent -> InputManager.keyPressed(keyEvent.getCode()));
+        gamePane.setOnKeyReleased(keyEvent -> InputManager.keyReleased(keyEvent.getCode()));
     }
 
     private void addGameObject(GameObjectView object)

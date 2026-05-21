@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.views;
 
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
 public class EnemyView extends GameObjectView {
 
