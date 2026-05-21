@@ -1,7 +1,10 @@
 package it.unicam.cs.mpgc.rpg130397.views;
 
+import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
+import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
 
 public class EnemyView extends GameObjectView {
 
@@ -14,8 +17,9 @@ public class EnemyView extends GameObjectView {
 
     public void update()
     {
-        setLayoutX(enemy.getPosition().getX());
-        setLayoutY(enemy.getPosition().getY());
+        Position newPos = ScreenToWorldPoint.worldToScreen(enemy.getPosition());
+        setLayoutX(newPos.getX());
+        setLayoutY(newPos.getY());
     }
 
     @Override

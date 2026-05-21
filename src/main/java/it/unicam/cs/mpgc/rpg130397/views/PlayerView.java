@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.views;
 
+import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 
 public class PlayerView extends GameObjectView {
@@ -12,8 +13,8 @@ public class PlayerView extends GameObjectView {
 
     public void update()
     {
-        setLayoutX(player.getPosition().getX());
-        setLayoutY(player.getPosition().getY());
+        setLayoutX(GameController.SCREENWIDTH / 2);
+        setLayoutY(GameController.SCREENHEIGHT / 2);
     }
 
     public Player getObject() {

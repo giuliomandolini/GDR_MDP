@@ -1,6 +1,10 @@
 package it.unicam.cs.mpgc.rpg130397.views;
 
+import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
+import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
 
 public class BulletView extends GameObjectView {
 
@@ -13,8 +17,9 @@ public class BulletView extends GameObjectView {
 
     public void update()
     {
-        setLayoutX(bullet.getPosition().getX());
-        setLayoutY(bullet.getPosition().getY());
+        Position newPos = ScreenToWorldPoint.worldToScreen(bullet.getPosition());
+        setLayoutX(newPos.getX());
+        setLayoutY(newPos.getY());
     }
 
     @Override

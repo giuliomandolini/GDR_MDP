@@ -2,57 +2,57 @@
   "Fireball": {
     "baseDamage": 20.0,
     "cooldown": 1000,
-    "range": 150.0,
+    "range": 250.0,
     "area": 50,
     "bulletStats": {
       "name": "Fireball",
-      "speed": 8.0
+      "speed": 4.5
     },
     "weaponType": "INTELLIGENCE"
   },
   "Sword": {
     "baseDamage": 15.0,
-    "cooldown": 1000,
+    "cooldown": 300,
     "range": 0.0,
     "area": 0.0,
     "weaponType": "STRENGTH"
   },
   "Dagger": {
     "baseDamage": 10.0,
-    "cooldown": 300,
-    "range": 100.0,
+    "cooldown": 150,
+    "range": 250.0,
     "area": 0.0,
     "bulletStats": {
       "name": "Dagger",
-      "speed": 10.0
+      "speed": 7.0
     },
     "weaponType": "DEXTERITY"
   },
   "Bow": {
     "baseDamage": 30.0,
-    "cooldown": 800,
-    "range": 200.0,
+    "cooldown": 400,
+    "range": 380.0,
     "area": 0.0,
     "bulletStats": {
       "name": "Arrow",
-      "speed": 20.0
+      "speed": 8.0
     },
     "weaponType": "DEXTERITY"
   },
   "Fire Bolt": {
     "baseDamage": 5.0,
-    "cooldown": 500,
-    "range": 150,
+    "cooldown": 300,
+    "range": 220,
     "area": 0.0,
     "bulletStats": {
       "name": "Fire Bolt",
-      "speed": 15.0
+      "speed": 6.0
     },
     "weaponType": "INTELLIGENCE"
   },
   "Axe": {
     "baseDamage": 20.0,
-    "cooldown": 2000,
+    "cooldown": 500,
     "range": 0.0,
     "area": 0.0,
     "weaponType": "STRENGTH"

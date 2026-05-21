@@ -9,6 +9,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
+import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
 import it.unicam.cs.mpgc.rpg130397.views.BulletView;
 import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
 import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
@@ -16,11 +17,13 @@ import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,18 +40,29 @@ public class GameController {
     private Label dexterityLabel;
     @FXML
     private Label intelligenceLabel;
+    @FXML
+    private Button playAgain;
 
     private PlayerView player;
     private List<BulletView> bullets;
     private List<EnemyView> enemies;
 
+    private AnimationTimer timer;
+    public static boolean lost;
+
     private static Position mousePosition;
+    public static double SCREENWIDTH;
+    public static double SCREENHEIGHT;
 
     @FXML
     public void initialize() throws FileNotFoundException, InterruptedException {
+        gamePane.getChildren().remove(playAgain);
+        lost = false;
+        SCREENWIDTH = gamePane.getMinWidth();
+        SCREENHEIGHT = gamePane.getMinHeight();
         GameData.start(gamePane); //1
         InputManager.start();
-        Player playerModel = new Player("Player", 1000, 4, new Characteristics(10, 10, 10), new Position()); //2
+        Player playerModel = new Player("Player", 250, 2.2f, new Characteristics(10, 10, 10), new Position(0, 0)); //2
 
         player = new PlayerView(playerModel);
         player.setScaleX(0.8);
@@ -58,11 +72,8 @@ public class GameController {
         bullets = new LinkedList<>();
         enemies = new LinkedList<>();
 
-
-        playerModel.getPosition().move(400 , 400);
-
         addGameObject(player);
-        AnimationTimer timer = new AnimationTimer() {
+        timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 update();
@@ -76,6 +87,10 @@ public class GameController {
     ///Synchronizes models with views and controls game
     public void update()
     {
+        if(lost) {
+            manageLoss();
+            return;
+        }
         //ui update
         createDestroyEnemyViews();
         createDestroyBulletViews();
@@ -138,9 +153,25 @@ public class GameController {
     private void setupInput()
     {
         mousePosition = new Position();
-        gamePane.setOnMouseMoved(event -> mousePosition.setPosition((float) event.getX(), (float) event.getY()));
+        gamePane.setOnMouseMoved(event -> mousePosition.setPosition(ScreenToWorldPoint.screenToWorld(new Position((float) event.getX(), (float) event.getY()))));
         gamePane.setOnKeyPressed(keyEvent -> InputManager.keyPressed(keyEvent.getCode()));
         gamePane.setOnKeyReleased(keyEvent -> InputManager.keyReleased(keyEvent.getCode()));
+    }
+
+    public static void lose()
+    {
+        lost = true;
+    }
+    private void manageLoss()
+    {
+        timer.stop();
+        remove(player.getObject());
+        gamePane.getChildren().add(playAgain);
+    }
+
+    @FXML
+    private void playAgain() throws IOException {
+        SceneManager.loadScene("game");
     }
 
     private void addGameObject(GameObjectView object)

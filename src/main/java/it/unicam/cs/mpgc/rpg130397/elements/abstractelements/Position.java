@@ -53,6 +53,13 @@ public class Position {
         this.y = y;
     }
 
+    public void setPosition(Position other)
+    {
+        this.x = other.x;
+        this.y = other.y;
+    }
+
+
     @Override
     public String toString() {
         return x + ", " + y;

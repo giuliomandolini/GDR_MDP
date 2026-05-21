@@ -18,7 +18,6 @@ public class CollisionSystem {
     private static Set<Bullet> playerBulletCollisions;
     private static Map<Enemy, List<Bullet>> enemyBulletCollisions;
 
-    //TODO sistemare collisioni e combat system
     public static void resetCollisions()
     {
         playerEnemyCollisions = new HashSet<>();

@@ -30,7 +30,6 @@ public class InputManager {
     ///Right positive, left negative
     public static int getX()
     {
-        System.out.println(pressedKeys);
         int result = 0;
         if(pressedKeys.contains(KeyCode.D)) result++;
         if(pressedKeys.contains(KeyCode.A)) result--;

@@ -1,8 +1,11 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
+import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
+import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -14,7 +17,6 @@ public class EnemySpawnSystem {
     private static long lastSpawn;
     private static long spawnCooldown;
     private static int enemiesToSpawn;
-    private static Pane pane;
     //In future developments the enemies will be coming in groups and not just random as it is now,
     //that is why i decided to use a map instead of a set inside GameData
     private static List<Enemy> possibleEnemies;
@@ -24,10 +26,8 @@ public class EnemySpawnSystem {
     public static void start(Pane gamePane)
     {
         possibleEnemies = GameData.getEnemiesMap().values().stream().toList();
-        spawnCooldown = 2000;
-        enemiesToSpawn = 5;
-        pane = gamePane;
-        //lastSpawn = System.currentTimeMillis();
+        spawnCooldown = 300;
+        enemiesToSpawn = 2;
         idCounter = 0;
     }
 
@@ -35,6 +35,11 @@ public class EnemySpawnSystem {
 
     public static List<Enemy> spawnEnemies()
     {
+        if(GameData.getEnemies().size() > 50)
+        {
+            spawnCooldown = 1000;
+            enemiesToSpawn = 3;
+        }
         if(lastSpawn + spawnCooldown < System.currentTimeMillis())
         {
             List<Enemy> toAdd = new ArrayList<>();
@@ -56,10 +61,20 @@ public class EnemySpawnSystem {
         }
         return null;
     }
+
+    public static void relocateEnemies()
+    {
+        for(Enemy e : GameData.getEnemies())
+        {
+            if(e.getPosition().distanceFrom(GameData.getPlayer().getPosition()) > GameController.SCREENWIDTH * 0.7f)
+                e.setPosition(getRandomPosition());
+        }
+    }
+
     private static Position getRandomPosition() {
         double rand = Math.random();
-        float maxX = (float) pane.getMinWidth();
-        float maxY = (float) pane.getMinHeight();
+        float maxX = (float) GameController.SCREENWIDTH;
+        float maxY = (float) GameController.SCREENHEIGHT;
 
         float x;
         float y;
@@ -82,6 +97,6 @@ public class EnemySpawnSystem {
             y = (float) Math.random() * maxY;
         }
 
-        return new Position(x, y);
+        return ScreenToWorldPoint.screenToWorld(new Position(x, y));
     }
 }

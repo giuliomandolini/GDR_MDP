@@ -4,7 +4,7 @@
     "cooldown": 2000,
     "range": 100.0,
     "bullet": {
-      "speed": 10.0,
+      "speed": 5.5,
       "damage": 6.0,
       "name": "Arrow"
     },
@@ -35,7 +35,7 @@
     "cooldown": 4000,
     "range": 100.0,
     "bullet": {
-      "speed": 7.0,
+      "speed": 4.5,
       "damage": 15.0,
       "name": "Fire Bolt"
     },

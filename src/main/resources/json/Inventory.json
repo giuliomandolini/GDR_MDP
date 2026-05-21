@@ -4,11 +4,11 @@
     "level": 1
   },
   "DEXTERITY": {
-    "name": "Bow",
+    "name": "Dagger",
     "level": 1
   },
   "INTELLIGENCE": {
-    "name": "Fire Bolt",
+    "name": "Fireball",
     "level": 1
   }
 }

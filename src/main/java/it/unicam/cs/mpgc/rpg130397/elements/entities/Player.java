@@ -5,12 +5,14 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.GameManager;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.InputManager;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
 
 public class Player extends Entity{
@@ -31,10 +33,10 @@ public class Player extends Entity{
 
     public void update()
     {
+        //Attack
         for(Weapon w : inventory.values()) w.attack();
-
+        //Move
         getPosition().move(InputManager.getX() * getStats().get(EntityStats.StatType.SPEED), InputManager.getY() * getStats().get(EntityStats.StatType.SPEED));
-
     }
 
     public void assignWeapon(Weapon weapon)
@@ -44,9 +46,12 @@ public class Player extends Entity{
         inventory.put(weapon.getStats().getWeaponType(), weapon);
     }
 
-    protected void die()
-    {
-        //TODO
+    protected void die() {
+        try {
+            GameManager.lose();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setInventory(Map<Characteristics.CharacteristicType, Weapon> inventory) {
