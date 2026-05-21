@@ -55,7 +55,6 @@ public class Bullet extends GameObject {
     }
 
     private void checkForLifespanAndRange() {
-        System.out.println(spawnPosition.distanceFrom(getPosition()) + ", " + range);
         if(System.currentTimeMillis() > spawnTime + LIFESPAN
         || spawnPosition.distanceFrom(getPosition()) > range) GameData.removeBullet(this);
     }

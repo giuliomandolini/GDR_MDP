@@ -40,7 +40,7 @@ public class EnemySpawnSystem {
             List<Enemy> toAdd = new ArrayList<>();
             for (int i = 0; i < enemiesToSpawn; i++) {
                 Position spawnPoint = getRandomPosition();
-                Enemy base = /*GameData.getEnemiesMap().get("Skeleton Archer");*/possibleEnemies.get(new Random().nextInt(possibleEnemies.size()));
+                Enemy base = /*GameData.getEnemiesMap().get("Skeleton Warrior");*/possibleEnemies.get(new Random().nextInt(possibleEnemies.size()));
 
                 //creates a new copy of the object, because otherwise the enemy cannot be added because javafx does not permit duplicates into the scene
                 Enemy enemy = new Enemy(base.getName(), base.getStats().get(EntityStats.StatType.MAX_HEALTH), base.getStats().get(EntityStats.StatType.SPEED),

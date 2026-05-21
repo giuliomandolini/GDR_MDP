@@ -19,7 +19,7 @@
   },
   "Dagger": {
     "baseDamage": 10.0,
-    "cooldown": 2000,
+    "cooldown": 300,
     "range": 100.0,
     "area": 0.0,
     "bulletStats": {
@@ -30,7 +30,7 @@
   },
   "Bow": {
     "baseDamage": 30.0,
-    "cooldown": 300,
+    "cooldown": 800,
     "range": 200.0,
     "area": 0.0,
     "bulletStats": {
@@ -42,7 +42,7 @@
   "Fire Bolt": {
     "baseDamage": 5.0,
     "cooldown": 500,
-    "range": 80.0,
+    "range": 150,
     "area": 0.0,
     "bulletStats": {
       "name": "Fire Bolt",

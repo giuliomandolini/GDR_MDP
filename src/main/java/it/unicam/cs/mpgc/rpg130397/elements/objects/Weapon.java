@@ -5,6 +5,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.CombatSystem;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.utils.NearestEnemyUpdater;
 
@@ -17,38 +18,33 @@ public class Weapon {
     private transient long lastAttack;
     private transient float damage;
 
+    public void attack()
+    {
+        Characteristics.CharacteristicType weaponType = stats.getWeaponType();
+        //strength weapons don't need an update: they attack when an enemy collides (see CombatSystem)
+        if(!canAttack() || weaponType == Characteristics.CharacteristicType.STRENGTH) return;
+
+        switch (weaponType)
+        {
+            case DEXTERITY -> rangedAttack();
+            case INTELLIGENCE -> magicAttack();
+        }
+        lastAttack = System.currentTimeMillis();
+    }
 
     public boolean canAttack()
     {
         return lastAttack + stats.getCooldown() < System.currentTimeMillis();
     }
 
-    public void attack()
-    {
-        if(!canAttack())
-        {
-            return;
-        }
-
-        switch (stats.getWeaponType())
-        {
-            case STRENGTH -> meleeAttack();
-            case DEXTERITY -> rangedAttack();
-            case INTELLIGENCE -> magicAttack();
-        }
-    }
-
     //Intelligence weapons attack automatically and target the closest enemy
     private void magicAttack() {
-
         Enemy closestEnemy = NearestEnemyUpdater.updateAndGetClosestEnemy();
         if(closestEnemy == null) return;
         Position target = closestEnemy.getPosition();
         if(target == null || GameData.getPlayer().getPosition().distanceFrom(target) > stats.getRange()) return;
 
         createBullet(target);
-
-        lastAttack = System.currentTimeMillis();
     }
 
     //Dexterity weapons attack towards mouse position
@@ -60,15 +56,16 @@ public class Weapon {
             System.out.println("NESSUNA POSIZIONE");
         }
         createBullet(target);
-        lastAttack = System.currentTimeMillis();
     }
 
-    //Strength weapons attack when the enemy is close enough and no shot is created
-    private void meleeAttack() {
-        //utils.updateClosestEnemy();
-        //TODO controlla la distanza melee con le entità a distanza minore del range di attacco dell'arma melee
-        lastAttack = System.currentTimeMillis();
+    public boolean meleeAttack()
+    {
+        boolean res = canAttack();
+        if(res)
+            lastAttack = System.currentTimeMillis();
+        return res;
     }
+
 
     private Bullet createBullet(Position target)
     {
@@ -100,5 +97,9 @@ public class Weapon {
 
     public String getName() {
         return name;
+    }
+
+    public float getDamage() {
+        return damage;
     }
 }

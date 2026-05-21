@@ -58,7 +58,7 @@ public class GameController {
 
         playerModel.getPosition().move(400 , 400);
 
-        add(player);
+        addGameObject(player);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -100,7 +100,7 @@ public class GameController {
     {
         for(Enemy e : GameData.getEnemiesToSpawn())
         {
-            addEnemy(new EnemyView(e));
+            addGameObject(new EnemyView(e));
         }
         for(Enemy e : GameData.getEnemiesToDespawn())
         {
@@ -111,7 +111,7 @@ public class GameController {
     {
         for(Bullet b : GameData.getBulletsToSpawn())
         {
-            addBullet(new BulletView(b));
+            addGameObject(new BulletView(b));
         }
         List<Bullet> toDespawn = GameData.getBulletsToDespawn();
         for(Bullet b : toDespawn)
@@ -132,25 +132,16 @@ public class GameController {
     private void setupInput()
     {
         mousePosition = new Position();
-        gamePane.setOnMouseMoved(event -> {
-            mousePosition.setPosition((float) event.getX(), (float) event.getY());
-        });
+        gamePane.setOnMouseMoved(event -> mousePosition.setPosition((float) event.getX(), (float) event.getY()));
     }
 
-    private void add(Node object)
+    private void addGameObject(GameObjectView object)
     {
         gamePane.getChildren().add(object);
+        if(object instanceof EnemyView) enemies.add((EnemyView) object);
+        if(object instanceof BulletView) bullets.add((BulletView) object);
     }
-    private void addEnemy(EnemyView object)
-    {
-        gamePane.getChildren().add(object);
-        enemies.add(object);
-    }
-    private void addBullet(BulletView object)
-    {
-        gamePane.getChildren().add(object);
-        bullets.add(object);
-    }
+
     public void remove(GameObject object)
     {
         Node node = getNode(object);

@@ -1,11 +1,13 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.util.*;
 
@@ -13,6 +15,12 @@ import java.util.*;
 public class CombatSystem {
 
     public static void update()
+    {
+        updateBullets();
+        meleeAttacks();
+    }
+
+    private static void updateBullets()
     {
         //Enemy bullets
         for(Bullet b : CollisionSystem.getPlayerBulletCollisions())
@@ -26,11 +34,8 @@ public class CombatSystem {
         {
             for(Bullet b : coll.get(e))
             {
-                System.out.println(b.getName() + ", " + b.getArea() + ", " + b.getDamage());
-                System.out.println(b.getStats().getName());
                 if(b.getArea() > 0)
                 {
-                    System.out.println("AREA + " + b.getArea());
                     List<Enemy> toDamage = new LinkedList<>(GameData.getEnemies());
                     for(Enemy enemyToDamage : toDamage)
                     {
@@ -40,15 +45,29 @@ public class CombatSystem {
                 }
                 else
                 {
-                    System.out.println("NO AREA");
                     damage(e, b.getDamage());
                 }
-
-                System.out.println("OK");
-
                 GameData.removeBullet(b);
             }
         }
+    }
+
+    private static void meleeAttacks()
+    {
+        //Player melee
+        Set<Enemy> collisions = CollisionSystem.getPlayerEnemyCollisions();
+
+        if(collisions.isEmpty()) return;
+
+        Enemy first = (Enemy) collisions.toArray()[0];
+
+        Weapon playerStrenghtWeapon = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.STRENGTH);
+
+        if(playerStrenghtWeapon != null && playerStrenghtWeapon.meleeAttack())
+        {
+            damage(first, playerStrenghtWeapon.getDamage());
+        }
+
         //Enemy melee
         for(Enemy e : CollisionSystem.getPlayerEnemyCollisions())
         {
@@ -59,6 +78,7 @@ public class CombatSystem {
             }
         }
     }
+
     public static void damage(Entity target, float amount)
     {
         target.changeHealth(-amount);
