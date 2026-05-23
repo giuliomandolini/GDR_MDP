@@ -5,9 +5,8 @@ import javafx.scene.input.KeyCode;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * This class is responsable for managing the input coming from the player, such as UI inputs and keyboard inputs.
- */
+
+///This class is responsable for managing the input coming from the player, such as keyboard inputs.
 public class InputManager {
     public static Set<KeyCode> pressedKeys;
     public static int x;

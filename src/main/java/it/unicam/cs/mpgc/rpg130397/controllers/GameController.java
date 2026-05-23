@@ -7,8 +7,8 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
+import it.unicam.cs.mpgc.rpg130397.utils.SceneManager;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
 import it.unicam.cs.mpgc.rpg130397.views.BulletView;
 import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
@@ -27,9 +27,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+/// Controller of the game scene.
+/// It contains the timer and all the root calls of the updates and syncs the views with the models.
 public class GameController {
-
-
     @FXML
     private Rectangle healthBar;
     @FXML
@@ -51,37 +51,67 @@ public class GameController {
     public static boolean lost;
 
     private static Position mousePosition;
+    //cannot be final because javafx and fxml don't call the constructor so they have to be assigned somwhere else
     public static double SCREENWIDTH;
     public static double SCREENHEIGHT;
 
     @FXML
-    public void initialize() throws FileNotFoundException, InterruptedException {
-        gamePane.getChildren().remove(playAgain);
-        lost = false;
-        SCREENWIDTH = gamePane.getMinWidth();
-        SCREENHEIGHT = gamePane.getMinHeight();
-        GameData.start(gamePane); //1
-        InputManager.start();
-        Player playerModel = new Player("Player", 250, 2.2f, new Characteristics(10, 10, 10), new Position(0, 0)); //2
+    public void initialize() throws FileNotFoundException{
+        setupGameLogic();
+        createPlayer();
+        setupUi();
+        setupInput();
 
-        player = new PlayerView(playerModel);
-        player.setScaleX(0.8);
-        player.setScaleY(0.8);
-
-        //it is better to use linked lists instead of array lists because a there are a lot of additions and remotions
-        bullets = new LinkedList<>();
-        enemies = new LinkedList<>();
-
-        addGameObject(player);
         timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 update();
             }
         };
-        setupUi();
-        setupInput();
         timer.start();
+    }
+
+    private void setupGameLogic() throws FileNotFoundException {
+        lost = false;
+        SCREENWIDTH = gamePane.getMinWidth();
+        SCREENHEIGHT = gamePane.getMinHeight();
+        GameData.start();
+        InputManager.start();
+
+        //it is better to use linked lists instead of array lists because a there are a lot of additions and remotions
+        bullets = new LinkedList<>();
+        enemies = new LinkedList<>();
+    }
+
+    private void createPlayer() throws FileNotFoundException {
+        Player playerModel = new Player("Player", 250, 2.2f, new Characteristics(10, 10, 10), new Position(0, 0)); //2
+
+        player = new PlayerView(playerModel);
+        player.setScaleX(0.8);
+        player.setScaleY(0.8);
+        addGameObject(player);
+    }
+
+    private void setupUi()
+    {
+        //the button has to be removed or else it would count as a child of gamePane and getNode would iterate also through it
+        gamePane.getChildren().remove(playAgain);
+
+        healthBar.widthProperty().bind(player.getObject().getHealthProperty().divide(player.getObject().getStats().get(EntityStats.StatType.MAX_HEALTH) / 155));
+
+        strengthLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.STRENGTH).asString());
+        dexterityLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.DEXTERITY).asString());
+        intelligenceLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.INTELLIGENCE).asString());
+
+        gamePane.setFocusTraversable(true);
+    }
+
+    private void setupInput()
+    {
+        mousePosition = new Position();
+        gamePane.setOnMouseMoved(event -> mousePosition.setPosition(ScreenToWorldPoint.screenToWorld(new Position((float) event.getX(), (float) event.getY()))));
+        gamePane.setOnKeyPressed(keyEvent -> InputManager.keyPressed(keyEvent.getCode()));
+        gamePane.setOnKeyReleased(keyEvent -> InputManager.keyReleased(keyEvent.getCode()));
     }
 
     ///Synchronizes models with views and controls game
@@ -91,7 +121,7 @@ public class GameController {
             manageLoss();
             return;
         }
-        //ui update
+        //views update
         createDestroyEnemyViews();
         createDestroyBulletViews();
         updatePositions();
@@ -138,30 +168,11 @@ public class GameController {
         }
     }
 
-    private void setupUi()
-    {
-        healthBar.widthProperty().bind(player.getObject().getHealthProperty().divide(player.getObject().getStats().get(EntityStats.StatType.MAX_HEALTH) / 155));
-
-        strengthLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.STRENGTH).asString());
-        dexterityLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.DEXTERITY).asString());
-        intelligenceLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.INTELLIGENCE).asString());
-
-        gamePane.requestFocus();
-        gamePane.setFocusTraversable(true);
-    }
-
-    private void setupInput()
-    {
-        mousePosition = new Position();
-        gamePane.setOnMouseMoved(event -> mousePosition.setPosition(ScreenToWorldPoint.screenToWorld(new Position((float) event.getX(), (float) event.getY()))));
-        gamePane.setOnKeyPressed(keyEvent -> InputManager.keyPressed(keyEvent.getCode()));
-        gamePane.setOnKeyReleased(keyEvent -> InputManager.keyReleased(keyEvent.getCode()));
-    }
-
     public static void lose()
     {
         lost = true;
     }
+
     private void manageLoss()
     {
         timer.stop();
@@ -199,6 +210,8 @@ public class GameController {
         }
     }
 
+    /// Returns a node (the view) of a certain GameObject.
+    /// Inside gamePane.getChildren() there are only instances of GameObjectView.
     private Node getNode(GameObject object)
     {
         for(Node g : gamePane.getChildren())

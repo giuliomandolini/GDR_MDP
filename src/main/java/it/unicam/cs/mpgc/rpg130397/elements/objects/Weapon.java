@@ -5,11 +5,12 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.CombatSystem;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.utils.NearestEnemyUpdater;
 
+/// Weapon is the class used by the weapons the player can attack with
 public class Weapon {
+    //Assigned by json
     private String name;
     private int level;
 
@@ -26,13 +27,13 @@ public class Weapon {
 
         switch (weaponType)
         {
-            case DEXTERITY -> rangedAttack();
+            case DEXTERITY -> dexAttack();
             case INTELLIGENCE -> magicAttack();
         }
         lastAttack = System.currentTimeMillis();
     }
 
-    public boolean canAttack()
+    private boolean canAttack()
     {
         return lastAttack + stats.getCooldown() < System.currentTimeMillis();
     }
@@ -48,13 +49,12 @@ public class Weapon {
     }
 
     //Dexterity weapons attack towards mouse position
-    private void rangedAttack() {
+    private void dexAttack() {
         Position target = GameController.getMousePosition();
+
         if(target == null)
-        {
             target = new Position(0, 0);
-            System.out.println("NESSUNA POSIZIONE");
-        }
+
         createBullet(target);
     }
 
@@ -66,24 +66,26 @@ public class Weapon {
         return res;
     }
 
-
-    private Bullet createBullet(Position target)
+    private void createBullet(Position target)
     {
         Bullet b = new Bullet(stats.getBulletStats(), damage, GameData.getPlayer(), target, stats.getRange(), stats.getArea());
         GameData.addBullet(b);
-        return b;
     }
 
+    //used to update the damage dealt by the weapon in case of a power up of its level or player characteristics
     public void updateDamage(Characteristics characteristics)
     {
-        int level = characteristics.getCharacteristicValue(stats.getWeaponType());
+        int charLevel = characteristics.getCharacteristicValue(stats.getWeaponType());
 
         //for each 5 points after level 10 the damage increases by 1 baseDamage
         //if the level is less than 10 the damage decreases linearly
-        if(level > 10) damage = stats.getBaseDamage() * (level / 5.0f - 1);
-        else damage = stats.getBaseDamage() * (level / 10f);
+        if(charLevel > 10) damage = stats.getBaseDamage() * (charLevel / 5.0f - 1);
+        else damage = stats.getBaseDamage() * (charLevel / 10f);
         //and the damage increases by 20% for each level
-        damage *= (level / 5.0f) + 1;
+        damage *= (charLevel / 5.0f) + 1;
+
+        //the damage also increases by 20% for each level above 1
+        damage += damage * 0.2f * (level - 1);
     }
 
     public WeaponStats getStats() {

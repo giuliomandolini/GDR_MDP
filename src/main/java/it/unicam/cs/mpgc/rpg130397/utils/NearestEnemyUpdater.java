@@ -9,19 +9,20 @@ import java.util.List;
 
 public class NearestEnemyUpdater {
     private static Enemy closestEnemy;
-    private static float minDistance;
     private static long lastUpdate;
-    private static final float UPDATE_COOLDOWN = 0.05f;
+    private static final int UPDATE_COOLDOWN = 10;
 
     public static Enemy updateAndGetClosestEnemy()
     {
         List<Enemy> enemies = GameData.getEnemies();
-        if(lastUpdate + UPDATE_COOLDOWN > System.currentTimeMillis() || enemies.isEmpty()) return null;
+        if(enemies.isEmpty()) return null;
+        //avoids calculating the nearest enemy too frequently as it probably remains the same between attacks with an update rate of 100 times per second
+        if(lastUpdate + UPDATE_COOLDOWN > System.currentTimeMillis()) return closestEnemy;
 
         closestEnemy = enemies.getFirst();
         Position playerPosition = GameData.getPlayer().getPosition();
 
-        minDistance = closestEnemy.getPosition().distanceFrom(playerPosition);
+        float minDistance = closestEnemy.getPosition().distanceFrom(playerPosition);
 
         for(int i = 1; i < enemies.size(); i++)
         {

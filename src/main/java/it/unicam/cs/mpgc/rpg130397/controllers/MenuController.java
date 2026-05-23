@@ -1,10 +1,11 @@
 package it.unicam.cs.mpgc.rpg130397.controllers;
 
-import it.unicam.cs.mpgc.rpg130397.gamelogic.SceneManager;
+import it.unicam.cs.mpgc.rpg130397.utils.SceneManager;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
 
+/// Controller for the menu scene.
 public class MenuController {
     @FXML
     private void playButtonPressed() throws IOException {

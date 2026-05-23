@@ -2,7 +2,7 @@
   "Skeleton Archer": {
     "damage": 6.0,
     "cooldown": 2000,
-    "range": 100.0,
+    "range": 70.0,
     "bullet": {
       "speed": 5.5,
       "damage": 6.0,

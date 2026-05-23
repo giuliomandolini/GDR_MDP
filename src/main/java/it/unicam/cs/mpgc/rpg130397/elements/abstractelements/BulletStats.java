@@ -1,8 +1,10 @@
 package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
 
+/// Class that contains bullet stats that are not given by its spawner. They are only name and speed.
+/// (es. damage, range, ecc... are given by the spawner of the bullet)
 public class BulletStats {
-    private String name;
-    private float speed;
+    private final String name;
+    private final float speed;
 
     public BulletStats(String name, float speed) {
         this.name = name;

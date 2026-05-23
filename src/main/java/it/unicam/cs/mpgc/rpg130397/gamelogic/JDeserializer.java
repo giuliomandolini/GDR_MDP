@@ -12,6 +12,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.Map;
 
+/// Serializes and Deserializes data from jsons
 public class JDeserializer {
     /**
      *  Static method that deserializes the data contained in the weapons.json file into the weapons map

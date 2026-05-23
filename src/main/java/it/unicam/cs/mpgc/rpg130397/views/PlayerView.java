@@ -9,12 +9,13 @@ public class PlayerView extends GameObjectView {
     public PlayerView(Player p) {
         player = p;
         super(p);
+        setLayoutX(GameController.SCREENWIDTH / 2);
+        setLayoutY(GameController.SCREENHEIGHT / 2);
     }
 
     public void update()
     {
-        setLayoutX(GameController.SCREENWIDTH / 2);
-        setLayoutY(GameController.SCREENHEIGHT / 2);
+        //TODO animations, effects, ecc
     }
 
     public Player getObject() {

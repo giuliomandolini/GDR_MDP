@@ -5,44 +5,43 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
-import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
-import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/// Manages the spawn of the enemies and their relocation: in case the player moves too far away from an enemy, it respawns it nearer
 public class EnemySpawnSystem {
 
     private static long lastSpawn;
     private static long spawnCooldown;
     private static int enemiesToSpawn;
     //In future developments the enemies will be coming in groups and not just random as it is now,
-    //that is why i decided to use a map instead of a set inside GameData
+    //that is why I decided to use a map instead of a set inside GameData
     private static List<Enemy> possibleEnemies;
     private static int idCounter;
 
 
-    public static void start(Pane gamePane)
+    public static void start()
     {
         possibleEnemies = GameData.getEnemiesMap().values().stream().toList();
-        spawnCooldown = 300;
+        spawnCooldown = 150;
         enemiesToSpawn = 2;
         idCounter = 0;
     }
 
 
 
-    public static List<Enemy> spawnEnemies()
+    public static void spawnEnemies()
     {
-        if(GameData.getEnemies().size() > 50)
+        if(GameData.getEnemies().size() > 60)
         {
-            spawnCooldown = 1000;
-            enemiesToSpawn = 3;
+            spawnCooldown = 500;
+        }
+        else {
+            spawnCooldown = 150;
         }
         if(lastSpawn + spawnCooldown < System.currentTimeMillis())
         {
-            List<Enemy> toAdd = new ArrayList<>();
             for (int i = 0; i < enemiesToSpawn; i++) {
                 Position spawnPoint = getRandomPosition();
                 Enemy base = /*GameData.getEnemiesMap().get("Skeleton Warrior");*/possibleEnemies.get(new Random().nextInt(possibleEnemies.size()));
@@ -51,15 +50,10 @@ public class EnemySpawnSystem {
                 Enemy enemy = new Enemy(base.getName(), base.getStats().get(EntityStats.StatType.MAX_HEALTH), base.getStats().get(EntityStats.StatType.SPEED),
                         base.getDamage(), base.getRange(), base.getCooldown(), base.getBullet(), spawnPoint, idCounter++);
 
-                toAdd.add(enemy);
+                GameData.addEnemy(enemy);
             }
-
             lastSpawn = System.currentTimeMillis();
-            GameData.addEnemies(toAdd);
-
-            return toAdd;
         }
-        return null;
     }
 
     public static void relocateEnemies()

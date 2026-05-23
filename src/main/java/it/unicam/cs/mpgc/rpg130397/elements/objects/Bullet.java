@@ -6,21 +6,22 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
+/// Class that implements every projectile in the game
 public class Bullet extends GameObject {
 
-    private BulletStats stats;
+    private final BulletStats stats;
     //the damage is inherited from the entity that spawns it
-    private transient float damage;
-    private transient float area;
-    private transient float range;
-    private transient float dirX;
-    private transient float dirY;
-    private transient Entity spawner;
+    private final transient float damage;
+    private final transient float area;
+    private final transient float range;
+    private final transient float dirX;
+    private final transient float dirY;
+    private final transient Entity spawner;
     //needed for range to be effective
-    private transient Position spawnPosition;
+    private final transient Position spawnPosition;
 
     static final float LIFESPAN = 7000f;
-    private transient long spawnTime;
+    private final transient long spawnTime;
 
     //Used for definition inside the JSON, the damage is set runtime on the Enemy constructor
     public Bullet(BulletStats stats, float damage, Entity spawner, Position target, float range, float area)
@@ -70,10 +71,6 @@ public class Bullet extends GameObject {
 
     public float getDamage() {
         return damage;
-    }
-
-    public BulletStats getStats() {
-        return stats;
     }
 
     public float getArea() {

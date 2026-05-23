@@ -11,16 +11,18 @@ import java.util.Map;
  *  -Strength <br>
  *  -Dexterity<br>
  *  -Intelligence <br>
- *  They have to be non-negative
+ *  They have to be non-negative.
+ *  Each characteristic modifies the damage of the corresponding weapon.
  */
 public class Characteristics {
 
     //The characteristics are only used by the player, and they must have a link
     //to the javafx pane to update the stats on the ui
-    private final Map<CharacteristicType, IntegerProperty> characteristics = new HashMap<>();
+    private final Map<CharacteristicType, IntegerProperty> characteristics;
 
     public Characteristics(int strength, int dexterity, int intelligence)
     {
+        characteristics = new HashMap<>();
         if (strength < 0 || dexterity < 0 || intelligence < 0) {
             throw new IllegalArgumentException("Caratteristiche minori di 0");
         }

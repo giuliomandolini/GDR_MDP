@@ -17,9 +17,9 @@ import java.util.Map;
 
 public class Player extends Entity{
 
-    private Characteristics characteristics;
-    private Map<Characteristics.CharacteristicType, Weapon> inventory;
-    private FloatProperty healthProperty;
+    private final Characteristics characteristics;
+    private final Map<Characteristics.CharacteristicType, Weapon> inventory;
+    private final FloatProperty healthProperty;
 
     public Player(String name, float health, float speed, Characteristics characteristics, Position position) throws FileNotFoundException {
         super(name, health, speed, position);
@@ -54,10 +54,6 @@ public class Player extends Entity{
         }
     }
 
-    public void setInventory(Map<Characteristics.CharacteristicType, Weapon> inventory) {
-        this.inventory = inventory;
-    }
-
     public Map<Characteristics.CharacteristicType, Weapon> getInventory() {
         return inventory;
     }
@@ -70,6 +66,8 @@ public class Player extends Entity{
         return characteristics;
     }
 
+
+    //TODO quando si sale di livello
     public void increaseCharacteristic(Characteristics.CharacteristicType type, int amount)
     {
         characteristics.setCharacteristicValue(type, characteristics.getCharacteristicValue(type) + amount);

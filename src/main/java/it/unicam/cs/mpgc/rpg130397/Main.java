@@ -5,13 +5,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.SceneManager;
+import it.unicam.cs.mpgc.rpg130397.utils.SceneManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

@@ -14,16 +14,16 @@ import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
  */
 public class Enemy extends Entity{
 
-    private float damage;
-    private long cooldown;
-    private float range;
-    private BulletStats bullet;
+    private final float damage;
+    private final long cooldown;
+    private final float range;
+    private final BulletStats bullet;
 
     //the field must not be saved in the json so it has to be declared transient
     private transient long lastAttack;
     //id is needed to override equals and hashcode more easily, or else it would be impossible to distinguish an enemy from another
-    private transient int id;
-    private transient Player player;
+    private final transient int id;
+    private final transient Player player;
 
     public Enemy(String name, float health, float speed, float damage, float range, long cooldown, BulletStats bullet, Position position, int id) {
         super(name, health, speed, position);
@@ -37,19 +37,16 @@ public class Enemy extends Entity{
         player = GameData.getPlayer();
     }
 
-    ///Has to be called at every tick. Makes the enemy decide wether to move or to attack.
+    ///Has to be called at every tick. Manages its movement. Combat is managed in {@link it.unicam.cs.mpgc.rpg130397.gamelogic.CombatSystem}
     public void update()
     {
         //if the enemy is ranged, it attacks if the player is in range. Else, it moves.
         if(range > 0)
         {
-            if(getPosition().distanceFrom(player.getPosition()) <= range)
-            {
-                if(canAttack()) spawnBullet();
-            }
-            else move();
+            if(getPosition().distanceFrom(player.getPosition()) > range)
+                move();
         }
-        //if the enemy is melee, it moves, then if the player is near enough, it attacks. if it is reloading its attack it remains still.
+        //if the enemy is melee, it moves, then if the player is near enough, it attacks.
         else
         {
             if(!CollisionSystem.getPlayerEnemyCollisions().contains(this))
@@ -57,17 +54,16 @@ public class Enemy extends Entity{
         }
     }
 
-    private void spawnBullet(){
-        //enemy spawn bullets without area damage firing towards the player
-        Bullet newBullet = new Bullet(bullet, damage, this, GameData.getPlayer().getPosition(), range, 0);
-        GameData.addBullet(newBullet);
-        lastAttack = System.currentTimeMillis();
-    }
 
-    //checks if the cooldown permits the attack
+    //checks if the cooldown and eventually range permits the attack
     public boolean canAttack()
     {
-        return lastAttack + cooldown < System.currentTimeMillis();
+        if(lastAttack + cooldown > System.currentTimeMillis()) return false;
+        if(range > 0)
+        {
+            return !(getPosition().distanceFrom(GameData.getPlayer().getPosition()) > range);
+        }
+        return true;
     }
     public void setLastAttack() {
         lastAttack = System.currentTimeMillis();
@@ -77,8 +73,7 @@ public class Enemy extends Entity{
     {
         GameData.removeEnemy(this);
 
-        //if(Math.random() > 0.95f) return;
-        //TODO instanzia il baule
+        //TODO chance to create chest
     }
 
     private void move()

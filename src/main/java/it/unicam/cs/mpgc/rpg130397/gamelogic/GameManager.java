@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-/// Class that contains the instructions for general game functioning and utility methods
+/// Class that contains the instructions for general game functioning.
+/// the update gets called directly from GameController and it spreads it to all the remaining logic that
+/// needs to be updated.
 public class GameManager {
 
     public static void update(List<BulletView> bullets, List<EnemyView> enemies, PlayerView player)

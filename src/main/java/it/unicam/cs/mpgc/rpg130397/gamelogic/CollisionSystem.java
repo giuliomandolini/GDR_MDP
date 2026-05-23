@@ -1,9 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.views.BulletView;
 import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
@@ -12,6 +9,7 @@ import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
 
 import java.util.*;
 
+/// Manages and stores collisions in the scene. in particular: Player and enemies, Bullets and Player, and Bullets and Enemies.
 public class CollisionSystem {
 
     private static Set<Enemy> playerEnemyCollisions;

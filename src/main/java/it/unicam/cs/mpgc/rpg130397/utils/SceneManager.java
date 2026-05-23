@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130397.gamelogic;
+package it.unicam.cs.mpgc.rpg130397.utils;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,9 +19,5 @@ public class SceneManager {
 
     public static void setStage(Stage stage) {
         SceneManager.stage = stage;
-    }
-
-    public static Stage getStage() {
-        return stage;
     }
 }

@@ -9,7 +9,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
  * Every entity must have a speed and health, but not all entities can attack (possible friendly npc)
  */
 public abstract class Entity extends GameObject{
-    private EntityStats stats;
+    private final EntityStats stats;
 
     public Entity(String name, float health, float speed, Position position) {
         super(name, position);

@@ -4,14 +4,12 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
-import javafx.scene.layout.Pane;
 
 import java.io.FileNotFoundException;
 import java.util.*;
 
-/** Class that contains the game data, such as the hash tables of the weapons and the enemies currently
- * in the game
- */
+/// Class that contains the game data, such as the player reference, hash tables of the weapons and lists of enemies and bullets currently in game;
+/// as well as bullets and enemies to delete and add in the scene
 public class GameData {
     private static Map<String, WeaponStats> weaponStatMap = new HashMap<>();
     private static Map<String, Enemy> enemiesMap = new HashMap<>();
@@ -27,7 +25,7 @@ public class GameData {
     private static List<Bullet> onlyViewBullets;
 
 
-    public static void start(Pane gamePane) throws FileNotFoundException {
+    public static void start() throws FileNotFoundException {
 
         enemies = new LinkedList<>();
         bullets = new LinkedList<>();
@@ -41,16 +39,13 @@ public class GameData {
         onlyViewBullets = new ArrayList<>();
         onlyViewEnemies = new ArrayList<>();
 
-        EnemySpawnSystem.start(gamePane);
+        EnemySpawnSystem.start();
     }
 
-    public static Enemy getEnemy(String enemy) {
-        return enemiesMap.get(enemy);
-    }
     public static List<Enemy> getEnemies() {
         return enemies;
     }
-    public static void addEnemies(List<Enemy> e) { onlyModelEnemies.addAll(e); }
+    public static void addEnemy(Enemy e) { onlyModelEnemies.add(e); }
     public static Map<String, Enemy> getEnemiesMap() {
         return enemiesMap;
     }

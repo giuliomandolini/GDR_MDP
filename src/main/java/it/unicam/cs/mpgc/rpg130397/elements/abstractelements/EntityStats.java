@@ -34,10 +34,5 @@ public class EntityStats {
     public void set(StatType type, float value) {
         stats.replace(type, value);
     }
-
-    public void sum(StatType type, float difference)
-    {
-        stats.replace(type, stats.get(type) + difference);
-    }
 }
 

@@ -1,23 +1,21 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
-import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.util.*;
 
-/// Updates enemies and bullets for what concerns combat, and every damaging action must pass trough this class
+/// Updates enemies and bullets for what concerns combat, and every damaging action must pass trough this class.
 public class CombatSystem {
 
     public static void update()
     {
         updateBullets();
         meleeAttacks();
+        enemiesRangedAttack();
     }
 
     private static void updateBullets()
@@ -78,6 +76,21 @@ public class CombatSystem {
             }
         }
     }
+
+    private static void enemiesRangedAttack()
+    {
+        for(Enemy e : GameData.getEnemies())
+        {
+            if(e.getRange() > 0 && e.canAttack())
+            {
+                //enemy spawn bullets without area damage firing towards the player
+                Bullet newBullet = new Bullet(e.getBullet(), e.getDamage(), e, GameData.getPlayer().getPosition(), e.getRange(), 0);
+                GameData.addBullet(newBullet);
+                e.setLastAttack();
+            }
+        }
+    }
+
 
     public static void damage(Entity target, float amount)
     {
