@@ -10,10 +10,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
 import it.unicam.cs.mpgc.rpg130397.utils.SceneManager;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
-import it.unicam.cs.mpgc.rpg130397.views.BulletView;
-import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
 import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
-import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -26,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /// Controller of the game scene.
 /// It contains the timer and all the root calls of the updates and syncs the views with the models.
@@ -43,9 +41,7 @@ public class GameController {
     @FXML
     private Button playAgain;
 
-    private PlayerView player;
-    private List<BulletView> bullets;
-    private List<EnemyView> enemies;
+    private static Map<Class<? extends GameObject>, List<GameObjectView<?>>> views;
 
     private AnimationTimer timer;
     public static boolean lost;
@@ -77,19 +73,15 @@ public class GameController {
         SCREENHEIGHT = gamePane.getMinHeight();
         GameData.start();
         InputManager.start();
-
-        //it is better to use linked lists instead of array lists because a there are a lot of additions and remotions
-        bullets = new LinkedList<>();
-        enemies = new LinkedList<>();
     }
 
     private void createPlayer() throws FileNotFoundException {
         Player playerModel = new Player("Player", 250, 2.2f, new Characteristics(10, 10, 10), new Position(0, 0)); //2
 
-        player = new PlayerView(playerModel);
-        player.setScaleX(0.8);
-        player.setScaleY(0.8);
-        addGameObject(player);
+        GameObjectView<Player> p = new GameObjectView<>(playerModel);
+        p.setScaleX(0.8);
+        p.setScaleY(0.8);
+        addView(p);
     }
 
     private void setupUi()
@@ -97,7 +89,8 @@ public class GameController {
         //the button has to be removed or else it would count as a child of gamePane and getNode would iterate also through it
         gamePane.getChildren().remove(playAgain);
 
-        healthBar.widthProperty().bind(player.getObject().getHealthProperty().divide(player.getObject().getStats().get(EntityStats.StatType.MAX_HEALTH) / 155));
+        Player p = getViews(Player.class).getFirst().getObject();
+        healthBar.widthProperty().bind(p.getHealthProperty().divide(p.getStats().get(EntityStats.StatType.MAX_HEALTH) / 155));
 
         strengthLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.STRENGTH).asString());
         dexterityLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.DEXTERITY).asString());
@@ -131,16 +124,12 @@ public class GameController {
     }
 
     private void updatePositions() {
-        player.update();
-
-        for(EnemyView e : enemies)
+        for(List<GameObjectView<?>> l : views.values())
         {
-            e.update();
-        }
-
-        for(BulletView b : bullets)
-        {
-            b.update();
+            for(GameObjectView<?> v : l)
+            {
+                v.update();
+            }
         }
     }
 
@@ -176,38 +165,13 @@ public class GameController {
     private void manageLoss()
     {
         timer.stop();
-        remove(player.getObject());
+        removeView(getViews(Player.class).getFirst());
         gamePane.getChildren().add(playAgain);
     }
 
     @FXML
     private void playAgain() throws IOException {
         SceneManager.loadScene("game");
-    }
-
-    private void addGameObject(GameObjectView object)
-    {
-        gamePane.getChildren().add(object);
-        if(object instanceof EnemyView) enemies.add((EnemyView) object);
-        if(object instanceof BulletView) bullets.add((BulletView) object);
-    }
-
-    public void remove(GameObject object)
-    {
-        Node node = getNode(object);
-
-        if(node != null)
-        {
-            gamePane.getChildren().remove(node);
-            if(node instanceof EnemyView)
-            {
-                enemies.remove(node);
-            }
-            if(node instanceof BulletView)
-            {
-                bullets.remove(node);
-            }
-        }
     }
 
     /// Returns a node (the view) of a certain GameObject.
@@ -220,6 +184,31 @@ public class GameController {
                 return g;
         }
         return null;
+    }
+
+    //it is better to use linked lists instead of array lists because a there are a lot of additions and remotions
+    private <T extends GameObject> void addView(GameObjectView<T> view)
+    {
+        Class<? extends GameObject> type =  view.getObject().getClass();
+        if(views.get(type) == null) views.put(type, new LinkedList<>());
+        views.get(type).add(view);
+        gamePane.getChildren().add(view);
+    }
+
+    private void removeView(GameObjectView<? extends GameObject> view)
+    {
+        Class<? extends GameObject> type =  view.getObject().getClass();
+        if(views.get(type) == null) return;
+        views.get(type).remove(view);
+        gamePane.getChildren().remove(view);
+    }
+
+    //only way to cast is to cast before List<GameObjectView<?>> in a List<?> and then into List<GameObjectView<T>>
+    //or else it would be necessary to use a cast on each call of getViews because the return type GameObjectView<?> would have
+    //a generic GameObject and not the type T used by the GameObjectView
+    private <T extends GameObject> List<GameObjectView<T>> getViews(Class<T> type)
+    {
+        return (List<GameObjectView<T>>) ((List<?>) views.get(type));
     }
 
     public static Position getMousePosition() {

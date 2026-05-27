@@ -3,9 +3,6 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
-import it.unicam.cs.mpgc.rpg130397.views.BulletView;
-import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
-import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
 
 import java.io.IOException;
 import java.util.LinkedList;

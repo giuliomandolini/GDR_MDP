@@ -3,10 +3,7 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
-import it.unicam.cs.mpgc.rpg130397.views.BulletView;
-import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
 import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
-import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -66,7 +63,9 @@ public class CollisionSystem {
         return playerCollisions;
     }
 
-    public static <T extends GameObject> Set<T> getPlayerCollisions(Class<T> type)
+    //it could have been an alternative to use T extends GameObject, but then it would have been impossible to get
+    //all the elements that extend interactable, that is an interface and cannot extend GameObject
+    public static <T> Set<T> getPlayerCollisions(Class<T> type)
     {
         return playerCollisions.stream()
                 .filter(type::isInstance)

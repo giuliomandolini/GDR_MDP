@@ -9,12 +9,10 @@ import java.util.Set;
 public class InteractablesManager {
     public static void update()
     {
-        List<Interactable> interactableSet = GameData.getInteractables();
-        Set<GameObject> collisions = CollisionSystem.getPlayerCollisions();
-
-        for(Interactable i : interactableSet)
+        Set<Interactable> collisions = CollisionSystem.getPlayerCollisions(Interactable.class);
+        for(Interactable i : collisions)
         {
-            if(collisions.contains())
+            i.interact();
         }
     }
 }
