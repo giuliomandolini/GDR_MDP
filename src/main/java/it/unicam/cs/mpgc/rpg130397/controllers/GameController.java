@@ -120,7 +120,7 @@ public class GameController {
         updatePositions();
 
         //logic update
-        GameManager.update(bullets, enemies, player);
+        GameManager.update(views);
     }
 
     private void updatePositions() {
@@ -135,25 +135,13 @@ public class GameController {
 
     private void createDestroyEnemyViews()
     {
-        for(Enemy e : GameData.getEnemiesToSpawn())
+        for(GameObject g : GameData.getElementsToSpawn())
         {
-            addGameObject(new EnemyView(e));
+            addView(g);
         }
-        for(Enemy e : GameData.getEnemiesToDespawn())
+        for(GameObject g : GameData.getElementsToDespawn())
         {
-            remove(e);
-        }
-    }
-    private void createDestroyBulletViews()
-    {
-        for(Bullet b : GameData.getBulletsToSpawn())
-        {
-            addGameObject(new BulletView(b));
-        }
-        List<Bullet> toDespawn = GameData.getBulletsToDespawn();
-        for(Bullet b : toDespawn)
-        {
-            remove(b);
+            removeView(g);
         }
     }
 
@@ -187,20 +175,24 @@ public class GameController {
     }
 
     //it is better to use linked lists instead of array lists because a there are a lot of additions and remotions
-    private <T extends GameObject> void addView(GameObjectView<T> view)
+    private <T extends GameObject> void addView(T object)
     {
-        Class<? extends GameObject> type =  view.getObject().getClass();
+        Class<? extends GameObject> type =  object.getClass();
         if(views.get(type) == null) views.put(type, new LinkedList<>());
-        views.get(type).add(view);
-        gamePane.getChildren().add(view);
+        GameObjectView<T> newView = new GameObjectView<>(object);
+        views.get(type).add(newView);
+        gamePane.getChildren().add(newView);
     }
 
-    private void removeView(GameObjectView<? extends GameObject> view)
+    private <T extends GameObject> void removeView(T object)
     {
-        Class<? extends GameObject> type =  view.getObject().getClass();
+        Class<? extends GameObject> type =  object.getClass();
         if(views.get(type) == null) return;
-        views.get(type).remove(view);
-        gamePane.getChildren().remove(view);
+
+        //TODO !!!!!!!!!
+        views.get(type).remove(object);
+
+        gamePane.getChildren().remove(getNode(object));
     }
 
     //only way to cast is to cast before List<GameObjectView<?>> in a List<?> and then into List<GameObjectView<T>>
