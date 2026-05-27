@@ -12,6 +12,7 @@
             <Font size="60.0" />
          </font>
       </Label>
+      <Button mnemonicParsing="false" onAction="#howToPlayButtonPressed" scaleX="1.5" scaleY="1.5" scaleZ="2.0" text="How to play" />
       <Button fx:id="playButton" mnemonicParsing="false" onAction="#playButtonPressed" scaleX="2.0" scaleY="2.0" text="Play" />
       <Button fx:id="quitButton" layoutX="392.0" layoutY="397.0" mnemonicParsing="false" onAction="#quitButtonPressed" scaleX="2.0" scaleY="2.0" text="Quit" />
    </children>

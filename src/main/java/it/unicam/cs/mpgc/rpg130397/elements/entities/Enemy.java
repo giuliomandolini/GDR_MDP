@@ -49,7 +49,7 @@ public class Enemy extends Entity{
         //if the enemy is melee, it moves, then if the player is near enough, it attacks.
         else
         {
-            if(!CollisionSystem.getPlayerEnemyCollisions().contains(this))
+            if(!CollisionSystem.getPlayerCollisions().contains(this))
                 move();
         }
     }

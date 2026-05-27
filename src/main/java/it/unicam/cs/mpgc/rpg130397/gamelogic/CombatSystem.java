@@ -3,10 +3,12 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /// Updates enemies and bullets for what concerns combat, and every damaging action must pass trough this class.
 public class CombatSystem {
@@ -21,11 +23,14 @@ public class CombatSystem {
     private static void updateBullets()
     {
         //Enemy bullets
-        for(Bullet b : CollisionSystem.getPlayerBulletCollisions())
+        Set<Bullet> bullets = CollisionSystem.getPlayerCollisions(Bullet.class);
+
+        for(Bullet b : bullets)
         {
-            damage(GameData.getPlayer(), b.getDamage());
+            damage(GameData.getPlayer(), (b.getDamage()));
             GameData.removeBullet(b);
         }
+
         //Player bullets
         Map<Enemy, List<Bullet>> coll = CollisionSystem.getEnemyBulletCollisions();
         for(Enemy e : coll.keySet())
@@ -53,7 +58,7 @@ public class CombatSystem {
     private static void meleeAttacks()
     {
         //Player melee
-        Set<Enemy> collisions = CollisionSystem.getPlayerEnemyCollisions();
+        Set<Enemy> collisions = CollisionSystem.getPlayerCollisions(Enemy.class);
 
         if(collisions.isEmpty()) return;
 
@@ -67,7 +72,7 @@ public class CombatSystem {
         }
 
         //Enemy melee
-        for(Enemy e : CollisionSystem.getPlayerEnemyCollisions())
+        for(Enemy e : collisions)
         {
             if(e.canAttack())
             {

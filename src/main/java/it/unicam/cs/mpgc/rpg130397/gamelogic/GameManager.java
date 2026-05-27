@@ -22,6 +22,7 @@ public class GameManager {
         EnemySpawnSystem.relocateEnemies();
         CollisionSystem.checkForCollisions(bullets, enemies, player);
         updateModels();
+        InteractablesManager.update();
         CombatSystem.update();
     }
 
@@ -44,7 +45,6 @@ public class GameManager {
     public static void lose() throws IOException {
         JDeserializer.saveInventory(GameData.getPlayer().getInventory());
         GameController.lose();
-
     }
 
 }

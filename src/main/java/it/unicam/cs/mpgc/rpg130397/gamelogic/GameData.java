@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Interactable;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
@@ -14,6 +15,8 @@ public class GameData {
     private static Map<String, WeaponStats> weaponStatMap = new HashMap<>();
     private static Map<String, Enemy> enemiesMap = new HashMap<>();
     private static Player player;
+
+    private static List<Interactable> interactables;
 
     private static List<Enemy> enemies;
     private static List<Bullet> bullets;
@@ -38,6 +41,8 @@ public class GameData {
 
         onlyViewBullets = new ArrayList<>();
         onlyViewEnemies = new ArrayList<>();
+
+        interactables = new LinkedList<>();
 
         EnemySpawnSystem.start();
     }
@@ -103,5 +108,17 @@ public class GameData {
     }
     public static Player getPlayer() {
         return player;
+    }
+
+    public static List<Interactable> getInteractables() {
+        return interactables;
+    }
+    public static void addInteractable(Interactable i)
+    {
+        interactables.add(i);
+    }
+    public static void removeInteractable(Interactable i)
+    {
+        interactables.remove(i);
     }
 }

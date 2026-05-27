@@ -1,5 +1,4 @@
 plugins {
-    id("java")
     id("application")
     id("org.openjfx.javafxplugin") version "0.1.0"
 }
@@ -19,7 +18,7 @@ dependencies {
 }
 
 javafx {
-    version = "25.0.1"
+    version = "25.0.3"
 
     modules = listOf(
         "javafx.controls",
@@ -27,7 +26,7 @@ javafx {
     )}
 
 application {
-    mainClass.set("Main.java")
+    mainClass.set("it.unicam.cs.mpgc.rpg130397.Main")
 }
 
 tasks.test {

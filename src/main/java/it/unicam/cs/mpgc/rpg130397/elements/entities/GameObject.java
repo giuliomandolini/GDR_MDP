@@ -5,7 +5,7 @@ import it.unicam.cs.mpgc.rpg130397.utils.GetSpriteByName;
 import javafx.scene.image.ImageView;
 
 /// Base class for each element that exists in the game. Each element must have a name and a position.
-public class GameObject {
+public abstract class GameObject {
     private final String name;
     private transient Position position;
 

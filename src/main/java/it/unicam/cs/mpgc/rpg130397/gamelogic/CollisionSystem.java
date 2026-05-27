@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.views.BulletView;
 import it.unicam.cs.mpgc.rpg130397.views.EnemyView;
@@ -8,18 +9,17 @@ import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
 import it.unicam.cs.mpgc.rpg130397.views.PlayerView;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /// Manages and stores collisions in the scene. in particular: Player and enemies, Bullets and Player, and Bullets and Enemies.
 public class CollisionSystem {
 
-    private static Set<Enemy> playerEnemyCollisions;
-    private static Set<Bullet> playerBulletCollisions;
+    private static Set<GameObject> playerCollisions;
     private static Map<Enemy, List<Bullet>> enemyBulletCollisions;
 
     public static void resetCollisions()
     {
-        playerEnemyCollisions = new HashSet<>();
-        playerBulletCollisions = new HashSet<>();
+        playerCollisions = new HashSet<>();
         enemyBulletCollisions = new HashMap<>();
     }
 
@@ -29,7 +29,7 @@ public class CollisionSystem {
         //collisions between player and enemies
         for(EnemyView e : enemies)
         {
-            if(collision(e, player)) playerEnemyCollisions.add(e.getObject());
+            if(collision(e, player)) playerCollisions.add(e.getObject());
         }
 
         //collisions between bullets and (enemies and player)
@@ -39,7 +39,7 @@ public class CollisionSystem {
             if(b.getObject().getSpawner() instanceof Enemy)
             {
                 if(collision(b, player)){
-                    playerBulletCollisions.add(b.getObject());
+                    playerCollisions.add(b.getObject());
                 }
             }
             else
@@ -62,12 +62,16 @@ public class CollisionSystem {
         return i1.getBoundsInParent().intersects(i2.getBoundsInParent());
     }
 
-    public static Set<Enemy> getPlayerEnemyCollisions() {
-        return playerEnemyCollisions;
+    public static Set<GameObject> getPlayerCollisions() {
+        return playerCollisions;
     }
 
-    public static Set<Bullet> getPlayerBulletCollisions() {
-        return playerBulletCollisions;
+    public static <T extends GameObject> Set<T> getPlayerCollisions(Class<T> type)
+    {
+        return playerCollisions.stream()
+                .filter(type::isInstance)
+                .map(type::cast)
+                .collect(Collectors.toSet());
     }
 
     public static Map<Enemy, List<Bullet>> getEnemyBulletCollisions() {
