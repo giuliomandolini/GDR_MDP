@@ -5,6 +5,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
 import it.unicam.cs.mpgc.rpg130397.utils.SceneManager;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
@@ -19,10 +20,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /// Controller of the game scene.
 /// It contains the timer and all the root calls of the updates and syncs the views with the models.
@@ -32,18 +30,32 @@ public class GameController {
     @FXML
     private AnchorPane gamePane;
     @FXML
-    private Label strengthLabel;
-    @FXML
-    private Label dexterityLabel;
-    @FXML
-    private Label intelligenceLabel;
-    @FXML
     private Button playAgain;
 
-    private static Map<Class<? extends GameObject>, List<GameObjectView<?>>> views;
+    @FXML
+    private Label strengthLevel;
+    @FXML
+    private Label dexterityLevel;
+    @FXML
+    private Label intelligenceLevel;
+    @FXML
+    private Label strengthWeapon;
+    @FXML
+    private Label dexterityWeapon;
+    @FXML
+    private Label intelligenceWeapon;
+    @FXML
+    private Label strengthWeaponLevel;
+    @FXML
+    private Label dexterityWeaponLevel;
+    @FXML
+    private Label intelligenceWeaponLevel;
+
+    private static Map<Class<? extends GameObject>, List<GameObjectView<? extends GameObject>>> views;
 
     private AnimationTimer timer;
-    public static boolean lost;
+    private static boolean lost;
+    private static boolean uiNeedsUpdate;
 
     private static Position mousePosition;
     //cannot be final because javafx and fxml don't call the constructor so they have to be assigned somwhere else
@@ -76,7 +88,7 @@ public class GameController {
     }
 
     private void createPlayer() throws FileNotFoundException {
-        Player playerModel = new Player("Player", 250, 2.2f, new Characteristics(10, 10, 10), new Position(0, 0)); //2
+        Player playerModel = new Player();
 
         GameObjectView<Player> p = new GameObjectView<>(playerModel);
         p.setScaleX(0.8);
@@ -94,11 +106,12 @@ public class GameController {
         Player p = getViews(Player.class).getFirst().getObject();
         healthBar.widthProperty().bind(p.getHealthProperty().divide(p.getStats().get(EntityStats.StatType.MAX_HEALTH) / 155));
 
-        strengthLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.STRENGTH).asString());
-        dexterityLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.DEXTERITY).asString());
-        intelligenceLabel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.INTELLIGENCE).asString());
+        strengthLevel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.STRENGTH).asString());
+        dexterityLevel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.DEXTERITY).asString());
+        intelligenceLevel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.INTELLIGENCE).asString());
 
         gamePane.setFocusTraversable(true);
+        uiNeedsUpdate();
     }
 
     private void setupInput()
@@ -122,6 +135,8 @@ public class GameController {
 
         //logic update
         GameManager.update();
+
+        updateUi();
     }
 
     private void updateViewPositions() {
@@ -156,6 +171,23 @@ public class GameController {
         timer.stop();
         removeView(GameData.getPlayer());
         gamePane.getChildren().add(playAgain);
+    }
+
+    public void updateUi()
+    {
+        if(!uiNeedsUpdate) return;
+        Weapon strength = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.STRENGTH);
+        Weapon dexterity = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.DEXTERITY);
+        Weapon intelligence = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.INTELLIGENCE);
+        dexterityWeapon.setText(dexterity.getName());
+        strengthWeapon.setText(strength.getName());
+        intelligenceWeapon.setText(intelligence.getName());
+
+        dexterityWeaponLevel.setText(String.valueOf(dexterity.getLevel()));
+        intelligenceWeaponLevel.setText(String.valueOf(intelligence.getLevel()));
+        strengthWeaponLevel.setText(String.valueOf(strength.getLevel()));
+
+        uiNeedsUpdate = false;
     }
 
     @FXML
@@ -201,15 +233,6 @@ public class GameController {
         gamePane.getChildren().remove(getNode(object));
     }
 
-    private <T extends GameObject> void removeView(GameObjectView<T> object)
-    {
-        Class<? extends GameObject> type =  object.getObject().getClass();
-        if(views.get(type) == null) return;
-
-        views.get(type).remove(object);
-        gamePane.getChildren().remove(object);
-    }
-
     public static GameObjectView<Player> getPlayer()
     {
         List<GameObjectView<Player>> players = getViews(Player.class);
@@ -231,7 +254,19 @@ public class GameController {
         return temp;
     }
 
+    public static List<GameObjectView<? extends GameObject>> getAllViews()
+    {
+        return views.values().stream()
+                .flatMap(Collection::stream)
+                .toList();
+    }
+
     public static Position getMousePosition() {
         return mousePosition;
+    }
+
+    public static void uiNeedsUpdate()
+    {
+        uiNeedsUpdate = true;
     }
 }

@@ -32,7 +32,7 @@ public class JDeserializer {
      *  Static method that deserializes the data contained in the enemies.json file into the enemies map
      * @return the map of all the enemies
      */
-    public static Map<String, Enemy> getEnemies() throws FileNotFoundException {
+    public static Map<String, Enemy> getEnemies() {
         Gson json = new Gson();
         InputStream f = JDeserializer.class.getClassLoader().getResourceAsStream("json/Enemies.json");
         if(f == null) throw new IllegalStateException("Errore nelle risorse del progetto");
@@ -42,22 +42,23 @@ public class JDeserializer {
         return json.fromJson(r, enemyMapType);
     }
 
-    public static void saveInventory(Map<Characteristics.CharacteristicType, Weapon> inventory) throws IOException {
-        File f = new File("src/main/resources/json/Inventory.json");
-        Gson j = new GsonBuilder().setPrettyPrinting().create();
-        BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-        j.toJson(inventory, writer);
+    public static void saveInventory() throws IOException {
+        Gson g = new GsonBuilder().setPrettyPrinting().create();
+        Writer writer = new FileWriter("src/main/resources/json/Inventory.json");
+        System.out.println("before saving invent " + GameData.getPlayer().getInventory() + " " +  getPreviousInventory());
+
+        g.toJson(GameData.getPlayer().getInventory(), writer);
         writer.close();
+        System.out.println("after saving invent " + GameData.getPlayer().getInventory() + " " +  getPreviousInventory());
     }
     public static Map<Characteristics.CharacteristicType, Weapon> getPreviousInventory() throws FileNotFoundException {
-        File f = new File("src/main/resources/json/Inventory.json");
         Gson json = new Gson();
-        Reader r = new FileReader(f);
+        Reader reader = new FileReader("src/main/resources/json/Inventory.json");
 
         //Data type definition for the correct deserialization of the json file
         Type inventoryMapType = new TypeToken<Map<Characteristics.CharacteristicType, Weapon>>() {}.getType();
 
-        Map<Characteristics.CharacteristicType, Weapon> inv = json.fromJson(r, inventoryMapType);
+        Map<Characteristics.CharacteristicType, Weapon> inv = json.fromJson(reader, inventoryMapType);
 
         //Only the name and the level of the weapons are saved. Their stats are saved in the GameData class.
         return addWeaponsStats(inv);
@@ -67,8 +68,27 @@ public class JDeserializer {
         for(Weapon w : inv.values())
         {
             w.setStats(GameData.getWeaponStatMap().get(w.getName()));
+            w.setLevel(GameData.getWeaponLevel(w.getName()));
         }
         return inv;
+    }
+
+
+    public static Map<String, Integer> getWeaponLevels() throws FileNotFoundException {
+        Gson json = new Gson();
+        Reader reader = new FileReader("src/main/resources/json/WeaponLevels.json");
+        //Data type definition for the correct deserialization of the json file
+        Type weaponLevelsType = new TypeToken<Map<String, Integer>>() {}.getType();
+        return json.fromJson(reader, weaponLevelsType);
+    }
+
+    public static void saveWeaponLevels() throws IOException {
+        System.out.println("before saving level "  + GameData.getWeaponsLevelMap() + " " + getWeaponLevels());
+        Gson g = new GsonBuilder().setPrettyPrinting().create();
+        Writer writer = new FileWriter("src/main/resources/json/WeaponLevels.json");
+        g.toJson(GameData.getWeaponsLevelMap(), writer);
+        writer.close();
+        System.out.println("after saving level "  + GameData.getWeaponsLevelMap() + " " + getWeaponLevels());
     }
 
 }

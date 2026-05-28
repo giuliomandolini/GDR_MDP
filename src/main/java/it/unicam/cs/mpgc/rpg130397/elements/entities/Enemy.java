@@ -4,8 +4,10 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
+import it.unicam.cs.mpgc.rpg130397.elements.interactables.Chest;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.CollisionSystem;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.SpawnSystem;
 
 /**
  * This class is the base class of all Entities that are aggressive towards the player.
@@ -69,9 +71,11 @@ public class Enemy extends Entity implements Updatable {
 
     protected void die()
     {
+        if(Math.random() < GameData.CHEST_SPAWN_RATE)
+        {
+            SpawnSystem.spawn(new Chest(getPosition()));
+        }
         GameData.removeGameObject(this);
-
-        //TODO chance to create chest
     }
 
     private void move()

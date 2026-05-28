@@ -23,31 +23,32 @@ public class CombatSystem {
 
         for(Bullet b : bullets)
         {
-            damage(GameData.getPlayer(), (b.getDamage()));
-            GameData.removeGameObject(b);
+            if(b.getSpawner() instanceof Enemy)
+            {
+                damage(GameData.getPlayer(), (b.getDamage()));
+                GameData.removeGameObject(b);
+            }
         }
 
         //Player bullets
-        Map<Enemy, List<Bullet>> coll = CollisionSystem.getEnemyBulletCollisions();
-        for(Enemy e : coll.keySet())
+        Map<Bullet, Enemy> coll = CollisionSystem.getBulletEnemyCollisions();
+        for(Bullet b : coll.keySet())
         {
-            for(Bullet b : coll.get(e))
+            if(b.getArea() > 0)
             {
-                if(b.getArea() > 0)
+                List<Enemy> toDamage = new LinkedList<>(GameData.getGameObjectsOfType(Enemy.class));
+                for(Enemy enemyToDamage : toDamage)
                 {
-                    List<Enemy> toDamage = new LinkedList<>(GameData.getGameObjectsOfType(Enemy.class));
-                    for(Enemy enemyToDamage : toDamage)
-                    {
-                        if(enemyToDamage.getPosition().distanceFrom(b.getPosition()) <= b.getArea())
-                            damage(enemyToDamage, b.getDamage());
-                    }
+                    if(enemyToDamage.getPosition().distanceFrom(b.getPosition()) <= b.getArea())
+                        damage(enemyToDamage, b.getDamage());
                 }
-                else
-                {
-                    damage(e, b.getDamage());
-                }
-                GameData.removeGameObject(b);
             }
+            else
+            {
+                damage(coll.get(b), b.getDamage());
+            }
+            GameData.removeGameObject(b);
+
         }
     }
 

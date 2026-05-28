@@ -7,7 +7,6 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
 
-import javax.swing.text.PlainView;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,59 +14,39 @@ import java.util.stream.Collectors;
 public class CollisionSystem {
 
     private static Set<GameObject> playerCollisions;
-    private static Map<Enemy, List<Bullet>> enemyBulletCollisions;
+    private static Map<Bullet, Enemy> bulletEnemyCollisions;
 
     public static void resetCollisions()
     {
         playerCollisions = new HashSet<>();
-        enemyBulletCollisions = new HashMap<>();
+        bulletEnemyCollisions = new HashMap<>();
     }
 
     /// Updates all the useful collisions, as those between player and enemies, player and enemy bullets and enemies and player bullets
     public static void checkForCollisions() {
         resetCollisions();
 
+        //collisions between players and other objects (except from itself)
         GameObjectView<Player> player = GameController.getPlayer();
-        List<GameObjectView<Enemy>> enemies = GameController.getViews(Enemy.class);
-        List<GameObjectView<Bullet>> bullets = GameController.getViews(Bullet.class);
-
-        //collisions between player and enemies
         playerCollisions.addAll(
-                enemies.stream()
-                        .filter(e -> collision(e, player))
-                        .map(GameObjectView::getObject)
-                        .collect(Collectors.toSet())
-        );
-
-        //collisions between player and enemy bullets
-        playerCollisions.addAll(
-                bullets.stream()
+                GameController.getAllViews().stream()
                         .filter(v -> collision(v, player))
                         .map(GameObjectView::getObject)
-                        .filter(b -> b.getSpawner() instanceof Enemy)
                         .collect(Collectors.toSet())
         );
+        playerCollisions.remove(GameData.getPlayer());
 
-        //collisions between bullets and (enemies and player)
+        //collisions between bullets and enemies
+        List<GameObjectView<Enemy>> enemies = GameController.getViews(Enemy.class);
+        List<GameObjectView<Bullet>> bullets = GameController.getViews(Bullet.class);
         for(GameObjectView<Bullet> b : bullets)
         {
-            //if the bullet is instantiated by an enemy, it has to check if it collides with the player, and vice versa
-            if(b.getObject().getSpawner() instanceof Enemy)
+            for(GameObjectView<Enemy> e : enemies)
             {
-                if(collision(b, player)){
-                    playerCollisions.add(b.getObject());
-                }
-            }
-            else
-            {
-                for(GameObjectView<Enemy> e : enemies)
+                if(collision(b, e) && b.getObject().getSpawner() instanceof Player)
                 {
-                    if(collision(b, e))
-                    {
-                        if(enemyBulletCollisions.get(e.getObject()) == null)
-                            enemyBulletCollisions.put(e.getObject(), new ArrayList<>());
-                        enemyBulletCollisions.get(e.getObject()).add(b.getObject());
-                    }
+                    bulletEnemyCollisions.put(b.getObject(), e.getObject());
+                    break;
                 }
             }
 
@@ -88,12 +67,12 @@ public class CollisionSystem {
     public static <T> Set<T> getPlayerCollisions(Class<T> type)
     {
         return playerCollisions.stream()
-                .filter(g -> g.getClass().equals(type))
+                .filter(g -> type.isInstance(g))
                 .map(g -> (T)g)
                 .collect(Collectors.toSet());
     }
 
-    public static Map<Enemy, List<Bullet>> getEnemyBulletCollisions() {
-        return enemyBulletCollisions;
+    public static Map<Bullet, Enemy> getBulletEnemyCollisions() {
+        return bulletEnemyCollisions;
     }
 }

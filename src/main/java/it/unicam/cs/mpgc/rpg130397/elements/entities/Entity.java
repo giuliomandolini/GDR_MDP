@@ -20,6 +20,10 @@ public abstract class Entity extends GameObject{
     public void changeHealth(float amount){
         stats.set(EntityStats.StatType.CURRENT_HEALTH, stats.get(EntityStats.StatType.CURRENT_HEALTH) + amount);
         if(stats.get(EntityStats.StatType.CURRENT_HEALTH) <= 0) die();
+        if(stats.get(EntityStats.StatType.CURRENT_HEALTH) > stats.get(EntityStats.StatType.MAX_HEALTH))
+        {
+            stats.set(EntityStats.StatType.CURRENT_HEALTH, stats.get(EntityStats.StatType.MAX_HEALTH));
+        }
     }
 
     protected abstract void die();

@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
+import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
@@ -22,15 +23,15 @@ public class Player extends Entity implements Updatable {
     private final Map<Characteristics.CharacteristicType, Weapon> inventory;
     private final FloatProperty healthProperty;
 
-    public Player(String name, float health, float speed, Characteristics characteristics, Position position) throws FileNotFoundException {
-        super(name, health, speed, position);
+    public Player() throws FileNotFoundException {
+        super("Player", 500, 2.2f, new Position(0, 0));
 
         GameData.setPlayer(this);//before
-        this.characteristics = characteristics;
+        this.characteristics =  new Characteristics(10, 10, 10);
         this.inventory = JDeserializer.getPreviousInventory();//after
 
-        healthProperty = new SimpleFloatProperty(health);
-    }
+        healthProperty = new SimpleFloatProperty(getStats().get(EntityStats.StatType.MAX_HEALTH));
+ }
 
     public void update()
     {
@@ -43,8 +44,10 @@ public class Player extends Entity implements Updatable {
     public void assignWeapon(Weapon weapon)
     {
         if(weapon == null) throw new IllegalArgumentException("Assegnando un'arma nulla");
+        weapon.setLevel(GameData.getWeaponLevel(weapon.getName()));
         weapon.updateDamage(characteristics);
         inventory.put(weapon.getStats().getWeaponType(), weapon);
+        GameController.uiNeedsUpdate();
     }
 
     protected void die() {
@@ -67,8 +70,6 @@ public class Player extends Entity implements Updatable {
         return characteristics;
     }
 
-
-    //TODO quando si sale di livello
     public void increaseCharacteristic(Characteristics.CharacteristicType type, int amount)
     {
         characteristics.setCharacteristicValue(type, characteristics.getCharacteristicValue(type) + amount);

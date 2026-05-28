@@ -6,6 +6,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
 
@@ -28,21 +29,18 @@ public class SpawnSystem {
     public static void start()
     {
         possibleEnemies = GameData.getEnemiesMap().values().stream().toList();
-        spawnCooldown = 150;
         enemiesToSpawn = 2;
         idCounter = 0;
     }
-
-
 
     public static void spawnEnemies()
     {
         if(GameData.getGameObjectsOfType(Enemy.class).size() > 60)
         {
-            spawnCooldown = 500;
+            spawnCooldown = 600;
         }
         else {
-            spawnCooldown = 150;
+            spawnCooldown = 100;
         }
         if(lastSpawn + spawnCooldown < System.currentTimeMillis())
         {
@@ -54,7 +52,7 @@ public class SpawnSystem {
                 Enemy enemy = new Enemy(base.getName(), base.getStats().get(EntityStats.StatType.MAX_HEALTH), base.getStats().get(EntityStats.StatType.SPEED),
                         base.getDamage(), base.getRange(), base.getCooldown(), base.getBullet(), spawnPoint, getNewId());
 
-                GameData.addGameObject(enemy);
+                spawn(enemy);
             }
             lastSpawn = System.currentTimeMillis();
         }
@@ -101,7 +99,17 @@ public class SpawnSystem {
     public static void createBullet(BulletStats stats, float damage, Entity spawner, Position target, float range, float area)
     {
         Bullet b = new Bullet(stats, damage, spawner, target, range, area);
-        GameData.addGameObject(b);
+        spawn(b);
+    }
+
+    public static void spawn(GameObject o, Position p)
+    {
+        o.setPosition(p);
+        spawn(o);
+    }
+    public static void spawn(GameObject o)
+    {
+        GameData.addGameObject(o);
     }
 
     public static int getNewId()

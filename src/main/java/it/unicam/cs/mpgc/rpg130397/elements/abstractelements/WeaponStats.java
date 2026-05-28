@@ -4,6 +4,7 @@ package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
 /// The weapon can be ranged or not, and from it depends if bulletStats is null or not.
 /// Each weapon has an associated CharacteristicType that modifies its damage.
 public class WeaponStats {
+    private float lastLevel;
     private final float baseDamage;
     private final long cooldown;
     private final float range;

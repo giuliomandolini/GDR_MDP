@@ -39,7 +39,7 @@ public class Main extends Application {
         //        loadWeapons();
 
         //launch();
-        //TODO controlla i valori passati tra i metodi
+        //TODO controlla i valori passati tra i metodi, per esempio quelli passati dai json
 
         //System.out.println(weapons.get("Bow").getName());
         //List<GameObject> l = new ArrayList<>() ;

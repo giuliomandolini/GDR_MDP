@@ -17,13 +17,22 @@ import java.util.Set;
 /// Weapon is the class used by the weapons the player can attack with
 public class Weapon {
     //Assigned by json
-    private String name;
-    private int level;
+    private final String name;
 
     //the fields must not be saved in the json so it has to be declared transient
     private transient WeaponStats stats;
+    //the level is given by the last save
+    private transient int level;
     private transient long lastAttack;
+    //damage is determined runtime by the level and stats.baseDamage
     private transient float damage;
+
+    public Weapon(String name)
+    {
+        this.name = name;
+        level = GameData.getWeaponLevel(name);
+        stats = GameData.getWeaponStatMap().get(name);
+    }
 
     public void attack()
     {
@@ -116,7 +125,25 @@ public class Weapon {
         return name;
     }
 
-    public float getDamage() {
-        return damage;
+    public void setLevel(int level)
+    {
+        this.level = level;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void levelUp()
+    {
+        level++;
+        GameData.saveWeaponLevel(name, level);
+        GameController.uiNeedsUpdate();
+    }
+
+    //todo togli
+    @Override
+    public String toString() {
+        return name;
     }
 }
