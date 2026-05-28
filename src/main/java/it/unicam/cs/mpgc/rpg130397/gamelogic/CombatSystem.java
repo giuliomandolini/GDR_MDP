@@ -1,14 +1,10 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /// Updates enemies and bullets for what concerns combat, and every damaging action must pass trough this class.
 public class CombatSystem {
@@ -16,7 +12,7 @@ public class CombatSystem {
     public static void update()
     {
         updateBullets();
-        meleeAttacks();
+        enemyMeleeAttacks();
         enemiesRangedAttack();
     }
 
@@ -28,7 +24,7 @@ public class CombatSystem {
         for(Bullet b : bullets)
         {
             damage(GameData.getPlayer(), (b.getDamage()));
-            GameData.removeBullet(b);
+            GameData.removeGameObject(b);
         }
 
         //Player bullets
@@ -39,7 +35,7 @@ public class CombatSystem {
             {
                 if(b.getArea() > 0)
                 {
-                    List<Enemy> toDamage = new LinkedList<>(GameData.getEnemies());
+                    List<Enemy> toDamage = new LinkedList<>(GameData.getGameObjectsOfType(Enemy.class));
                     for(Enemy enemyToDamage : toDamage)
                     {
                         if(enemyToDamage.getPosition().distanceFrom(b.getPosition()) <= b.getArea())
@@ -50,28 +46,14 @@ public class CombatSystem {
                 {
                     damage(e, b.getDamage());
                 }
-                GameData.removeBullet(b);
+                GameData.removeGameObject(b);
             }
         }
     }
 
-    private static void meleeAttacks()
+    private static void enemyMeleeAttacks()
     {
-        //Player melee
         Set<Enemy> collisions = CollisionSystem.getPlayerCollisions(Enemy.class);
-
-        if(collisions.isEmpty()) return;
-
-        Enemy first = (Enemy) collisions.toArray()[0];
-
-        Weapon playerStrenghtWeapon = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.STRENGTH);
-
-        if(playerStrenghtWeapon != null && playerStrenghtWeapon.meleeAttack())
-        {
-            damage(first, playerStrenghtWeapon.getDamage());
-        }
-
-        //Enemy melee
         for(Enemy e : collisions)
         {
             if(e.canAttack())
@@ -84,13 +66,12 @@ public class CombatSystem {
 
     private static void enemiesRangedAttack()
     {
-        for(Enemy e : GameData.getEnemies())
+        for(Enemy e : GameData.getGameObjectsOfType(Enemy.class))
         {
             if(e.getRange() > 0 && e.canAttack())
             {
                 //enemy spawn bullets without area damage firing towards the player
-                Bullet newBullet = new Bullet(e.getBullet(), e.getDamage(), e, GameData.getPlayer().getPosition(), e.getRange(), 0);
-                GameData.addBullet(newBullet);
+                SpawnSystem.createBullet(e.getBullet(), e.getDamage(), e, GameData.getPlayer().getPosition(), e.getRange(), 0);
                 e.setLastAttack();
             }
         }

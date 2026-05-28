@@ -3,10 +3,8 @@ package it.unicam.cs.mpgc.rpg130397.controllers;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
 import it.unicam.cs.mpgc.rpg130397.utils.SceneManager;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
@@ -21,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +70,7 @@ public class GameController {
         lost = false;
         SCREENWIDTH = gamePane.getMinWidth();
         SCREENHEIGHT = gamePane.getMinHeight();
+        views = new HashMap<>();
         GameData.start();
         InputManager.start();
     }
@@ -82,6 +82,8 @@ public class GameController {
         p.setScaleX(0.8);
         p.setScaleY(0.8);
         addView(p);
+        p.setLayoutX(SCREENWIDTH / 2);
+        p.setLayoutY(SCREENHEIGHT / 2);
     }
 
     private void setupUi()
@@ -115,15 +117,14 @@ public class GameController {
             return;
         }
         //views update
-        createDestroyEnemyViews();
-        createDestroyBulletViews();
-        updatePositions();
+        createDeleteViews();
+        updateViewPositions();
 
         //logic update
-        GameManager.update(views);
+        GameManager.update();
     }
 
-    private void updatePositions() {
+    private void updateViewPositions() {
         for(List<GameObjectView<?>> l : views.values())
         {
             for(GameObjectView<?> v : l)
@@ -133,7 +134,7 @@ public class GameController {
         }
     }
 
-    private void createDestroyEnemyViews()
+    private void createDeleteViews()
     {
         for(GameObject g : GameData.getElementsToSpawn())
         {
@@ -153,7 +154,7 @@ public class GameController {
     private void manageLoss()
     {
         timer.stop();
-        removeView(getViews(Player.class).getFirst());
+        removeView(GameData.getPlayer());
         gamePane.getChildren().add(playAgain);
     }
 
@@ -162,14 +163,14 @@ public class GameController {
         SceneManager.loadScene("game");
     }
 
-    /// Returns a node (the view) of a certain GameObject.
+    /// Returns a GameObjectView (the view) of a certain GameObject.
     /// Inside gamePane.getChildren() there are only instances of GameObjectView.
-    private Node getNode(GameObject object)
+    private GameObjectView<?> getNode(GameObject object)
     {
         for(Node g : gamePane.getChildren())
         {
-            if(((GameObjectView) g).getObject().equals(object))
-                return g;
+            if(((GameObjectView<?>) g).getObject().equals(object))
+                return (GameObjectView<?>) g;
         }
         return null;
     }
@@ -183,24 +184,51 @@ public class GameController {
         views.get(type).add(newView);
         gamePane.getChildren().add(newView);
     }
+    private <T extends GameObject> void addView(GameObjectView<T> object)
+    {
+        Class<? extends GameObject> type =  object.getObject().getClass();
+        if(views.get(type) == null) views.put(type, new LinkedList<>());
+        views.get(type).add(object);
+        gamePane.getChildren().add(object);
+    }
 
     private <T extends GameObject> void removeView(T object)
     {
         Class<? extends GameObject> type =  object.getClass();
         if(views.get(type) == null) return;
 
-        //TODO !!!!!!!!!
-        views.get(type).remove(object);
-
+        views.get(type).remove(getNode(object));
         gamePane.getChildren().remove(getNode(object));
+    }
+
+    private <T extends GameObject> void removeView(GameObjectView<T> object)
+    {
+        Class<? extends GameObject> type =  object.getObject().getClass();
+        if(views.get(type) == null) return;
+
+        views.get(type).remove(object);
+        gamePane.getChildren().remove(object);
+    }
+
+    public static GameObjectView<Player> getPlayer()
+    {
+        List<GameObjectView<Player>> players = getViews(Player.class);
+        if(players.isEmpty()) throw new IllegalStateException("There is no player in the scene");
+        if(players.size() > 1) throw new IllegalStateException("There are too many players in the scene");
+        return players.getFirst();
     }
 
     //only way to cast is to cast before List<GameObjectView<?>> in a List<?> and then into List<GameObjectView<T>>
     //or else it would be necessary to use a cast on each call of getViews because the return type GameObjectView<?> would have
     //a generic GameObject and not the type T used by the GameObjectView
-    private <T extends GameObject> List<GameObjectView<T>> getViews(Class<T> type)
+    /// Gets all the views of a determined class.
+    /// @return the List of the GameObjectViews of the determined class, or an empty list if there isn't any.
+    /// @param type the class of the determined return type
+    public static <T extends GameObject> List<GameObjectView<T>> getViews(Class<T> type)
     {
-        return (List<GameObjectView<T>>) ((List<?>) views.get(type));
+        List<GameObjectView<T>> temp = (List<GameObjectView<T>>) ((List<?>) views.get(type));
+        if(temp == null) return new LinkedList<>();
+        return temp;
     }
 
     public static Position getMousePosition() {

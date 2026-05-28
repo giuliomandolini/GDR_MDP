@@ -5,8 +5,14 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.CollisionSystem;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.CombatSystem;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.SpawnSystem;
 import it.unicam.cs.mpgc.rpg130397.utils.NearestEnemyUpdater;
+
+import java.util.Set;
 
 /// Weapon is the class used by the weapons the player can attack with
 public class Weapon {
@@ -21,31 +27,45 @@ public class Weapon {
 
     public void attack()
     {
-        Characteristics.CharacteristicType weaponType = stats.getWeaponType();
-        //strength weapons don't need an update: they attack when an enemy collides (see CombatSystem)
-        if(!canAttack() || weaponType == Characteristics.CharacteristicType.STRENGTH) return;
+        if(!canAttack()) return;
 
-        switch (weaponType)
+        switch (stats.getWeaponType())
         {
             case DEXTERITY -> dexAttack();
-            case INTELLIGENCE -> magicAttack();
+            case INTELLIGENCE -> intelligenceAttack();
+            case STRENGTH -> strengthAttack();
         }
         lastAttack = System.currentTimeMillis();
     }
 
     private boolean canAttack()
     {
-        return lastAttack + stats.getCooldown() < System.currentTimeMillis();
+        if(lastAttack + stats.getCooldown() > System.currentTimeMillis()) return false;
+        switch (stats.getWeaponType())
+        {
+            case DEXTERITY -> {
+                return true;
+            }  //le armi a destrezza attaccano sempre
+            case INTELLIGENCE -> {
+                Enemy closestEnemy = NearestEnemyUpdater.updateAndGetClosestEnemy();
+                if(closestEnemy == null) return false;
+                Position target = closestEnemy.getPosition();
+                return GameData.getPlayer().getPosition().distanceFrom(target) <= stats.getRange();
+            }
+            case STRENGTH -> {
+                Set<Enemy> collisions = CollisionSystem.getPlayerCollisions(Enemy.class);
+                return !collisions.isEmpty();
+            }
+        }
+        throw new IllegalStateException("This weapon doesn't have a canAttack condition: " + name + " " + stats.getWeaponType());
     }
 
     //Intelligence weapons attack automatically and target the closest enemy
-    private void magicAttack() {
-        Enemy closestEnemy = NearestEnemyUpdater.updateAndGetClosestEnemy();
-        if(closestEnemy == null) return;
-        Position target = closestEnemy.getPosition();
-        if(target == null || GameData.getPlayer().getPosition().distanceFrom(target) > stats.getRange()) return;
-
-        createBullet(target);
+    private void intelligenceAttack() {
+        //the update of the method occurs once every tens of milliseconds.
+        //it can't produce nullPointerException because canAttack() controls if the weapon can't reach the target
+        Position target = NearestEnemyUpdater.updateAndGetClosestEnemy().getPosition();
+        SpawnSystem.createBullet(stats.getBulletStats(), damage, GameData.getPlayer(), target, stats.getRange(), stats.getArea());
     }
 
     //Dexterity weapons attack towards mouse position
@@ -55,22 +75,17 @@ public class Weapon {
         if(target == null)
             target = new Position(0, 0);
 
-        createBullet(target);
+        SpawnSystem.createBullet(stats.getBulletStats(), damage, GameData.getPlayer(), target, stats.getRange(), stats.getArea());
     }
 
-    public boolean meleeAttack()
+    public void strengthAttack()
     {
-        boolean res = canAttack();
-        if(res)
-            lastAttack = System.currentTimeMillis();
-        return res;
+        Set<Enemy> collisions = CollisionSystem.getPlayerCollisions(Enemy.class);
+        Enemy first = (Enemy) collisions.toArray()[0];
+        CombatSystem.damage(first, damage);
     }
 
-    private void createBullet(Position target)
-    {
-        Bullet b = new Bullet(stats.getBulletStats(), damage, GameData.getPlayer(), target, stats.getRange(), stats.getArea());
-        GameData.addBullet(b);
-    }
+
 
     //used to update the damage dealt by the weapon in case of a power up of its level or player characteristics
     public void updateDamage(Characteristics characteristics)

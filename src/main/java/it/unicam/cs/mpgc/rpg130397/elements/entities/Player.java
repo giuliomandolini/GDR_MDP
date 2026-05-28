@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg130397.elements.entities;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameManager;
@@ -15,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-public class Player extends Entity{
+public class Player extends Entity implements Updatable {
 
     private final Characteristics characteristics;
     private final Map<Characteristics.CharacteristicType, Weapon> inventory;

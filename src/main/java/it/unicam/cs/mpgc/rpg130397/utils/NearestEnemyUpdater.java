@@ -14,7 +14,7 @@ public class NearestEnemyUpdater {
 
     public static Enemy updateAndGetClosestEnemy()
     {
-        List<Enemy> enemies = GameData.getEnemies();
+        List<Enemy> enemies = GameData.getGameObjectsOfType(Enemy.class);
         if(enemies.isEmpty()) return null;
         //avoids calculating the nearest enemy too frequently as it probably remains the same between attacks with an update rate of 100 times per second
         if(lastUpdate + UPDATE_COOLDOWN > System.currentTimeMillis()) return closestEnemy;

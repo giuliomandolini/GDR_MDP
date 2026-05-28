@@ -3,7 +3,7 @@ package it.unicam.cs.mpgc.rpg130397.elements.entities;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.CollisionSystem;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
@@ -12,7 +12,7 @@ import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
  * All enemies move towards the player until they are at range, then they attack.
  * If the player leaves their maximum range, the enemy goes back to moving towards the player.
  */
-public class Enemy extends Entity{
+public class Enemy extends Entity implements Updatable {
 
     private final float damage;
     private final long cooldown;
@@ -22,7 +22,6 @@ public class Enemy extends Entity{
     //the field must not be saved in the json so it has to be declared transient
     private transient long lastAttack;
     //id is needed to override equals and hashcode more easily, or else it would be impossible to distinguish an enemy from another
-    private final transient int id;
     private final transient Player player;
 
     public Enemy(String name, float health, float speed, float damage, float range, long cooldown, BulletStats bullet, Position position, int id) {
@@ -31,7 +30,6 @@ public class Enemy extends Entity{
         this.cooldown = cooldown;
         this.range = range;
         this.bullet = bullet;
-        this.id = id;
         this.setPosition(position);
         if(range > 0) lastAttack = System.currentTimeMillis();
         player = GameData.getPlayer();
@@ -71,7 +69,7 @@ public class Enemy extends Entity{
 
     protected void die()
     {
-        GameData.removeEnemy(this);
+        GameData.removeGameObject(this);
 
         //TODO chance to create chest
     }
@@ -79,18 +77,6 @@ public class Enemy extends Entity{
     private void move()
     {
         getPosition().moveTowards(player.getPosition(), getStats().get(EntityStats.StatType.SPEED));
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Enemy)) return false;
-        if(((Enemy) obj).id == id) return true;
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
     }
 
     public float getDamage() {

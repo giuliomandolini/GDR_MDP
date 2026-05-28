@@ -4,7 +4,6 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -29,27 +28,33 @@ public class GameData {
         onlyViewElements = new ArrayList<>();
         onlyModelElements = new ArrayList<>();
 
-        EnemySpawnSystem.start();
+        gameObjects = new HashMap<>();
+
+        SpawnSystem.start();
     }
 
-    public static void removeElement(GameObject e)
+    public static void removeGameObject(GameObject e)
     {
         if(gameObjects.get(e.getClass()) == null) return;
         gameObjects.get(e.getClass()).remove(e);
         onlyViewElements.add(e);
     }
-    public static void addElement(GameObject e)
+    public static void addGameObject(GameObject e)
     {
         if(gameObjects.get(e.getClass()) == null) gameObjects.put(e.getClass(), new LinkedList<>());
         gameObjects.get(e.getClass()).add(e);
-        onlyViewElements.add(e);
+        onlyModelElements.add(e);
     }
-    public static List<GameObject> getElements(Class<? extends GameObject> type)
+    public static <T extends GameObject> List<T> getGameObjectsOfType(Class<T> type)
     {
-        List<GameObject> t = gameObjects.get(type);
+        List<T> t = (List<T>) gameObjects.get(type);
         //avoid passing null, but an empty list instead
         if(t == null) t = new LinkedList<>();
         return t;
+    }
+
+    public static Map<Class<? extends GameObject>, List<GameObject>> getAllGameObjects() {
+        return gameObjects;
     }
 
     public static Map<String, Enemy> getEnemiesMap() {
@@ -74,6 +79,8 @@ public class GameData {
 
     public static void setPlayer(Player player) {
         GameData.player = player;
+        gameObjects.put(Player.class, new LinkedList<>());
+        gameObjects.get(Player.class).add(player);
     }
     public static Player getPlayer() {
         return player;

@@ -2,12 +2,13 @@ package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
 /// Class that implements every projectile in the game
-public class Bullet extends GameObject {
+public class Bullet extends GameObject implements Updatable {
 
     private final BulletStats stats;
     //the damage is inherited from the entity that spawns it
@@ -57,7 +58,7 @@ public class Bullet extends GameObject {
 
     private void checkForLifespanAndRange() {
         if(System.currentTimeMillis() > spawnTime + LIFESPAN
-        || spawnPosition.distanceFrom(getPosition()) > range) GameData.removeBullet(this);
+        || spawnPosition.distanceFrom(getPosition()) > range) GameData.removeGameObject(this);
     }
 
     private void move()
@@ -75,23 +76,6 @@ public class Bullet extends GameObject {
 
     public float getArea() {
         return area;
-    }
-
-    public long getSpawnTime() {
-        return spawnTime;
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if(!(o instanceof Bullet)) return false;
-        return ((Bullet) o).getSpawnTime() == spawnTime && ((Bullet) o).getSpawner().equals(spawner);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return (int) spawnTime + spawner.hashCode();
     }
 
 }

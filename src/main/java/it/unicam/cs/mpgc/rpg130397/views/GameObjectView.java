@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg130397.views;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.utils.GetSpriteByName;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
 import javafx.scene.image.ImageView;
@@ -24,6 +25,8 @@ public class GameObjectView<T extends GameObject> extends ImageView {
     }
     public void update()
     {
+        if(object instanceof Player) return;
+
         Position newPos = ScreenToWorldPoint.worldToScreen(object.getPosition());
         setLayoutX(newPos.getX());
         setLayoutY(newPos.getY());

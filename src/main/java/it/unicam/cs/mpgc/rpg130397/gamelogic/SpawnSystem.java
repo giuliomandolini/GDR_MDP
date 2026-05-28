@@ -1,16 +1,20 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
+import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
 
 import java.util.List;
 import java.util.Random;
 
-/// Manages the spawn of the enemies and their relocation: in case the player moves too far away from an enemy, it respawns it nearer
-public class EnemySpawnSystem {
+/// Manages the spawn of the enemies and their relocation: in case the player moves too far away from an enemy, it respawns it nearer.
+/// It should be the only way to comunicate with GameData.addGameObject().
+public class SpawnSystem {
 
     private static long lastSpawn;
     private static long spawnCooldown;
@@ -33,7 +37,7 @@ public class EnemySpawnSystem {
 
     public static void spawnEnemies()
     {
-        if(GameData.getEnemies().size() > 60)
+        if(GameData.getGameObjectsOfType(Enemy.class).size() > 60)
         {
             spawnCooldown = 500;
         }
@@ -44,13 +48,13 @@ public class EnemySpawnSystem {
         {
             for (int i = 0; i < enemiesToSpawn; i++) {
                 Position spawnPoint = getRandomPosition();
-                Enemy base = /*GameData.getEnemiesMap().get("Skeleton Warrior");*/possibleEnemies.get(new Random().nextInt(possibleEnemies.size()));
+                Enemy base = possibleEnemies.get(new Random().nextInt(possibleEnemies.size()));
 
                 //creates a new copy of the object, because otherwise the enemy cannot be added because javafx does not permit duplicates into the scene
                 Enemy enemy = new Enemy(base.getName(), base.getStats().get(EntityStats.StatType.MAX_HEALTH), base.getStats().get(EntityStats.StatType.SPEED),
-                        base.getDamage(), base.getRange(), base.getCooldown(), base.getBullet(), spawnPoint, idCounter++);
+                        base.getDamage(), base.getRange(), base.getCooldown(), base.getBullet(), spawnPoint, getNewId());
 
-                GameData.addEnemy(enemy);
+                GameData.addGameObject(enemy);
             }
             lastSpawn = System.currentTimeMillis();
         }
@@ -58,7 +62,7 @@ public class EnemySpawnSystem {
 
     public static void relocateEnemies()
     {
-        for(Enemy e : GameData.getEnemies())
+        for(Enemy e : GameData.getGameObjectsOfType(Enemy.class))
         {
             if(e.getPosition().distanceFrom(GameData.getPlayer().getPosition()) > GameController.SCREENWIDTH * 0.7f)
                 e.setPosition(getRandomPosition());
@@ -93,4 +97,16 @@ public class EnemySpawnSystem {
 
         return ScreenToWorldPoint.screenToWorld(new Position(x, y));
     }
+
+    public static void createBullet(BulletStats stats, float damage, Entity spawner, Position target, float range, float area)
+    {
+        Bullet b = new Bullet(stats, damage, spawner, target, range, area);
+        GameData.addGameObject(b);
+    }
+
+    public static int getNewId()
+    {
+        return idCounter++;
+    }
+
 }
