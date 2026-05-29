@@ -10,6 +10,12 @@ import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import java.util.Arrays;
 import java.util.Random;
 
+/// This class manages the chest GameObject. The chest is interactable, so when it collides with the player,
+/// it interacts with it, giving him a random reward, that can be:
+/// - update of a random weapon
+/// - update of a random characteristic
+/// - heal
+/// - substitution of a random weapon.
 public class Chest extends GameObject implements Interactable {
 
     RewardType rewardType;

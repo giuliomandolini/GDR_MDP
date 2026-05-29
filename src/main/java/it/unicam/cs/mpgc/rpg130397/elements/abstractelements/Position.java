@@ -29,6 +29,10 @@ public class Position {
         this.x += x;
         this.y += y;
     }
+
+    /// Moves the position towards a target point in the world, by a determined speed.
+    /// @param target the target position
+    /// @param speed the speed of the object
     public void moveTowards(Position target, float speed)
     {
         float distanceX = target.getX() - x;
@@ -43,26 +47,16 @@ public class Position {
         y += distanceY / totalDistance * speed;
     }
 
+    /// Returns the distance of a position relative to this position.
     public float distanceFrom(Position otherPosition)
     {
         return (float) Math.sqrt( Math.pow(x - otherPosition.getX(), 2) + Math.pow(y - otherPosition.getY(), 2));
     }
 
-    public void setPosition(float x, float y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
+    /// Copies the coordinates from another position.
     public void setPosition(Position other)
     {
         this.x = other.x;
         this.y = other.y;
-    }
-
-
-    @Override
-    public String toString() {
-        return x + ", " + y;
     }
 }

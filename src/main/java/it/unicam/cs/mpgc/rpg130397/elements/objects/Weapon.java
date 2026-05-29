@@ -14,10 +14,13 @@ import it.unicam.cs.mpgc.rpg130397.utils.NearestEnemyUpdater;
 
 import java.util.Set;
 
-/// Weapon is the class used by the weapons the player can attack with
+/// Weapon is the class used by the weapons the player can attack with. <br>
+/// The player can have a maximum of 3 weapons, and they have a set of stats, a name and runtime information
+/// as the last time it has attacked or the damage it does, relative to the relative actual characteristic of the player,
+/// not only to the base damage of the stats.
 public class Weapon {
     //Assigned by json
-    private String name;
+    private final String name;
 
     //the fields must not be saved in the json so it has to be declared transient
     private transient WeaponStats stats;
@@ -47,6 +50,8 @@ public class Weapon {
         lastAttack = System.currentTimeMillis();
     }
 
+    //returns if the weapon can attack based on its characteristic: each of them has
+    //determined conditions under witch they can attack.
     private boolean canAttack()
     {
         if(lastAttack + stats.getCooldown() > System.currentTimeMillis()) return false;
@@ -54,17 +59,17 @@ public class Weapon {
         {
             case DEXTERITY -> {
                 return true;
-            }  //le armi a destrezza attaccano sempre
+            }  //dexterity weapons always attack
             case INTELLIGENCE -> {
                 Enemy closestEnemy = NearestEnemyUpdater.updateAndGetClosestEnemy();
                 if(closestEnemy == null) return false;
                 Position target = closestEnemy.getPosition();
                 return GameData.getPlayer().getPosition().distanceFrom(target) <= stats.getRange();
-            }
+            }   //intelligence weapon attack only if there is at least one enemy in range of the weapon
             case STRENGTH -> {
                 Set<Enemy> collisions = CollisionSystem.getPlayerCollisions(Enemy.class);
                 return !collisions.isEmpty();
-            }
+            }   //strength weapons attack if there is an enemy colliding.
         }
         throw new IllegalStateException("This weapon doesn't have a canAttack condition: " + name + " " + stats.getWeaponType());
     }
@@ -93,8 +98,6 @@ public class Weapon {
         Enemy first = (Enemy) collisions.toArray()[0];
         CombatSystem.damage(first, damage);
     }
-
-
 
     //used to update the damage dealt by the weapon in case of a power up of its level or player characteristics
     public void updateDamage(Characteristics characteristics)
@@ -139,11 +142,5 @@ public class Weapon {
         level++;
         GameData.saveWeaponLevel(name, level);
         GameController.updateUi();
-    }
-
-    //todo togli
-    @Override
-    public String toString() {
-        return name;
     }
 }

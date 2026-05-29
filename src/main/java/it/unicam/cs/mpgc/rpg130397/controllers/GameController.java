@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collector;
 
-/// Controller of the game scene.
-/// It contains the timer and all the root calls of the updates and syncs the views with the models.
+/// Controller of the game scene. Its responsibility regards the graphic interface for the scene.
+/// It contains the timer and all the root calls of the updates, syncs the views with the models and manages the ui for the scene.
 public class GameController {
     @FXML
     private Rectangle healthBar;
@@ -91,6 +91,7 @@ public class GameController {
         InputManager.start();
     }
 
+    //instantiates the player and sets up correct scale and position
     private void createPlayer() throws FileNotFoundException {
         Player playerModel = new Player();
 
@@ -98,10 +99,12 @@ public class GameController {
         p.setScaleX(0.8);
         p.setScaleY(0.8);
         addView(p);
+        //puts the player at the center of the screen
         p.setLayoutX(SCREENWIDTH / 2);
         p.setLayoutY(SCREENHEIGHT / 2);
     }
 
+    //assignment of properties and general setup for the ui: labels, graphics and buttons.
     private void setupUi()
     {
         //the button has to be removed or else it would count as a child of gamePane and getNode would iterate also through it
@@ -126,8 +129,8 @@ public class GameController {
         gamePane.setOnKeyReleased(keyEvent -> InputManager.keyReleased(keyEvent.getCode()));
     }
 
-    ///Synchronizes models with views and controls game
-    public void update()
+    //Synchronizes models with views and controls game (shares the update to all the other objects by the GameManager)
+    private void update()
     {
         if(lost) {
             manageLoss();
@@ -165,6 +168,7 @@ public class GameController {
         }
     }
 
+    //needed as a bridge from static classes and logic and the GameContoroller class.
     public static void lose()
     {
         lost = true;
@@ -198,8 +202,8 @@ public class GameController {
         SceneManager.loadScene("game");
     }
 
-    /// Returns a GameObjectView (the view) of a certain GameObject.
-    /// Inside gamePane.getChildren() there are only instances of GameObjectView.
+    //Returns a GameObjectView (the view) of a certain GameObject.
+    //Inside gamePane.getChildren() there are only instances of GameObjectView.
     private GameObjectView<?> getNode(GameObject object)
     {
         for(Node g : gamePane.getChildren())
@@ -236,6 +240,8 @@ public class GameController {
         gamePane.getChildren().remove(getNode(object));
     }
 
+    /// Returns the view of the Player GameObject.
+    /// @return the player view as a GameObjectView.
     public static GameObjectView<Player> getPlayer()
     {
         List<GameObjectView<Player>> players = getViews(Player.class);

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /// Class that contains the instructions for general game functioning.
-/// the update gets called directly from GameController and it spreads it to all the remaining logic that
+/// the update gets called directly from GameController and it spreads it to all the logic that
 /// needs to be updated.
 public class GameManager {
 

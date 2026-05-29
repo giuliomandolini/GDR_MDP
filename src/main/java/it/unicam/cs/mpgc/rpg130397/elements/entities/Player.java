@@ -17,6 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
+/// This class manages the player in the game scene. it contains player data, such as its characteristics and inventory
+/// (health, speed are given by Entity), and manages its logic, particularly its movement and updates its weapons so they can attack.
 public class Player extends Entity implements Updatable {
 
     private final Characteristics characteristics;
@@ -35,15 +37,28 @@ public class Player extends Entity implements Updatable {
 
     public void update()
     {
-        //Attack
+        //Attack with all his weapons
         for(Weapon w : inventory.values()) w.attack();
-        //Move
-        getPosition().move(InputManager.getX() * getStats().get(EntityStats.StatType.SPEED), InputManager.getY() * getStats().get(EntityStats.StatType.SPEED));
+
+        move();
     }
 
+    private void move()
+    {
+        float x = InputManager.getX() * getStats().get(EntityStats.StatType.SPEED);
+        float y = InputManager.getY() * getStats().get(EntityStats.StatType.SPEED);
+        getPosition().move(x, y);
+        //also the mouse position has to be updated: if the mouse doesn't move, its position doesn't get updated,
+        //so the bullet fires to the last world position the mouse was pointing. by moving the mouse
+        //with the player, even if the mouse doesn't update, the bullet fires in the same direction even if the player is moving.
+        GameController.getMousePosition().move(x, y);
+    }
+
+    /// Used to substitute a weapon from the inventory of the same characteristic. Updates the UI.
+    /// @param weapon the weapon to insert into the inventory.
     public void assignWeapon(Weapon weapon)
     {
-        if(weapon == null) throw new IllegalArgumentException("Assegnando un'arma nulla");
+        if(weapon == null) throw new IllegalArgumentException("Assigning a null weapon");
         weapon.setLevel(GameData.getWeaponLevel(weapon.getName()));
         weapon.updateDamage(characteristics);
         inventory.put(weapon.getStats().getWeaponType(), weapon);

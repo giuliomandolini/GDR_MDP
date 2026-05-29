@@ -7,7 +7,9 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
-/// Class that implements every projectile in the game
+/// Class that implements every projectile in the game.
+/// At each update, the bullet moves towards the target point, using a vector to determine its trajectory and
+/// continuing in this direction. The bullet gets destroyed if it is out of range or is in the scene for too much time.
 public class Bullet extends GameObject implements Updatable {
 
     private final BulletStats stats;

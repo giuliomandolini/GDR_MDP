@@ -1,5 +1,8 @@
 {
   "DEXTERITY": {
     "name": "Dagger"
+  },
+  "INTELLIGENCE": {
+    "name": "Fire Bolt"
   }
 }

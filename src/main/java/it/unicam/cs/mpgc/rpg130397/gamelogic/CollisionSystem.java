@@ -10,7 +10,9 @@ import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/// Manages and stores collisions in the scene. in particular: Player and enemies, Bullets and Player, and Bullets and Enemies.
+/// Manages and stores collisions in the scene. <br>
+/// In particular: all the player collisions (bullets, enemies, interactables, ecc) and those between
+/// enemies and player bullets.
 public class CollisionSystem {
 
     private static Set<GameObject> playerCollisions;
