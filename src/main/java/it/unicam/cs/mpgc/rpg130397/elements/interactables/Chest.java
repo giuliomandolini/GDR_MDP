@@ -46,8 +46,14 @@ public class Chest extends GameObject implements Interactable {
                 GameData.getPlayer().changeHealth(heal);}
 
             case WEAPON_LEVEL -> {
-                int randomIndex = new Random().nextInt((int) Arrays.stream(Characteristics.CharacteristicType.values()).count());
-                GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.values()[randomIndex]).levelUp();
+                int randomIndex;
+                Weapon chosen;
+                do
+                {
+                    randomIndex = new Random().nextInt((int) Arrays.stream(Characteristics.CharacteristicType.values()).count());
+                    chosen = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.values()[randomIndex]);
+                }while(chosen == null);
+                chosen.levelUp();
             }
 
             case CHARACTERISTIC -> {

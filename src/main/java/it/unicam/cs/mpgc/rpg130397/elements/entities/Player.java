@@ -47,7 +47,7 @@ public class Player extends Entity implements Updatable {
         weapon.setLevel(GameData.getWeaponLevel(weapon.getName()));
         weapon.updateDamage(characteristics);
         inventory.put(weapon.getStats().getWeaponType(), weapon);
-        GameController.uiNeedsUpdate();
+        GameController.updateUi();
     }
 
     protected void die() {

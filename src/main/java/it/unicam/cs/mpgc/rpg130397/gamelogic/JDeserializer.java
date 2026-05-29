@@ -10,6 +10,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 /// Serializes and Deserializes data from jsons
@@ -25,7 +26,11 @@ public class JDeserializer {
         InputStreamReader r = new InputStreamReader(f);
         //Data type definition for the correct deserialization of the json file
         Type weaponMapType = new TypeToken<Map<String, WeaponStats>>() {}.getType();
-        return json.fromJson(r, weaponMapType);
+        Map<String, WeaponStats> temp = json.fromJson(r, weaponMapType);
+        if(temp == null || temp.keySet().isEmpty()) throw new IllegalStateException("Stats not found");
+        System.out.println("stats = " + temp);
+                //todo
+        return temp;
     }
 
     /**
@@ -60,13 +65,20 @@ public class JDeserializer {
 
         Map<Characteristics.CharacteristicType, Weapon> inv = json.fromJson(reader, inventoryMapType);
 
+        if(inv == null)
+        {
+            inv = new HashMap<>();
+            inv.put(Characteristics.CharacteristicType.DEXTERITY, new Weapon("Dagger"));
+        }
         //Only the name and the level of the weapons are saved. Their stats are saved in the GameData class.
         return addWeaponsStats(inv);
     }
     private static Map<Characteristics.CharacteristicType, Weapon> addWeaponsStats(Map<Characteristics.CharacteristicType, Weapon> inv)
     {
+        System.out.println("definitivo: inv = " + inv + ", stats = " + GameData.getWeaponStatMap());
         for(Weapon w : inv.values())
         {
+            System.out.println(w + ", " + w.getName() + " is getting " + GameData.getWeaponStatMap().get(w.getName()));
             w.setStats(GameData.getWeaponStatMap().get(w.getName()));
             w.setLevel(GameData.getWeaponLevel(w.getName()));
         }

@@ -24,6 +24,7 @@ public class GameData {
 
     public static void start() throws FileNotFoundException {
         weaponStatMap = JDeserializer.getWeaponsStat();
+        System.out.println("gotten: " + weaponStatMap);
         if(weaponStatMap == null || weaponStatMap.isEmpty()) throw new IllegalStateException("Values of the weapons not read correctly");
         enemiesMap = JDeserializer.getEnemies();
         System.out.println("getting levels: " + weaponsLevelMap);

@@ -21,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collector;
 
 /// Controller of the game scene.
 /// It contains the timer and all the root calls of the updates and syncs the views with the models.
@@ -51,11 +52,14 @@ public class GameController {
     @FXML
     private Label intelligenceWeaponLevel;
 
+    private static List<Label> weaponNames;
+    private static List<Label> weaponLevels;
+    private static List<Label> characteristicLevels;
+
     private static Map<Class<? extends GameObject>, List<GameObjectView<? extends GameObject>>> views;
 
     private AnimationTimer timer;
     private static boolean lost;
-    private static boolean uiNeedsUpdate;
 
     private static Position mousePosition;
     //cannot be final because javafx and fxml don't call the constructor so they have to be assigned somwhere else
@@ -106,12 +110,12 @@ public class GameController {
         Player p = getViews(Player.class).getFirst().getObject();
         healthBar.widthProperty().bind(p.getHealthProperty().divide(p.getStats().get(EntityStats.StatType.MAX_HEALTH) / 155));
 
-        strengthLevel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.STRENGTH).asString());
-        dexterityLevel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.DEXTERITY).asString());
-        intelligenceLevel.textProperty().bind(GameData.getPlayer().getCharacteristics().getCharacteristicProperty(Characteristics.CharacteristicType.INTELLIGENCE).asString());
-
         gamePane.setFocusTraversable(true);
-        uiNeedsUpdate();
+
+        weaponNames = List.of(strengthWeapon, dexterityWeapon, intelligenceWeapon);
+        weaponLevels = List.of(strengthWeaponLevel, dexterityWeaponLevel, intelligenceWeaponLevel);
+        characteristicLevels = List.of(strengthLevel, dexterityLevel, intelligenceLevel);
+
     }
 
     private void setupInput()
@@ -173,21 +177,20 @@ public class GameController {
         gamePane.getChildren().add(playAgain);
     }
 
-    public void updateUi()
+    public static void updateUi()
     {
-        if(!uiNeedsUpdate) return;
-        Weapon strength = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.STRENGTH);
-        Weapon dexterity = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.DEXTERITY);
-        Weapon intelligence = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.INTELLIGENCE);
-        dexterityWeapon.setText(dexterity.getName());
-        strengthWeapon.setText(strength.getName());
-        intelligenceWeapon.setText(intelligence.getName());
+        //Could have used properties, but there would have been many and it would scale
+        //badly in case of new weapons, characteristics or inventory size increase.
+        int i = 0;
+        for(Characteristics.CharacteristicType t : Characteristics.CharacteristicType.values())
+        {
+            Weapon current = GameData.getPlayer().getInventory().get(t);
+            weaponNames.get(i).setText(current != null ? current.getName() : "No weapon");
+            weaponLevels.get(i).setText(current != null ? String.valueOf(current.getLevel()) : "");
+            characteristicLevels.get(i).setText(String.valueOf(GameData.getPlayer().getCharacteristics().getCharacteristicValue(t)));
+            i++;
+        }
 
-        dexterityWeaponLevel.setText(String.valueOf(dexterity.getLevel()));
-        intelligenceWeaponLevel.setText(String.valueOf(intelligence.getLevel()));
-        strengthWeaponLevel.setText(String.valueOf(strength.getLevel()));
-
-        uiNeedsUpdate = false;
     }
 
     @FXML
@@ -265,8 +268,4 @@ public class GameController {
         return mousePosition;
     }
 
-    public static void uiNeedsUpdate()
-    {
-        uiNeedsUpdate = true;
-    }
 }

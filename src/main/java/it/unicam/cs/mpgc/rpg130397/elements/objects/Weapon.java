@@ -17,7 +17,7 @@ import java.util.Set;
 /// Weapon is the class used by the weapons the player can attack with
 public class Weapon {
     //Assigned by json
-    private final String name;
+    private String name;
 
     //the fields must not be saved in the json so it has to be declared transient
     private transient WeaponStats stats;
@@ -138,7 +138,7 @@ public class Weapon {
     {
         level++;
         GameData.saveWeaponLevel(name, level);
-        GameController.uiNeedsUpdate();
+        GameController.updateUi();
     }
 
     //todo togli

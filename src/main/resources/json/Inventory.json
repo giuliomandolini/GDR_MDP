@@ -1,11 +1,5 @@
 {
-  "STRENGTH" : {
-  "Name" : "Axe"
-},
-  "INTELLIGENCE" : {
-  "Name" : "Fireball"
-},
-  "DEXTERITY" : {
-  "Name" : "Bow"
-}
+  "DEXTERITY": {
+    "name": "Dagger"
+  }
 }
