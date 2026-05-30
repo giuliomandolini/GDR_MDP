@@ -5,6 +5,7 @@ Il progetto tratta di un GDR nel quale il giocatore controlla un personaggio, il
 Per eseguire il progetto è sufficiente eseguire la build e run dell'applicazione. Come giocare è spiegato nell'apposita scena "How to play".
 
 ## Utilizzo dell'IA
-L'IA è stata utilizzata esclusivamente per 2 scopi:
+L'IA è stata utilizzata esclusivamente per 3 scopi:
 * Spesso come integrazione a motori di ricerca e siti web nella ricerca di informazioni online (es. documentazione e/o spiegazione di metodi e classi)
 * Occasionalmente come assistenza e integrazione al debug 
+* Generazione della pixel art per il solo sprite del personaggio (non sono riuscito a reperire uno sprite che si allineasse con le mie idee)
