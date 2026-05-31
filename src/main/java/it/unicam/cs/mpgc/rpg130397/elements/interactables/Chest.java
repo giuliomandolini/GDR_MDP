@@ -69,9 +69,7 @@ public class Chest extends GameObject implements Interactable {
                 GameData.getPlayer().increaseCharacteristic(chosen, 1);
             }
 
-            case NEW_WEAPON -> {
-                GameData.getPlayer().assignWeapon(getNewWeapon());
-            }
+            case NEW_WEAPON -> GameData.getPlayer().assignWeapon(getNewWeapon());
         }
     }
 

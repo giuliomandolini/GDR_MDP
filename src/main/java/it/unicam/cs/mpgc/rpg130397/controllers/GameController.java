@@ -92,8 +92,8 @@ public class GameController {
         p.setScaleY(0.8);
         addView(p);
         //puts the player at the center of the screen
-        p.setLayoutX(Main.WIDTH / 2f);
-        p.setLayoutY(Main.HEIGHT / 2f);
+        p.setLayoutX(Main.SCREEN_WIDTH / 2f);
+        p.setLayoutY(Main.SCREEN_HEIGHT / 2f);
     }
 
     //assignment of properties and general setup for the ui: labels, graphics and buttons.

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class SceneManager {
 
@@ -13,7 +14,9 @@ public class SceneManager {
 
     /// Used to load scenes by name. Use only the scene name without ".fxml" or path
     public static void loadScene(String scene) throws IOException {
-        Parent root = FXMLLoader.load(SceneManager.class.getResource("/fxml/"+scene+".fxml"));
+        URL resource = SceneManager.class.getResource("/fxml/"+scene+".fxml");
+        if(resource == null) throw new IllegalArgumentException("The name of the scene to load is not valid.");
+        Parent root = FXMLLoader.load(resource);
         stage.setScene(new Scene(root));
     }
 

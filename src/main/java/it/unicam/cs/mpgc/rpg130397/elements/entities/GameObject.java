@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.GameManager;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.SpawnSystem;
 
 /// Base class for each element that exists in the game. Each element must have a name and a position,

@@ -6,11 +6,11 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg130397.controllers.MenuController">
    <children>
-      <Label layoutX="359.0" layoutY="103.0" scaleX="3.0" scaleY="3.0" text="HOW TO PLAY" />
-      <Label alignment="CENTER" layoutX="203.0" layoutY="199.0" prefHeight="275.0" prefWidth="400.0" text="You play as a character who needs to survive as much as possible inside the game. You attack with 3 weapons: a melee one, witch attacks when you touch an enemy, and 2 ranged ones: the first, based on the intelligence characteristic, attacks towards the closest enemy, and one based on the dexterity characteristic, witch attacks towards the mouse position. Try to survive as much as possible and level up your weapons to make more damage and survive longer!" textOverrun="CLIP" wrapText="true">
+      <Label layoutX="360.0" layoutY="87.0" scaleX="3.0" scaleY="3.0" text="HOW TO PLAY" />
+      <Label alignment="CENTER" layoutX="179.0" layoutY="156.0" prefHeight="361.0" prefWidth="443.0" text="You play as a character who needs to survive as much as possible inside the game. You attack with 3 weapons: a melee one, witch attacks when you touch an enemy, and 2 ranged ones: the first, based on the intelligence characteristic, attacks towards the closest enemy, and one based on the dexterity characteristic, witch attacks towards the mouse position. Enemies might drop loot as Chests: the green chest upgrades one of your weapons, the blue one one of your characteristics, the red one changes one of your weapons and the chest that has a gem heals you. Try to survive as much as possible and level up your weapons to make more damage and survive longer!" textOverrun="CLIP" wrapText="true">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Button layoutX="378.0" layoutY="558.0" mnemonicParsing="false" onAction="#backButtonPressed" scaleX="2.0" scaleY="2.0" text="Back" />
+      <Button layoutX="378.0" layoutY="594.0" mnemonicParsing="false" onAction="#backButtonPressed" scaleX="2.0" scaleY="2.0" text="Back" />
    </children>
 </Pane>

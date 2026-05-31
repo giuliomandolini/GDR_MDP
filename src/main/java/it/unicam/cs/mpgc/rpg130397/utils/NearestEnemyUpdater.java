@@ -2,7 +2,6 @@ package it.unicam.cs.mpgc.rpg130397.utils;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
 import java.util.List;

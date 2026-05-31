@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.Main;
-import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
@@ -11,7 +10,6 @@ import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
 
-import java.util.List;
 import java.util.Random;
 
 /// Manages the spawn of the enemies and their relocation: in case the player moves too far away from an enemy, it respawns it nearer.
@@ -39,13 +37,8 @@ public class SpawnSystem {
 
     public static void spawnEnemies()
     {
-        if(GameData.getGameObjectsOfType(Enemy.class).size() > 60)
-        {
-            spawnCooldown = 600;
-        }
-        else {
-            spawnCooldown = 100;
-        }
+        updateEnemySpawnRate();
+
         if(lastSpawn + spawnCooldown < System.currentTimeMillis())
         {
             for (int i = 0; i < enemiesToSpawn; i++) {
@@ -55,7 +48,7 @@ public class SpawnSystem {
 
                 //creates a new copy of the object, because otherwise the enemy cannot be added because javafx does not permit duplicates into the scene
                 Enemy enemy = new Enemy(base.getName(), base.getStats().get(EntityStats.StatType.MAX_HEALTH), base.getStats().get(EntityStats.StatType.SPEED),
-                        base.getDamage(), base.getRange(), base.getCooldown(), base.getBullet(), spawnPoint, getNewId());
+                        base.getDamage(), base.getRange(), base.getCooldown(), base.getBullet(), spawnPoint);
 
                 spawn(enemy);
             }
@@ -63,19 +56,40 @@ public class SpawnSystem {
         }
     }
 
+    private static void updateEnemySpawnRate()
+    {
+        int numberOfEnemies = GameData.getGameObjectsOfType(Enemy.class).size();
+
+        System.out.println(numberOfEnemies);
+
+        if(numberOfEnemies < 50)
+        {
+            spawnCooldown = 150;
+            enemiesToSpawn = 2;
+        }
+        else if(numberOfEnemies < 80){
+            enemiesToSpawn = 2;
+            spawnCooldown = 500;
+        }
+        else {
+            enemiesToSpawn = 1;
+            spawnCooldown = 400;
+        }
+    }
+
     public static void relocateEnemies()
     {
         for(Enemy e : GameData.getGameObjectsOfType(Enemy.class))
         {
-            if(e.getPosition().distanceFrom(GameData.getPlayer().getPosition()) > Main.WIDTH * 0.7f)
+            if(e.getPosition().distanceFrom(GameData.getPlayer().getPosition()) > Main.SCREEN_WIDTH * 0.7f)
                 e.setPosition(getRandomPosition());
         }
     }
 
     private static Position getRandomPosition() {
         double rand = Math.random();
-        float maxX = (float) Main.WIDTH;
-        float maxY = (float) Main.HEIGHT;
+        float maxX = (float) Main.SCREEN_WIDTH;
+        float maxY = (float) Main.SCREEN_HEIGHT;
 
         float x;
         float y;

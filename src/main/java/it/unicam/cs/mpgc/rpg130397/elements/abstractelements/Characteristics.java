@@ -1,8 +1,5 @@
 package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 import java.util.HashMap;
 import java.util.Map;
 

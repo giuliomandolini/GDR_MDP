@@ -16,7 +16,8 @@ public abstract class Entity extends GameObject{
         stats = new EntityStats(health, speed);
     }
 
-    ///@return true if the health is <= 0, false otherwise
+    ///changes the health of the entity by the defined amount. if it is equal or less than 0, the entity dies.
+    /// @param amount the amount of health the entity adds to his current health
     public void changeHealth(float amount){
         stats.set(EntityStats.StatType.CURRENT_HEALTH, stats.get(EntityStats.StatType.CURRENT_HEALTH) + amount);
         if(stats.get(EntityStats.StatType.CURRENT_HEALTH) <= 0) die();

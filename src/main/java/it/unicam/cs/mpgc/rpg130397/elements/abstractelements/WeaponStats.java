@@ -16,16 +16,9 @@ public class WeaponStats {
     //The code remains readable, scalable and not duplicated.
     private final Characteristics.CharacteristicType weaponType;
 
-    public WeaponStats(float range, long cooldown, float damage, float area, BulletStats bulletStats,
-                       Characteristics.CharacteristicType weaponType) {
-        this.weaponType = weaponType;
-        this.area = area;
-        this.range = range;
-        this.cooldown = cooldown;
-        this.damage = damage;
-        this.bulletStats = bulletStats;
-    }
-
+    //WeaponStats are mainly given by the Json. there are occasions in witch the stats have to be copied from the original
+    //ones found in GameData and their damage and cooldown have to be updated, but they have to be a copy because else
+    //the logic would override the original data.
     public WeaponStats(WeaponStats copy)
     {
         this.weaponType = copy.weaponType;

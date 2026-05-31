@@ -26,7 +26,7 @@ public class Enemy extends Entity implements Updatable {
     //id is needed to override equals and hashcode more easily, or else it would be impossible to distinguish an enemy from another
     private final transient Player player;
 
-    public Enemy(String name, float health, float speed, float damage, float range, long cooldown, BulletStats bullet, Position position, int id) {
+    public Enemy(String name, float health, float speed, float damage, float range, long cooldown, BulletStats bullet, Position position) {
         super(name, health, speed, position);
         this.damage = damage;
         this.cooldown = cooldown;
