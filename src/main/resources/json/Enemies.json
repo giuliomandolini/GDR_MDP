@@ -11,27 +11,27 @@
     "stats": {
       "stats": {
         "SPEED": 1.0,
-        "MAX_HEALTH": 20.0,
-        "CURRENT_HEALTH": 20.0
+        "MAX_HEALTH": 30.0,
+        "CURRENT_HEALTH": 30.0
       }
     },
     "name": "Skeleton Archer"
   },
   "Skeleton Warrior": {
-    "damage": 10.0,
+    "damage": 15.0,
     "cooldown": 2000,
     "range": 0.0,
     "stats": {
       "stats": {
         "SPEED": 1.0,
-        "MAX_HEALTH": 50.0,
-        "CURRENT_HEALTH": 50.0
+        "MAX_HEALTH": 70.0,
+        "CURRENT_HEALTH": 70.0
       }
     },
     "name": "Skeleton Warrior"
   },
   "Skeleton Mage": {
-    "damage": 15.0,
+    "damage": 10.0,
     "cooldown": 4000,
     "range": 100.0,
     "bullet": {
@@ -42,8 +42,8 @@
     "stats": {
       "stats": {
         "SPEED": 0.7,
-        "MAX_HEALTH": 10.0,
-        "CURRENT_HEALTH": 10.0
+        "MAX_HEALTH": 20.0,
+        "CURRENT_HEALTH": 20.0
       }
     },
     "name": "Skeleton Mage"

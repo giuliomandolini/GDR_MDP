@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
+import it.unicam.cs.mpgc.rpg130397.Main;
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
@@ -62,15 +63,15 @@ public class SpawnSystem {
     {
         for(Enemy e : GameData.getGameObjectsOfType(Enemy.class))
         {
-            if(e.getPosition().distanceFrom(GameData.getPlayer().getPosition()) > GameController.SCREENWIDTH * 0.7f)
+            if(e.getPosition().distanceFrom(GameData.getPlayer().getPosition()) > Main.WIDTH * 0.7f)
                 e.setPosition(getRandomPosition());
         }
     }
 
     private static Position getRandomPosition() {
         double rand = Math.random();
-        float maxX = (float) GameController.SCREENWIDTH;
-        float maxY = (float) GameController.SCREENHEIGHT;
+        float maxX = (float) Main.WIDTH;
+        float maxY = (float) Main.HEIGHT;
 
         float x;
         float y;

@@ -11,7 +11,7 @@ public class SceneManager {
 
     private static Stage stage;
 
-    /// Used to load scenes by name. Use only the scene name without extension or path
+    /// Used to load scenes by name. Use only the scene name without ".fxml" or path
     public static void loadScene(String scene) throws IOException {
         Parent root = FXMLLoader.load(SceneManager.class.getResource("/fxml/"+scene+".fxml"));
         stage.setScene(new Scene(root));

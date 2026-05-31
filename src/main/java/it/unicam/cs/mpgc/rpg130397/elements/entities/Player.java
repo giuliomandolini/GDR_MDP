@@ -51,7 +51,7 @@ public class Player extends Entity implements Updatable {
         //also the mouse position has to be updated: if the mouse doesn't move, its position doesn't get updated,
         //so the bullet fires to the last world position the mouse was pointing. by moving the mouse
         //with the player, even if the mouse doesn't update, the bullet fires in the same direction even if the player is moving.
-        GameController.getMousePosition().move(x, y);
+        InputManager.getMousePosition().move(x, y);
     }
 
     /// Used to substitute a weapon from the inventory of the same characteristic. Updates the UI.
@@ -60,7 +60,6 @@ public class Player extends Entity implements Updatable {
     {
         if(weapon == null) throw new IllegalArgumentException("Assigning a null weapon");
         weapon.setLevel(GameData.getWeaponLevel(weapon.getName()));
-        weapon.updateDamage(characteristics);
         inventory.put(weapon.getStats().getWeaponType(), weapon);
         GameController.updateUi();
     }
@@ -88,6 +87,10 @@ public class Player extends Entity implements Updatable {
     public void increaseCharacteristic(Characteristics.CharacteristicType type, int amount)
     {
         characteristics.setCharacteristicValue(type, characteristics.getCharacteristicValue(type) + amount);
+        for(Weapon w : inventory.values())
+        {
+            w.updateStats();
+        }
     }
 
     @Override

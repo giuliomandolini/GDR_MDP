@@ -59,7 +59,7 @@ public class Chest extends GameObject implements Interactable {
                     randomIndex = new Random().nextInt((int) Arrays.stream(Characteristics.CharacteristicType.values()).count());
                     chosen = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.values()[randomIndex]);
                 }while(chosen == null);
-                chosen.levelUp();
+                chosen.setLevel(chosen.getLevel() + 1);
             }
 
             case CHARACTERISTIC -> {

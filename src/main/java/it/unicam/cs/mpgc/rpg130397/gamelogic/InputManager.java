@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashSet;
@@ -9,12 +10,14 @@ import java.util.Set;
 ///This class is responsable for managing the input coming from the player, such as keyboard inputs.
 public class InputManager {
     public static Set<KeyCode> pressedKeys;
+    private static Position mousePosition;
     public static int x;
     public static int y;
 
     public static void start()
     {
         pressedKeys = new HashSet<>();
+        mousePosition = new Position();
     }
 
     public static void keyPressed(KeyCode k)
@@ -43,4 +46,7 @@ public class InputManager {
         return result;
     }
 
+    public static Position getMousePosition() {
+        return mousePosition;
+    }
 }

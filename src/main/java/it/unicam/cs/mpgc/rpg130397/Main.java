@@ -7,7 +7,6 @@ import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
 import it.unicam.cs.mpgc.rpg130397.utils.SceneManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -19,18 +18,16 @@ import java.util.Map;
 
 public class Main extends Application {
 
-    public int width = 800;
-    public int height = 800;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 800;
     @Override
     public void start(Stage stage) throws IOException {
-        stage.setWidth(width);
-        stage.setHeight(height);
+        stage.setWidth(WIDTH);
+        stage.setHeight(HEIGHT);
         stage.setResizable(false);
 
         SceneManager.setStage(stage);
         SceneManager.loadScene("menu");
-
-
 
         stage.show();
     }

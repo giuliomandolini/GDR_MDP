@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.controllers;
 
+import it.unicam.cs.mpgc.rpg130397.Main;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
@@ -24,7 +25,9 @@ import java.util.*;
 import java.util.stream.Collector;
 
 /// Controller of the game scene. Its responsibility regards the graphic interface for the scene.
-/// It contains the timer and all the root calls of the updates, syncs the views with the models and manages the ui for the scene.
+/// - It contains the timer and so all the root calls of the updates
+/// - Manages the ui for the scene (syncs the views with the models and manages javafx controls).
+/// - The initialize() method needs to call the start of the game in each
 public class GameController {
     @FXML
     private Rectangle healthBar;
@@ -61,15 +64,14 @@ public class GameController {
     private AnimationTimer timer;
     private static boolean lost;
 
-    private static Position mousePosition;
-    //cannot be final because javafx and fxml don't call the constructor so they have to be assigned somwhere else
-    public static double SCREENWIDTH;
-    public static double SCREENHEIGHT;
-
     @FXML
     public void initialize() throws FileNotFoundException{
-        setupGameLogic();
+        views = new HashMap<>();
+        lost = false;
+
+        GameManager.setupGameLogic();
         createPlayer();
+        //needs the player to be created before to bind health property to the health bar
         setupUi();
         setupInput();
 
@@ -82,15 +84,6 @@ public class GameController {
         timer.start();
     }
 
-    private void setupGameLogic() throws FileNotFoundException {
-        lost = false;
-        SCREENWIDTH = gamePane.getMinWidth();
-        SCREENHEIGHT = gamePane.getMinHeight();
-        views = new HashMap<>();
-        GameData.start();
-        InputManager.start();
-    }
-
     //instantiates the player and sets up correct scale and position
     private void createPlayer() throws FileNotFoundException {
         Player playerModel = new Player();
@@ -100,8 +93,8 @@ public class GameController {
         p.setScaleY(0.8);
         addView(p);
         //puts the player at the center of the screen
-        p.setLayoutX(SCREENWIDTH / 2);
-        p.setLayoutY(SCREENHEIGHT / 2);
+        p.setLayoutX(Main.WIDTH / 2f);
+        p.setLayoutY(Main.HEIGHT / 2f);
     }
 
     //assignment of properties and general setup for the ui: labels, graphics and buttons.
@@ -121,10 +114,11 @@ public class GameController {
 
     }
 
+    //This method only sets up the logic because the events are relative to javafx so the setup has to be in the contorller,
+    //but all the input logic is in the InputManager, keeping the responsabilities clear
     private void setupInput()
     {
-        mousePosition = new Position();
-        gamePane.setOnMouseMoved(event -> mousePosition.setPosition(ScreenToWorldPoint.screenToWorld(new Position((float) event.getX(), (float) event.getY()))));
+        gamePane.setOnMouseMoved(event -> InputManager.getMousePosition().setPosition(ScreenToWorldPoint.screenToWorld(new Position((float) event.getX(), (float) event.getY()))));
         gamePane.setOnKeyPressed(keyEvent -> InputManager.keyPressed(keyEvent.getCode()));
         gamePane.setOnKeyReleased(keyEvent -> InputManager.keyReleased(keyEvent.getCode()));
     }
@@ -268,10 +262,6 @@ public class GameController {
         return views.values().stream()
                 .flatMap(Collection::stream)
                 .toList();
-    }
-
-    public static Position getMousePosition() {
-        return mousePosition;
     }
 
 }

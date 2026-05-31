@@ -1,15 +1,10 @@
 package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.CollisionSystem;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.CombatSystem;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.SpawnSystem;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
 import it.unicam.cs.mpgc.rpg130397.utils.NearestEnemyUpdater;
 
 import java.util.Set;
@@ -27,14 +22,16 @@ public class Weapon {
     //the level is given by the last save
     private transient int level;
     private transient long lastAttack;
-    //damage is determined runtime by the level and stats.baseDamage
-    private transient float damage;
 
     public Weapon(String name)
     {
         this.name = name;
         level = GameData.getWeaponLevel(name);
-        stats = GameData.getWeaponStatMap().get(name);
+        //the stats have to be a copy of the original, because if the weapon gets changed and its stats get updated,
+        //the calculations of the damage and cooldown by weaponLevel and characteristicLevel have to be done on the original stats,
+        //not the previous that the weapon had before changing.
+        stats = new WeaponStats(GameData.getWeaponStatMap().get(name));
+        System.out.println(stats + " " + GameData.getWeaponStatMap().get(name));
     }
 
     public void attack()
@@ -79,49 +76,60 @@ public class Weapon {
         //the update of the method occurs once every tens of milliseconds.
         //it can't produce nullPointerException because canAttack() controls if the weapon can't reach the target
         Position target = NearestEnemyUpdater.updateAndGetClosestEnemy().getPosition();
-        SpawnSystem.createBullet(stats.getBulletStats(), damage, GameData.getPlayer(), target, stats.getRange(), stats.getArea());
+        SpawnSystem.createBullet(stats.getBulletStats(), stats.getDamage(), GameData.getPlayer(), target, stats.getRange(), stats.getArea());
     }
 
     //Dexterity weapons attack towards mouse position
     private void dexAttack() {
-        Position target = GameController.getMousePosition();
+        Position target = InputManager.getMousePosition();
 
         if(target == null)
             target = new Position(0, 0);
 
-        SpawnSystem.createBullet(stats.getBulletStats(), damage, GameData.getPlayer(), target, stats.getRange(), stats.getArea());
+        SpawnSystem.createBullet(stats.getBulletStats(), stats.getDamage(), GameData.getPlayer(), target, stats.getRange(), stats.getArea());
     }
 
     public void strengthAttack()
     {
         Set<Enemy> collisions = CollisionSystem.getPlayerCollisions(Enemy.class);
         Enemy first = (Enemy) collisions.toArray()[0];
-        CombatSystem.damage(first, damage);
+        CombatSystem.damage(first, stats.getDamage());
     }
 
     //used to update the damage dealt by the weapon in case of a power up of its level or player characteristics
-    public void updateDamage(Characteristics characteristics)
+    public void updateStats()
     {
-        int charLevel = characteristics.getCharacteristicValue(stats.getWeaponType());
+        WeaponStats originalStats = GameData.getWeaponStatMap().get(name);
+        System.out.println(name + " has level " + level + " and an original of " + stats.getDamage() + " " + stats.getCooldown()+" and stats " + stats);
+        int charLevel = GameData.getPlayer().getCharacteristics().getCharacteristicValue(stats.getWeaponType());
+        //the damage increases by 10% for each characteristic level above 10
+        float damage = originalStats.getDamage() * (charLevel / 10.0f);
 
-        //for each 5 points after level 10 the damage increases by 1 baseDamage
-        //if the level is less than 10 the damage decreases linearly
-        if(charLevel > 10) damage = stats.getBaseDamage() * (charLevel / 5.0f - 1);
-        else damage = stats.getBaseDamage() * (charLevel / 10f);
-        //and the damage increases by 20% for each level
-        damage *= (charLevel / 5.0f) + 1;
+        stats.setDamage(damage);
+        System.out.println("2 damage = " + stats.getDamage() + ", cool = " + stats.getCooldown());
+        //the damage also increases by 5% for each weapon level above 1
+        stats.setDamage(damage * (1 + 0.05f * (level)));
+        System.out.println("3 damage = " + stats.getDamage() + ", cool = " + stats.getCooldown());
 
-        //the damage also increases by 20% for each level above 1
-        damage += damage * 0.2f * (level - 1);
+        //the cooldown decreases by 5% per level
+        float cooldown = originalStats.getCooldown() * (1 - 0.05f * level);
+        //the weapon must have a minimum cooldown
+        if(cooldown < 20) cooldown = 20;
+        stats.setCooldown((long) (cooldown));
+        System.out.println("4 damage = " + stats.getDamage() + ", cool = " + stats.getCooldown());
+
     }
 
     public WeaponStats getStats() {
         return stats;
     }
 
-    public void setStats(WeaponStats stats) {
-        this.stats = stats;
-        updateDamage(GameData.getPlayer().getCharacteristics());
+    //used at the start to assign the stats and the level at the weapons in the inventory.
+    //doesn't need to update ui and save level, because if it doesn't change it remains the same.
+    public void setStatsAndLevel(WeaponStats stats, int level) {
+        this.stats = new WeaponStats(stats);
+        this.level = level;
+        updateStats();
     }
 
     public String getName() {
@@ -131,16 +139,13 @@ public class Weapon {
     public void setLevel(int level)
     {
         this.level = level;
+        GameData.saveWeaponLevel(name, level);
+        updateStats();
+        GameController.updateUi();
     }
 
     public int getLevel() {
         return level;
     }
 
-    public void levelUp()
-    {
-        level++;
-        GameData.saveWeaponLevel(name, level);
-        GameController.updateUi();
-    }
 }

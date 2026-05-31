@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -14,6 +15,12 @@ import java.util.stream.Collectors;
 /// the update gets called directly from GameController and it spreads it to all the logic that
 /// needs to be updated.
 public class GameManager {
+
+    public static void setupGameLogic() throws FileNotFoundException {
+
+        GameData.start();
+        InputManager.start();
+    }
 
     public static void update()
     {

@@ -23,13 +23,10 @@ public class GameData {
     private static List<GameObject> onlyModelElements;
 
     public static void start() throws FileNotFoundException {
+        //controls about stats are made in the JDeserializer class
         weaponStatMap = JDeserializer.getWeaponsStat();
-        System.out.println("gotten: " + weaponStatMap);
-        if(weaponStatMap == null || weaponStatMap.isEmpty()) throw new IllegalStateException("Values of the weapons not read correctly");
         enemiesMap = JDeserializer.getEnemies();
-        System.out.println("getting levels: " + weaponsLevelMap);
         weaponsLevelMap = JDeserializer.getWeaponLevels();
-        System.out.println("got levels: " + weaponsLevelMap);
 
         //se weaponsLevelMap è null non si è mai avviato il gioco
         if(weaponsLevelMap == null) weaponsLevelMap = new HashMap<>();

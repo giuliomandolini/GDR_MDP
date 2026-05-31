@@ -19,7 +19,7 @@ public class JDeserializer {
      *  Static method that deserializes the data contained in the weapons.json file into the weapons map
      * @return the map of all the weapons
      */
-    public static Map<String, WeaponStats> getWeaponsStat() throws FileNotFoundException {
+    public static Map<String, WeaponStats> getWeaponsStat() {
         Gson json = new Gson();
         InputStream f = JDeserializer.class.getClassLoader().getResourceAsStream("json/WeaponStats.json");
         if(f == null) throw new IllegalStateException("Errore nelle risorse del progetto");
@@ -27,9 +27,7 @@ public class JDeserializer {
         //Data type definition for the correct deserialization of the json file
         Type weaponMapType = new TypeToken<Map<String, WeaponStats>>() {}.getType();
         Map<String, WeaponStats> temp = json.fromJson(r, weaponMapType);
-        if(temp == null || temp.keySet().isEmpty()) throw new IllegalStateException("Stats not found");
-        System.out.println("stats = " + temp);
-                //todo
+        if(temp == null || temp.isEmpty()) throw new IllegalStateException("Stats not found");
         return temp;
     }
 
@@ -50,11 +48,9 @@ public class JDeserializer {
     public static void saveInventory() throws IOException {
         Gson g = new GsonBuilder().setPrettyPrinting().create();
         Writer writer = new FileWriter("src/main/resources/json/Inventory.json");
-        System.out.println("before saving invent " + GameData.getPlayer().getInventory() + " " +  getPreviousInventory());
 
         g.toJson(GameData.getPlayer().getInventory(), writer);
         writer.close();
-        System.out.println("after saving invent " + GameData.getPlayer().getInventory() + " " +  getPreviousInventory());
     }
     public static Map<Characteristics.CharacteristicType, Weapon> getPreviousInventory() throws FileNotFoundException {
         Gson json = new Gson();
@@ -75,12 +71,9 @@ public class JDeserializer {
     }
     private static Map<Characteristics.CharacteristicType, Weapon> addWeaponsStats(Map<Characteristics.CharacteristicType, Weapon> inv)
     {
-        System.out.println("definitivo: inv = " + inv + ", stats = " + GameData.getWeaponStatMap());
         for(Weapon w : inv.values())
         {
-            System.out.println(w + ", " + w.getName() + " is getting " + GameData.getWeaponStatMap().get(w.getName()));
-            w.setStats(GameData.getWeaponStatMap().get(w.getName()));
-            w.setLevel(GameData.getWeaponLevel(w.getName()));
+            w.setStatsAndLevel(GameData.getWeaponStatMap().get(w.getName()), GameData.getWeaponLevel(w.getName()));
         }
         return inv;
     }
@@ -95,12 +88,10 @@ public class JDeserializer {
     }
 
     public static void saveWeaponLevels() throws IOException {
-        System.out.println("before saving level "  + GameData.getWeaponsLevelMap() + " " + getWeaponLevels());
         Gson g = new GsonBuilder().setPrettyPrinting().create();
         Writer writer = new FileWriter("src/main/resources/json/WeaponLevels.json");
         g.toJson(GameData.getWeaponsLevelMap(), writer);
         writer.close();
-        System.out.println("after saving level "  + GameData.getWeaponsLevelMap() + " " + getWeaponLevels());
     }
 
 }
