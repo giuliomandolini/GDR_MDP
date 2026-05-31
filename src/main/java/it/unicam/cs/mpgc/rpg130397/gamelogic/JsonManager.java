@@ -14,14 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /// Serializes and Deserializes data from jsons
-public class JDeserializer {
+public class JsonManager {
     /**
      *  Static method that deserializes the data contained in the weapons.json file into the weapons map
      * @return the map of all the weapons
      */
     public static Map<String, WeaponStats> getWeaponsStat() {
         Gson json = new Gson();
-        InputStream f = JDeserializer.class.getClassLoader().getResourceAsStream("json/WeaponStats.json");
+        InputStream f = JsonManager.class.getClassLoader().getResourceAsStream("json/WeaponStats.json");
         if(f == null) throw new IllegalStateException("Errore nelle risorse del progetto");
         InputStreamReader r = new InputStreamReader(f);
         //Data type definition for the correct deserialization of the json file
@@ -37,7 +37,7 @@ public class JDeserializer {
      */
     public static Map<String, Enemy> getEnemies() {
         Gson json = new Gson();
-        InputStream f = JDeserializer.class.getClassLoader().getResourceAsStream("json/Enemies.json");
+        InputStream f = JsonManager.class.getClassLoader().getResourceAsStream("json/Enemies.json");
         if(f == null) throw new IllegalStateException("Errore nelle risorse del progetto");
         InputStreamReader r = new InputStreamReader(f);
         //Data type definition for the correct deserialization of the json file

@@ -11,8 +11,6 @@ import java.util.Set;
 public class InputManager {
     public static Set<KeyCode> pressedKeys;
     private static Position mousePosition;
-    public static int x;
-    public static int y;
 
     public static void start()
     {

@@ -9,7 +9,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameManager;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.InputManager;
-import it.unicam.cs.mpgc.rpg130397.gamelogic.JDeserializer;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.JsonManager;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 
@@ -30,7 +30,7 @@ public class Player extends Entity implements Updatable {
 
         GameData.setPlayer(this);//before
         this.characteristics =  new Characteristics(10, 10, 10);
-        this.inventory = JDeserializer.getPreviousInventory();//after
+        this.inventory = JsonManager.getPreviousInventory();//after
 
         healthProperty = new SimpleFloatProperty(getStats().get(EntityStats.StatType.MAX_HEALTH));
  }

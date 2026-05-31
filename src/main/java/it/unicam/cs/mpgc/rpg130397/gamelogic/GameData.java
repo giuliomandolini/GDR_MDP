@@ -23,10 +23,10 @@ public class GameData {
     private static List<GameObject> onlyModelElements;
 
     public static void start() throws FileNotFoundException {
-        //controls about stats are made in the JDeserializer class
-        weaponStatMap = JDeserializer.getWeaponsStat();
-        enemiesMap = JDeserializer.getEnemies();
-        weaponsLevelMap = JDeserializer.getWeaponLevels();
+        //controls about stats are made in the JsonManager class
+        weaponStatMap = JsonManager.getWeaponsStat();
+        enemiesMap = JsonManager.getEnemies();
+        weaponsLevelMap = JsonManager.getWeaponLevels();
 
         //se weaponsLevelMap è null non si è mai avviato il gioco
         if(weaponsLevelMap == null) weaponsLevelMap = new HashMap<>();

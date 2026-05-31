@@ -45,7 +45,7 @@ public class Main extends Application {
         /*saveInventory();
 
         GameData data = new GameData();
-        Player p = new Player("io", 1, 1, JDeserializer.getPreviousInventory(data), null);
+        Player p = new Player("io", 1, 1, JsonManager.getPreviousInventory(data), null);
         System.out.println(p.getInventory().get(Characteristics.CharacteristicType.STRENGTH).getStats().getBaseDamage());
 */
         //System.out.println(GetSpriteByName.getResourcePath("SkeletonArcher"));
@@ -54,8 +54,8 @@ public class Main extends Application {
 
 //    private static void saveInventory() throws IOException {
 //        Map<Characteristics.CharacteristicType, Weapon> inventory  = new HashMap<>();
-//        inventory.put(Characteristics.CharacteristicType.STRENGTH, new Weapon("Axe", JDeserializer.getWeaponsStat().get("Axe")));
-//        JDeserializer.saveInventory(inventory);
+//        inventory.put(Characteristics.CharacteristicType.STRENGTH, new Weapon("Axe", JsonManager.getWeaponsStat().get("Axe")));
+//        JsonManager.saveInventory(inventory);
 //    }
 
     private static void loadEnemies() throws IOException {

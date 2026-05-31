@@ -1,8 +1,11 @@
 {
   "DEXTERITY": {
-    "name": "Dagger"
+    "name": "Bow"
   },
   "INTELLIGENCE": {
-    "name": "Fire Bolt"
+    "name": "Fire bolt"
+  },
+  "STRENGTH": {
+    "name": "Axe"
   }
 }

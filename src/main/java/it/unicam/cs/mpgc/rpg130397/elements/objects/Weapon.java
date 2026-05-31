@@ -100,24 +100,20 @@ public class Weapon {
     public void updateStats()
     {
         WeaponStats originalStats = GameData.getWeaponStatMap().get(name);
-        System.out.println(name + " has level " + level + " and an original of " + stats.getDamage() + " " + stats.getCooldown()+" and stats " + stats);
+
         int charLevel = GameData.getPlayer().getCharacteristics().getCharacteristicValue(stats.getWeaponType());
         //the damage increases by 10% for each characteristic level above 10
         float damage = originalStats.getDamage() * (charLevel / 10.0f);
-
         stats.setDamage(damage);
-        System.out.println("2 damage = " + stats.getDamage() + ", cool = " + stats.getCooldown());
+
         //the damage also increases by 5% for each weapon level above 1
         stats.setDamage(damage * (1 + 0.05f * (level)));
-        System.out.println("3 damage = " + stats.getDamage() + ", cool = " + stats.getCooldown());
 
         //the cooldown decreases by 5% per level
         float cooldown = originalStats.getCooldown() * (1 - 0.05f * level);
         //the weapon must have a minimum cooldown
         if(cooldown < 20) cooldown = 20;
         stats.setCooldown((long) (cooldown));
-        System.out.println("4 damage = " + stats.getDamage() + ", cool = " + stats.getCooldown());
-
     }
 
     public WeaponStats getStats() {

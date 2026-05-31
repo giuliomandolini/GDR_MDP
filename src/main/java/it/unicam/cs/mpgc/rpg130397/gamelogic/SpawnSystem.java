@@ -23,15 +23,18 @@ public class SpawnSystem {
     private static int enemiesToSpawn;
     //In future developments the enemies will be coming in groups and not just random as it is now,
     //that is why I decided to use a map instead of a set inside GameData
-    private static List<Enemy> possibleEnemies;
     private static int idCounter;
+    //Memorizes an array of the possible enemies by their name, so there is no need to extract the keySet from
+    //GameData.enemiesMap at each iteration and the get from an hashmap is O(1) so it is not convenient to store
+    //the entire values of the map
+    private static String[] enemyNames;
 
 
     public static void start()
     {
-        possibleEnemies = GameData.getEnemiesMap().values().stream().toList();
         enemiesToSpawn = 2;
         idCounter = 0;
+        enemyNames = GameData.getEnemiesMap().keySet().toArray(new String[0]); //IntelliJ suggestion
     }
 
     public static void spawnEnemies()
@@ -47,7 +50,8 @@ public class SpawnSystem {
         {
             for (int i = 0; i < enemiesToSpawn; i++) {
                 Position spawnPoint = getRandomPosition();
-                Enemy base = possibleEnemies.get(new Random().nextInt(possibleEnemies.size()));
+                String randomEnemy = enemyNames[new Random().nextInt(enemyNames.length)];
+                Enemy base = GameData.getEnemiesMap().get(randomEnemy); //possibleEnemies.get(new Random().nextInt(possibleEnemies.size()));
 
                 //creates a new copy of the object, because otherwise the enemy cannot be added because javafx does not permit duplicates into the scene
                 Enemy enemy = new Enemy(base.getName(), base.getStats().get(EntityStats.StatType.MAX_HEALTH), base.getStats().get(EntityStats.StatType.SPEED),
@@ -103,11 +107,6 @@ public class SpawnSystem {
         spawn(b);
     }
 
-    public static void spawn(GameObject o, Position p)
-    {
-        o.setPosition(p);
-        spawn(o);
-    }
     public static void spawn(GameObject o)
     {
         GameData.addGameObject(o);

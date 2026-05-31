@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /// Class that contains the instructions for general game functioning.
 /// the update gets called directly from GameController and it spreads it to all the logic that
@@ -46,8 +45,8 @@ public class GameManager {
 
     public static void lose() throws IOException {
 
-        JDeserializer.saveInventory();
-        JDeserializer.saveWeaponLevels();
+        JsonManager.saveInventory();
+        JsonManager.saveWeaponLevels();
 
         GameController.lose();
     }

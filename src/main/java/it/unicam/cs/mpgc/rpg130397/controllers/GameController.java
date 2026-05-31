@@ -22,7 +22,6 @@ import javafx.scene.shape.Rectangle;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collector;
 
 /// Controller of the game scene. Its responsibility regards the graphic interface for the scene.
 /// - It contains the timer and so all the root calls of the updates
@@ -250,6 +249,7 @@ public class GameController {
     /// Gets all the views of a determined class.
     /// @return the List of the GameObjectViews of the determined class, or an empty list if there isn't any.
     /// @param type the class of the determined return type
+    @SuppressWarnings("unchecked")
     public static <T extends GameObject> List<GameObjectView<T>> getViews(Class<T> type)
     {
         List<GameObjectView<T>> temp = (List<GameObjectView<T>>) ((List<?>) views.get(type));

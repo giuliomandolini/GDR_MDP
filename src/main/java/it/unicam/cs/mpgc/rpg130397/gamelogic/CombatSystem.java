@@ -16,6 +16,7 @@ public class CombatSystem {
         enemiesRangedAttack();
     }
 
+    //Updates all the bullets in the scene and manages their combat and damage
     private static void updateBullets()
     {
         //Enemy bullets
