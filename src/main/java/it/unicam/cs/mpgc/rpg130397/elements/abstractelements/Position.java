@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
 
 /// Represents a logic position in the game world. it isn't always the same as the world position (see {@link it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint})
+/// guarantees the code to be scalable by inserting z for 3D and modifying only the methods in this class.
 public class Position {
     private float x;
     private float y;

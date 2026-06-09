@@ -3,14 +3,14 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Inventory;
+import it.unicam.cs.mpgc.rpg130397.elements.stats.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /// Serializes and Deserializes data from jsons
@@ -52,26 +52,26 @@ public class JsonManager {
         g.toJson(GameData.getPlayer().getInventory(), writer);
         writer.close();
     }
-    public static Map<Characteristics.CharacteristicType, Weapon> getPreviousInventory() throws FileNotFoundException {
+    //if there is no previous inventory, the first one is composed by the dagger weapon
+    public static Inventory getPreviousInventory() throws FileNotFoundException {
         Gson json = new Gson();
         Reader reader = new FileReader("src/main/resources/json/Inventory.json");
 
         //Data type definition for the correct deserialization of the json file
-        Type inventoryMapType = new TypeToken<Map<Characteristics.CharacteristicType, Weapon>>() {}.getType();
+        Type inventoryMapType = new TypeToken<Inventory>() {}.getType();
 
-        Map<Characteristics.CharacteristicType, Weapon> inv = json.fromJson(reader, inventoryMapType);
+        Inventory inv = json.fromJson(reader, inventoryMapType);
 
         if(inv == null)
         {
-            inv = new HashMap<>();
-            inv.put(Characteristics.CharacteristicType.DEXTERITY, new Weapon("Dagger"));
+            inv = new Inventory(List.of(new Weapon("Dagger")));
         }
         //Only the name and the level of the weapons are saved. Their stats are saved in the GameData class.
         return addWeaponsStats(inv);
     }
-    private static Map<Characteristics.CharacteristicType, Weapon> addWeaponsStats(Map<Characteristics.CharacteristicType, Weapon> inv)
+    private static Inventory addWeaponsStats(Inventory inv)
     {
-        for(Weapon w : inv.values())
+        for(Weapon w : inv.getWeapons())
         {
             w.setStatsAndLevel(GameData.getWeaponStatMap().get(w.getName()), GameData.getWeaponLevel(w.getName()));
         }

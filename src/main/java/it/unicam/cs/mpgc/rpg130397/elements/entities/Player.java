@@ -1,11 +1,9 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.*;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
+import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameManager;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.InputManager;
@@ -15,14 +13,13 @@ import javafx.beans.property.SimpleFloatProperty;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Map;
 
 /// This class manages the player in the game scene. it contains player data, such as its characteristics and inventory
 /// (health, speed are given by Entity), and manages its logic, particularly its movement and updates its weapons so they can attack.
 public class Player extends Entity implements Updatable {
 
     private final Characteristics characteristics;
-    private final Map<Characteristics.CharacteristicType, Weapon> inventory;
+    private final Inventory inventory;
     private final FloatProperty healthProperty;
 
     public Player() throws FileNotFoundException {
@@ -38,7 +35,7 @@ public class Player extends Entity implements Updatable {
     public void update()
     {
         //Attack with all his weapons
-        for(Weapon w : inventory.values()) w.attack();
+        for(Weapon w : inventory.getWeapons()) w.attack();
 
         move();
     }
@@ -60,7 +57,7 @@ public class Player extends Entity implements Updatable {
     {
         if(weapon == null) throw new IllegalArgumentException("Assigning a null weapon");
         weapon.setLevel(GameData.getWeaponLevel(weapon.getName()));
-        inventory.put(weapon.getStats().getWeaponType(), weapon);
+        inventory.addWeapon(weapon);
         GameController.updateUi();
     }
 
@@ -72,7 +69,7 @@ public class Player extends Entity implements Updatable {
         }
     }
 
-    public Map<Characteristics.CharacteristicType, Weapon> getInventory() {
+    public Inventory getInventory() {
         return inventory;
     }
 
@@ -87,7 +84,7 @@ public class Player extends Entity implements Updatable {
     public void increaseCharacteristic(Characteristics.CharacteristicType type, int amount)
     {
         characteristics.setCharacteristicValue(type, characteristics.getCharacteristicValue(type) + amount);
-        for(Weapon w : inventory.values())
+        for(Weapon w : inventory.getWeapons())
         {
             w.updateStats();
         }

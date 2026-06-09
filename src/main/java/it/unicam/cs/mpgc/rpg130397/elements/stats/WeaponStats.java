@@ -1,4 +1,6 @@
-package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
+package it.unicam.cs.mpgc.rpg130397.elements.stats;
+
+import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
 
 /// Contains the stats of the weapon that the player can use to attack the enemies.
 /// The weapon can be ranged or not, and from it depends if bulletStats is null or not.

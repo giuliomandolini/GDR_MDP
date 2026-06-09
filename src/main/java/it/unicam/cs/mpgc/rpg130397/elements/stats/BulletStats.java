@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
+package it.unicam.cs.mpgc.rpg130397.elements.stats;
 
 /// Class that contains bullet stats that are not given by its spawner. They are only name and speed.
 /// (es. damage, range, ecc... are given by the spawner of the bullet)

@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
+import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 
 /**

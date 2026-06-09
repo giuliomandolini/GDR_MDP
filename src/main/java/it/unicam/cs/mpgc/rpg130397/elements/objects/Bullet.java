@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
+import it.unicam.cs.mpgc.rpg130397.elements.stats.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;

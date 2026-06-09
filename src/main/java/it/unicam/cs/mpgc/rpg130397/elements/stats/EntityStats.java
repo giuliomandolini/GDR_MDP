@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
+package it.unicam.cs.mpgc.rpg130397.elements.stats;
 
 import java.util.HashMap;
 import java.util.Map;

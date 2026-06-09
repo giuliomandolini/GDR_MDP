@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
-import it.unicam.cs.mpgc.rpg130397.elements.interactables.Interactable;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.interactables.Interactable;
 
 import java.util.Set;
 

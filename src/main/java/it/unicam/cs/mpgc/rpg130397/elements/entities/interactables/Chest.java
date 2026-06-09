@@ -1,7 +1,7 @@
-package it.unicam.cs.mpgc.rpg130397.elements.interactables;
+package it.unicam.cs.mpgc.rpg130397.elements.entities.interactables;
 
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
+import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
@@ -57,7 +57,7 @@ public class Chest extends GameObject implements Interactable {
                 do
                 {
                     randomIndex = new Random().nextInt((int) Arrays.stream(Characteristics.CharacteristicType.values()).count());
-                    chosen = GameData.getPlayer().getInventory().get(Characteristics.CharacteristicType.values()[randomIndex]);
+                    chosen = GameData.getPlayer().getInventory().getWeapon(Characteristics.CharacteristicType.values()[randomIndex]);
                 }while(chosen == null);
                 chosen.setLevel(chosen.getLevel() + 1);
             }
@@ -80,7 +80,7 @@ public class Chest extends GameObject implements Interactable {
             int randomIndex = new Random().nextInt(GameData.getWeaponStatMap().size());
             chosenIsOk = true;
             randomWeapon = (String) GameData.getWeaponStatMap().keySet().toArray()[randomIndex];
-            for(Weapon w : GameData.getPlayer().getInventory().values())
+            for(Weapon w : GameData.getPlayer().getInventory().getWeapons())
             {
                 if (w.getName().equals(randomWeapon)) {
                     chosenIsOk = false;

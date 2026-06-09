@@ -1,8 +1,8 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.Main;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.BulletStats;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
+import it.unicam.cs.mpgc.rpg130397.elements.stats.BulletStats;
+import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;

@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg130397.controllers;
 
 import it.unicam.cs.mpgc.rpg130397.Main;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.EntityStats;
+import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
@@ -181,7 +181,7 @@ public class GameController {
         int i = 0;
         for(Characteristics.CharacteristicType t : Characteristics.CharacteristicType.values())
         {
-            Weapon current = GameData.getPlayer().getInventory().get(t);
+            Weapon current = GameData.getPlayer().getInventory().getWeapon(t);
             weaponNames.get(i).setText(current != null ? current.getName() : "No weapon");
             weaponLevels.get(i).setText(current != null ? String.valueOf(current.getLevel()) : "");
             characteristicLevels.get(i).setText(String.valueOf(GameData.getPlayer().getCharacteristics().getCharacteristicValue(t)));

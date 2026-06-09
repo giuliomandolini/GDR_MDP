@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.WeaponStats;
+import it.unicam.cs.mpgc.rpg130397.elements.stats.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
 import it.unicam.cs.mpgc.rpg130397.utils.NearestEnemyUpdater;
