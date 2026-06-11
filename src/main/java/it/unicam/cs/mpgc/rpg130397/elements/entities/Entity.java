@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
 import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
 
 /**
  * This is the base class for each entity that exists in the game.<br>

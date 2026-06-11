@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
+package it.unicam.cs.mpgc.rpg130397.elements.entities.player;
 
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 
@@ -12,12 +12,10 @@ import java.util.Map;
 public class Inventory {
     private final Map<Characteristics.CharacteristicType, Weapon> map;
 
-    public Inventory(Map<Characteristics.CharacteristicType, Weapon> inventory) {
-        this.map = inventory;
-    }
     public Inventory(List<Weapon> weapons) {
         map = new HashMap<>();
-        weapons.forEach(this::addWeapon);
+        if(weapons != null)
+            weapons.forEach(this::addWeapon);
     }
 
     public Collection<Weapon> getWeapons()

@@ -30,8 +30,14 @@
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="20.0" stroke="BLACK" strokeType="INSIDE" width="160.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-                  <Rectangle fx:id="healthBar" arcHeight="5.0" arcWidth="5.0" fill="RED" height="16.0" layoutX="130.0" layoutY="48.0" stroke="BLACK" strokeType="INSIDE" width="155.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="20.0" stroke="BLACK" strokeType="INSIDE" width="160.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets left="52.5" />
+                     </GridPane.margin></Rectangle>
+                  <Rectangle fx:id="healthBar" arcHeight="5.0" arcWidth="5.0" fill="RED" height="16.0" layoutX="130.0" layoutY="48.0" stroke="BLACK" strokeType="INSIDE" width="155.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets left="55.0" top="1.5" />
+                     </GridPane.margin></Rectangle>
                   <Label text="Strength" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
                      <GridPane.margin>
                         <Insets left="10.0" />

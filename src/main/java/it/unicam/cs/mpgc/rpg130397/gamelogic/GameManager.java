@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
+import it.unicam.cs.mpgc.rpg130397.elements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 
 import java.io.FileNotFoundException;
@@ -21,30 +21,17 @@ public class GameManager {
         InputManager.start();
     }
 
+    /// Updates all the game logic
     public static void update()
     {
-        SpawnSystem.spawnEnemies();
-        SpawnSystem.relocateEnemies();
+        SpawnSystem.update();
         CollisionSystem.checkForCollisions();
-        updateModels();
-        InteractablesManager.update();
+        ModelManager.update();
         CombatSystem.update();
     }
 
-
-    public static void updateModels()
-    {
-        //needed to avoid ConcurrentModificationException: there might be enemies or bullets that get removed during the update cycle.
-        List<GameObject> allGameObjects = new LinkedList<>(GameData.getAllGameObjects().values().stream().flatMap(Collection::stream).toList());
-        for(GameObject g : allGameObjects)
-        {
-            if(g instanceof Updatable)
-                ((Updatable)g).update();
-        }
-    }
-
+    /// Happens when the player hp get <= 0
     public static void lose() throws IOException {
-
         JsonManager.saveInventory();
         JsonManager.saveWeaponLevels();
 

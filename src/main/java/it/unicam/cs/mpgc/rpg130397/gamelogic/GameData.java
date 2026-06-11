@@ -3,7 +3,7 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Player;
 
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -39,18 +39,24 @@ public class GameData {
         SpawnSystem.start();
     }
 
-    public static void removeGameObject(GameObject e)
+    /// Removes a GameObject from the game.
+    /// @param gameObject the GameObject to remove.
+    public static void removeGameObject(GameObject gameObject)
     {
-        if(gameObjects.get(e.getClass()) == null) return;
-        gameObjects.get(e.getClass()).remove(e);
-        onlyViewElements.add(e);
+        if(gameObjects.get(gameObject.getClass()) == null) return;
+        gameObjects.get(gameObject.getClass()).remove(gameObject);
+        onlyViewElements.add(gameObject);
     }
-    public static void addGameObject(GameObject e)
+    /// Adds a GameObject into the game.
+    /// @param gameObject the GameObject to add.
+    public static void addGameObject(GameObject gameObject)
     {
-        if(gameObjects.get(e.getClass()) == null) gameObjects.put(e.getClass(), new LinkedList<>());
-        gameObjects.get(e.getClass()).add(e);
-        onlyModelElements.add(e);
+        if(gameObjects.get(gameObject.getClass()) == null) gameObjects.put(gameObject.getClass(), new LinkedList<>());
+        gameObjects.get(gameObject.getClass()).add(gameObject);
+        onlyModelElements.add(gameObject);
     }
+    /// Gets all the GameObjects of a given type.
+    /// @param type The type of the elements to get.
     public static <T extends GameObject> List<T> getGameObjectsOfType(Class<T> type)
     {
         List<T> t = (List<T>) gameObjects.get(type);
@@ -58,10 +64,11 @@ public class GameData {
         if(t == null) t = new LinkedList<>();
         return t;
     }
-    public static Map<Class<? extends GameObject>, List<GameObject>> getAllGameObjects() {
-        return gameObjects;
+    public static List<GameObject> getAllGameObjects() {
+        return gameObjects.values().stream().flatMap(Collection::stream).toList();
     }
 
+    //methods to get json info
     public static Map<String, Enemy> getEnemiesMap() {
         return enemiesMap;
     }
@@ -72,6 +79,7 @@ public class GameData {
         if(weaponsLevelMap.putIfAbsent(name, level) != null)
             weaponsLevelMap.put(name, level);
     }
+
     //if the level has not been saved yet, then the default level is 0 because the weapon has never been used.
     public static int getWeaponLevel(String name)
     {
@@ -82,12 +90,14 @@ public class GameData {
         return weaponsLevelMap;
     }
 
+    /// Called when the GameController updates the views. It updates the list of the elements that still have to spawn (have their view created)
     public static List<GameObject> getElementsToSpawn()
     {
         List<GameObject> toReturn = new ArrayList<>(onlyModelElements);
         onlyModelElements = new ArrayList<>();
         return toReturn;
     }
+    /// Called when the GameController updates the views. It updates the list of the elements that still have to despawn (have their view deleted)
     public static List<GameObject> getElementsToDespawn()
     {
         List<GameObject> toReturn = new ArrayList<>(onlyViewElements);
@@ -96,6 +106,7 @@ public class GameData {
     }
 
     public static void setPlayer(Player player) {
+        if(player == null) throw new IllegalArgumentException("The player cannot be null");
         GameData.player = player;
         gameObjects.put(Player.class, new LinkedList<>());
         gameObjects.get(Player.class).add(player);

@@ -9,6 +9,7 @@ import java.util.*;
 /// Updates enemies and bullets for what concerns combat, and every damaging action must pass trough this class.
 public class CombatSystem {
 
+    /// Checks for all the bullets collisions and interactions with the player and the enemies and the enemies attacks.
     public static void update()
     {
         updateBullets();

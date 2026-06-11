@@ -1,11 +1,11 @@
 package it.unicam.cs.mpgc.rpg130397.controllers;
 
 import it.unicam.cs.mpgc.rpg130397.Main;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
 import it.unicam.cs.mpgc.rpg130397.utils.SceneManager;
@@ -129,12 +129,12 @@ public class GameController {
             manageLoss();
             return;
         }
+        //logic update
+        GameManager.update();
+
         //views update
         createDeleteViews();
         updateViewPositions();
-
-        //logic update
-        GameManager.update();
 
         updateUi();
     }

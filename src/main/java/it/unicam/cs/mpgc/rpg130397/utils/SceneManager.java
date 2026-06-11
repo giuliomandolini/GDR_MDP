@@ -7,12 +7,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-
+/// Util class to load a scene by its name.
 public class SceneManager {
 
     private static Stage stage;
 
-    /// Used to load scenes by name. Use only the scene name without ".fxml" or path
+    /// Used to load scenes by name. Use only the scene name without ".fxml" or path.
+    /// @param scene the name of the scene
     public static void loadScene(String scene) throws IOException {
         URL resource = SceneManager.class.getResource("/fxml/"+scene+".fxml");
         if(resource == null) throw new IllegalArgumentException("The name of the scene to load is not valid.");

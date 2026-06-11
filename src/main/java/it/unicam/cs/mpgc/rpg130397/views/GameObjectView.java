@@ -1,13 +1,14 @@
 package it.unicam.cs.mpgc.rpg130397.views;
 
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Player;
 import it.unicam.cs.mpgc.rpg130397.utils.GetSpriteByName;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
 import javafx.scene.image.ImageView;
 
-/// Base class from where all the views originate.
+/// Base class from where all the views originate. Takes a generic GameObject to represent on the screen, because each element that
+/// has to be instantiated is a GameObject.
 //it uses the generics because else there would be a view class for each GameObject in game and the project would not
 //be scalable, doing so permits to instantiate a new class simply creating a new GameObjectView with the interested GameObject
 //as T, without using a cast if T would only be a simple GameObject.
@@ -15,8 +16,10 @@ public class GameObjectView<T extends GameObject> extends ImageView {
 
     private final T object;
 
+    /// @param object The GameObject that is represented by this view. Must not be null.
     public GameObjectView(T object)
     {
+        if(object == null) throw new IllegalArgumentException("The GameObject of a view must not be null.");
         super(GetSpriteByName.getSprite(object.getName()));
         this.object = object;
     }

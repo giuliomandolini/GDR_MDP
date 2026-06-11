@@ -3,7 +3,7 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Inventory;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Inventory;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
-/// Serializes and Deserializes data from jsons
+/// This class serializes and deserializes data from jsons.
 public class JsonManager {
     /**
      *  Static method that deserializes the data contained in the weapons.json file into the weapons map

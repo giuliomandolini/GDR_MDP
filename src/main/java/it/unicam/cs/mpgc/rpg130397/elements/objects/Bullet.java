@@ -1,8 +1,8 @@
 package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
 import it.unicam.cs.mpgc.rpg130397.elements.stats.BulletStats;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
+import it.unicam.cs.mpgc.rpg130397.elements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
@@ -29,6 +29,11 @@ public class Bullet extends GameObject implements Updatable {
     //Used for definition inside the JSON, the damage is set runtime on the Enemy constructor
     public Bullet(BulletStats stats, float damage, Entity spawner, Position target, float range, float area)
     {
+        if(spawner == null) throw new IllegalArgumentException("The spawner of the bullet is not set.");
+        if(target == null) throw new IllegalArgumentException("The target of the bullet is not set.");
+        if(stats == null) throw new IllegalArgumentException("Bullet has no stats associated.");
+        if(damage < 0) throw new IllegalArgumentException("A bullet cannot have negative damage.");
+
         super(stats.getName(), new Position(spawner.getPosition().getX(), spawner.getPosition().getY()));
 
         this.stats = stats;

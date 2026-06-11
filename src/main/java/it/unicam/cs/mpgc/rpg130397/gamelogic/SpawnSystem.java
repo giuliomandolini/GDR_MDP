@@ -3,7 +3,6 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import it.unicam.cs.mpgc.rpg130397.Main;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
@@ -35,6 +34,13 @@ public class SpawnSystem {
         enemyNames = GameData.getEnemiesMap().keySet().toArray(new String[0]); //IntelliJ suggestion
     }
 
+    /// Spawns the enemies in the scene and relocates the enemies that are too far away from the player nearby
+    public static void update()
+    {
+        spawnEnemies();
+        relocateEnemies();
+    }
+
     public static void spawnEnemies()
     {
         updateEnemySpawnRate();
@@ -59,8 +65,6 @@ public class SpawnSystem {
     private static void updateEnemySpawnRate()
     {
         int numberOfEnemies = GameData.getGameObjectsOfType(Enemy.class).size();
-
-        System.out.println(numberOfEnemies);
 
         if(numberOfEnemies < 50)
         {

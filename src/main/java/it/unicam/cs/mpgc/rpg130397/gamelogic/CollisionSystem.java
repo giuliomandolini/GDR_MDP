@@ -3,7 +3,7 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.Player;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Bullet;
 import it.unicam.cs.mpgc.rpg130397.views.GameObjectView;
 
@@ -55,6 +55,10 @@ public class CollisionSystem {
         }
 
     }
+    /// Checks if a GameObjectView collides with another.
+    /// @param i1 the first object
+    /// @param i2 the second object
+    /// @return true if the objects collide, false otherwise
     private static boolean collision(GameObjectView<?> i1, GameObjectView<?> i2)
     {
         return i1.getBoundsInParent().intersects(i2.getBoundsInParent());
@@ -66,6 +70,9 @@ public class CollisionSystem {
 
     //it could have been an alternative to use T extends GameObject, but then it would have been impossible to get
     //all the elements that extend interactable, that is an interface and cannot extend GameObject
+    /// Returns all the collisions with the player of a given type
+    /// @param type The type of class that collides with the player.
+    /// @return The set of Objects that collide with the player of the given type.
     public static <T> Set<T> getPlayerCollisions(Class<T> type)
     {
         return playerCollisions.stream()

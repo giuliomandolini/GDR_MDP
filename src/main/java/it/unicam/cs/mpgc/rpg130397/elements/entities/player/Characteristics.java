@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130397.elements.abstractelements;
+package it.unicam.cs.mpgc.rpg130397.elements.entities.player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class Characteristics {
     {
         characteristics = new HashMap<>();
         if (strength < 0 || dexterity < 0 || intelligence < 0) {
-            throw new IllegalArgumentException("Caratteristiche minori di 0");
+            throw new IllegalArgumentException("Characteristics values cannot be less than 0");
         }
         characteristics.put(CharacteristicType.STRENGTH, strength);
         characteristics.put(CharacteristicType.DEXTERITY, dexterity);
@@ -39,7 +39,7 @@ public class Characteristics {
     }
 
     public void setCharacteristicValue(CharacteristicType type, int value) {
-        if(value < 0) throw new IllegalArgumentException("Valore di una caratteristica minore di 0");
+        if(value < 0) throw new IllegalArgumentException("Characteristics values cannot be less than 0");
         characteristics.put(type, value);
     }
 

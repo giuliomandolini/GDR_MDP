@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashSet;

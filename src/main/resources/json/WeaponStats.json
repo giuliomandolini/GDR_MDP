@@ -1,6 +1,6 @@
 {
   "Fireball": {
-    "damage": 25.0,
+    "damage": 30.0,
     "cooldown": 1000,
     "range": 250.0,
     "area": 50,

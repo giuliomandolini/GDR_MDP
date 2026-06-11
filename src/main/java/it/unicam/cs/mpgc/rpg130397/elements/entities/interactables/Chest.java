@@ -1,8 +1,9 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities.interactables;
 
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Characteristics;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.CollisionSystem;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
@@ -22,6 +23,7 @@ public class Chest extends GameObject implements Interactable {
 
     public Chest(Position position)
     {
+        if (position == null) throw new IllegalArgumentException("Chest has no position");
         //cannot read rewardType before the constructor is called
         RewardType temp = RewardType.values()[new Random().nextInt((int)Arrays.stream(RewardType.values()).count())];
         rewardType = temp;
@@ -43,6 +45,12 @@ public class Chest extends GameObject implements Interactable {
         GameData.removeGameObject(this);
     }
 
+    @Override
+    public boolean canInteract() {
+        return CollisionSystem.getPlayerCollisions(Interactable.class).contains(this);
+    }
+
+    /// Has to be called when the chest opens. Gives the reward to the player.
     private void reward()
     {
         switch (rewardType)

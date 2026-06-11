@@ -1,0 +1,13 @@
+{
+  "map": {
+    "DEXTERITY": {
+      "name": "Bow"
+    },
+    "STRENGTH": {
+      "name": "Sword"
+    },
+    "INTELLIGENCE": {
+      "name": "Fireball"
+    }
+  }
+}

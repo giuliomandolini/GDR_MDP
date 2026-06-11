@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.rpg130397.elements.objects;
 
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
@@ -82,9 +82,13 @@ public class Weapon {
     //Dexterity weapons attack towards mouse position
     private void dexAttack() {
         Position target = InputManager.getMousePosition();
+        Position playerPosition = GameData.getPlayer().getPosition();
 
-        if(target == null)
-            target = new Position(0, 0);
+        //if there is no mouse position or the player is at the same position as the target, the weapon shoots up
+        if(target == null || target.equals(playerPosition))
+        {
+            target = new Position(playerPosition.getX(), playerPosition.getY() - 1);
+        }
 
         SpawnSystem.createBullet(stats.getBulletStats(), stats.getDamage(), GameData.getPlayer(), target, stats.getRange(), stats.getArea());
     }

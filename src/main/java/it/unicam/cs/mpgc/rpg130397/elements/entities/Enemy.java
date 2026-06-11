@@ -1,9 +1,10 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities;
 
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Player;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.BulletStats;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Position;
-import it.unicam.cs.mpgc.rpg130397.elements.abstractelements.Updatable;
+import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
+import it.unicam.cs.mpgc.rpg130397.elements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.interactables.Chest;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.CollisionSystem;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
