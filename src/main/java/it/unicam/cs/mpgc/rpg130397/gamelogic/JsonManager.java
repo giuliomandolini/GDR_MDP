@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Inventory;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.WeaponStats;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Enemy;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Weapon;
 
 import java.io.*;
 import java.lang.reflect.Type;

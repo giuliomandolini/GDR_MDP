@@ -1,7 +1,5 @@
 package it.unicam.cs.mpgc.rpg130397.elements.entities.player;
 
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;

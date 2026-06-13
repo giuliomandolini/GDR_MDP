@@ -1,11 +1,11 @@
-package it.unicam.cs.mpgc.rpg130397.elements.entities.interactables;
+package it.unicam.cs.mpgc.rpg130397.elements.interactables;
 
 import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Characteristics;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.CollisionSystem;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.GameData;
 
 import java.util.Arrays;

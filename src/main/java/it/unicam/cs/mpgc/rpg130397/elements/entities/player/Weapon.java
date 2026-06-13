@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg130397.elements.objects;
+package it.unicam.cs.mpgc.rpg130397.elements.entities.player;
 
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
@@ -31,7 +31,6 @@ public class Weapon {
         //the calculations of the damage and cooldown by weaponLevel and characteristicLevel have to be done on the original stats,
         //not the previous that the weapon had before changing.
         stats = new WeaponStats(GameData.getWeaponStatMap().get(name));
-        System.out.println(stats + " " + GameData.getWeaponStatMap().get(name));
     }
 
     public void attack()
@@ -108,13 +107,12 @@ public class Weapon {
         int charLevel = GameData.getPlayer().getCharacteristics().getCharacteristicValue(stats.getWeaponType());
         //the damage increases by 10% for each characteristic level above 10
         float damage = originalStats.getDamage() * (charLevel / 10.0f);
+        //the damage also increases by 5% for each weapon level above 0
+        damage *= (1 + 0.05f * (level));
         stats.setDamage(damage);
 
-        //the damage also increases by 5% for each weapon level above 1
-        stats.setDamage(damage * (1 + 0.05f * (level)));
-
-        //the cooldown decreases by 5% per level
-        float cooldown = originalStats.getCooldown() * (1 - 0.05f * level);
+        //the cooldown decreases by 5% per char level above 10
+        float cooldown = originalStats.getCooldown() * (1 - 0.05f * (charLevel - 10));
         //the weapon must have a minimum cooldown
         if(cooldown < 20) cooldown = 20;
         stats.setCooldown((long) (cooldown));

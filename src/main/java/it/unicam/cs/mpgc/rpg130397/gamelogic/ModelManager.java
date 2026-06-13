@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg130397.gamelogic;
 
 import it.unicam.cs.mpgc.rpg130397.elements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
-import it.unicam.cs.mpgc.rpg130397.elements.entities.interactables.Interactable;
+import it.unicam.cs.mpgc.rpg130397.elements.interactables.Interactable;
 
 import java.util.LinkedList;
 import java.util.List;

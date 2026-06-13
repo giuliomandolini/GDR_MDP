@@ -3,7 +3,6 @@ package it.unicam.cs.mpgc.rpg130397.elements.entities.player;
 import it.unicam.cs.mpgc.rpg130397.controllers.GameController;
 import it.unicam.cs.mpgc.rpg130397.elements.Updatable;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.Entity;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
 import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
 import javafx.beans.property.FloatProperty;

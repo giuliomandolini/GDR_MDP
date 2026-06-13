@@ -16,6 +16,7 @@ import java.util.Random;
 public class SpawnSystem {
 
     private static long lastSpawn;
+    private static long timeAtStart;
     private static long spawnCooldown;
     private static int enemiesToSpawn;
     //In future developments the enemies will be coming in groups and not just random as it is now,
@@ -32,6 +33,7 @@ public class SpawnSystem {
         enemiesToSpawn = 2;
         idCounter = 0;
         enemyNames = GameData.getEnemiesMap().keySet().toArray(new String[0]); //IntelliJ suggestion
+        timeAtStart = System.currentTimeMillis();
     }
 
     /// Spawns the enemies in the scene and relocates the enemies that are too far away from the player nearby
@@ -79,6 +81,9 @@ public class SpawnSystem {
             enemiesToSpawn = 1;
             spawnCooldown = 400;
         }
+        //Each 0.75 seconds, the time between enemy spawn reduces by 1 millisecond to increase difficulty
+        spawnCooldown -= (lastSpawn - timeAtStart) / 750;
+        if(spawnCooldown < 100) spawnCooldown = 100;
     }
 
     public static void relocateEnemies()

@@ -6,7 +6,7 @@ import it.unicam.cs.mpgc.rpg130397.elements.stats.EntityStats;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.Position;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.GameObject;
 import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Player;
-import it.unicam.cs.mpgc.rpg130397.elements.objects.Weapon;
+import it.unicam.cs.mpgc.rpg130397.elements.entities.player.Weapon;
 import it.unicam.cs.mpgc.rpg130397.gamelogic.*;
 import it.unicam.cs.mpgc.rpg130397.utils.SceneManager;
 import it.unicam.cs.mpgc.rpg130397.utils.ScreenToWorldPoint;
